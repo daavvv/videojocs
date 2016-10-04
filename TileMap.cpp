@@ -60,9 +60,7 @@ void TileMap::loadLevelTest(const string &levelFile)
 	ifstream file(levelFile);
 	ostringstream tmp;
 	tmp << file.rdbuf();
-	//hola guapo
 
-	//holakase
 	
 
 	string jsonString = tmp.str();

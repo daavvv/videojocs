@@ -89,7 +89,11 @@ int main(int argc, char **argv)
 {
 	// GLUT initialization
 	glutInit(&argc, argv);
+#ifdef __APPLE__
 	glutInitDisplayMode(GLUT_3_2_CORE_PROFILE | GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
+#else
+	glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
+#endif
 	glutInitWindowPosition(100, 100);
 	glutInitWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
