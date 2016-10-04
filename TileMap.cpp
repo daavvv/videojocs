@@ -61,14 +61,6 @@ void TileMap::loadLevelTest(const string &levelFile)
 	std::string jsonString = tmp.str();
 
 
-	picojson::value v;
-	string err = picojson::parse(v, jsonString);
-
-	if (!err.empty()) {
-		std:cerr << err << endl;
-	}
-
-
 	
 	//cout << jsonString << endl;
 	//cout << j << endl;
