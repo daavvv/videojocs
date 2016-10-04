@@ -31,14 +31,6 @@ void Scene::init()
 {
 	initShaders();
 	map = TileMap::createTileMap("levels/level01.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
-
-	Texture spritesheet;
-	spritesheet.loadFromFile("images/rocks.jpeg", TEXTURE_PIXEL_FORMAT_RGBA);
-	Sprite* sprite;
-	sprite = Sprite::createSprite(glm::ivec2(32, 32), glm::vec2(0.5, 0.5), &spritesheet, &texProgram);
-	sprite->setPosition(glm::vec2(float(SCREEN_X), float(SCREEN_Y)));
-
-
 	player = new Player();
 	player->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));

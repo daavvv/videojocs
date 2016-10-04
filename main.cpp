@@ -1,5 +1,9 @@
 #include <GL/glew.h>
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
 #include <GL/glut.h>
+#endif
 #include "Game.h"
 
 
@@ -85,9 +89,10 @@ int main(int argc, char **argv)
 {
 	// GLUT initialization
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
+	glutInitDisplayMode(GLUT_3_2_CORE_PROFILE | GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
 	glutInitWindowPosition(100, 100);
 	glutInitWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+
 
 	glutCreateWindow(argv[0]);
 	glutDisplayFunc(drawCallback);

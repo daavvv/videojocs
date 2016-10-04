@@ -1,7 +1,11 @@
 #include <cmath>
 #include <iostream>
 #include <GL/glew.h>
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
 #include <GL/glut.h>
+#endif
 #include "Player.h"
 #include "Game.h"
 
@@ -13,7 +17,7 @@
 
 enum PlayerAnims
 {
-	STAND_LEFT, STAND_RIGHT, MOVE_LEFT, MOVE_RIGHT, ATACK
+	STAND_LEFT, STAND_RIGHT, MOVE_LEFT, MOVE_RIGHT
 };
 
 
@@ -28,21 +32,17 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 		sprite->addKeyframe(STAND_LEFT, glm::vec2(0.f, 0.f));
 		
 		sprite->setAnimationSpeed(STAND_RIGHT, 8);
-		sprite->addKeyframe(STAND_RIGHT, glm::vec2(0.f, 0.f));
+		sprite->addKeyframe(STAND_RIGHT, glm::vec2(0.25f, 0.f));
 		
 		sprite->setAnimationSpeed(MOVE_LEFT, 8);
 		sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.f, 0.f));
-		sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.f, 0.0f));
-		sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.f, 0.0f));
+		sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.f, 0.25f));
+		sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.f, 0.5f));
 		
 		sprite->setAnimationSpeed(MOVE_RIGHT, 8);
 		sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.25, 0.f));
 		sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.25, 0.25f));
 		sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.25, 0.5f));
-
-		//nou
-		sprite->setAnimationSpeed(ATACK, 8);
-		sprite->addKeyframe(ATACK, glm::vec2(0.5f, 0.5f));
 		
 	sprite->changeAnimation(0);
 	tileMapDispl = tileMapPos;
@@ -64,20 +64,15 @@ void Player::update(int deltaTime)
 			sprite->changeAnimation(STAND_LEFT);
 		}
 	}
-	else if(Game::instance().getKey('a'))
+	else if(Game::instance().getSpecialKey(GLUT_KEY_RIGHT))
 	{
-		posPlayer.x += 8;
-
-	}
-	if (Game::instance().getSpecialKey(GLUT_KEY_RIGHT))
-	{
-		if (sprite->animation() != MOVE_RIGHT)
+		if(sprite->animation() != MOVE_RIGHT)
 			sprite->changeAnimation(MOVE_RIGHT);
 		posPlayer.x += 2;
-		if (map->collisionMoveRight(posPlayer, glm::ivec2(32, 32)))
+		if(map->collisionMoveRight(posPlayer, glm::ivec2(32, 32)))
 		{
 			posPlayer.x -= 2;
-			sprite->changeAnimation(MOVE_RIGHT);
+			sprite->changeAnimation(STAND_RIGHT);
 		}
 	}
 	else
