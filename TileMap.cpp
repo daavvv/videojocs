@@ -6,6 +6,7 @@
 #include "json.hpp"
 #include <string>
 
+
 // for convenience
 using json = nlohmann::json;
 
@@ -25,7 +26,7 @@ TileMap *TileMap::createTileMap(const string &levelFile, const glm::vec2 &minCoo
 TileMap::TileMap(const string &levelFile, const glm::vec2 &minCoords, ShaderProgram &program)
 {
 	loadLevel(levelFile);
-	//loadLevelTest(levelFile);
+	loadLevelTest(levelFile);
 	prepareArrays(minCoords, program);
 }
 
@@ -65,11 +66,11 @@ void TileMap::loadLevelTest(const string &levelFile)
 
 	string jsonString = tmp.str();
 
-	json j = json::parse(jsonString);
+	//json j = json::parse(jsonString);
 
 	cout << "hola" << endl;
-	cout << jsonString << endl;
-	cout << j["height"] << endl;
+	//cout << jsonString << endl;
+	//cout << j["height"] << endl;
 
 }
 
