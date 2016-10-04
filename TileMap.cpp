@@ -3,11 +3,9 @@
 #include <sstream>
 #include <vector>
 #include "TileMap.h"
-#include "json.hpp"
 #include <stdlib.h>
 
-// for convenience
-using json = nlohmann::json;
+
 
 
 
@@ -60,17 +58,77 @@ void TileMap::loadLevelTest(const string &levelFile)
 	ifstream file(path);
 	ostringstream tmp;
 	tmp << file.rdbuf();
-
 	std::string jsonString = tmp.str();
 
-	cout << jsonString << endl;
+
+	picojson::value v;
+	string err = picojson::parse(v, jsonString);
+
+	if (!err.empty()) {
+		std:cerr << err << endl;
+	}
+
 
 	
-	json j = json::parse(jsonString);
-
-	cout << "hola" << endl;
 	//cout << jsonString << endl;
-	cout << j["height"] << endl;
+	//cout << j << endl;
+
+	/*
+	mapSize.x << mapSize.y << j["height"];
+	
+	tileSize << blockSize << j["tileheight"];
+
+	cout << mapSize.x << mapSize.y << endl << tileSize << blockSize << endl; 
+	*/
+
+
+	/*
+	getline(fin, line);
+	sstream.str(line);
+	sstream >> mapSize.x >> mapSize.y;
+	getline(fin, line);
+	sstream.str(line);
+	sstream >> tileSize >> blockSize;
+	getline(fin, line);
+	sstream.str(line);
+	
+
+	sstream >> tilesheetFile;
+	tilesheet.loadFromFile(tilesheetFile, TEXTURE_PIXEL_FORMAT_RGBA);
+	tilesheet.setWrapS(GL_CLAMP_TO_EDGE);
+	tilesheet.setWrapT(GL_CLAMP_TO_EDGE);
+	tilesheet.setMinFilter(GL_NEAREST);
+	tilesheet.setMagFilter(GL_NEAREST);
+	getline(fin, line);
+	sstream.str(line);
+	sstream >> tilesheetSize.x >> tilesheetSize.y;
+	tileTexSize = glm::vec2(1.f / tilesheetSize.x, 1.f / tilesheetSize.y);
+
+	map = new int[mapSize.x * mapSize.y];
+	for(int j=0; j<mapSize.y; j++)
+	{
+	for(int i=0; i<mapSize.x; i++)
+	{
+	fin.get(tile);
+	if(tile == ' ')
+	map[j*mapSize.x+i] = 0;
+	else
+	map[j*mapSize.x+i] = tile - int('0');
+	}
+	fin.get(tile);
+	#ifndef _WIN32
+	fin.get(tile);
+	#endif
+	}
+	fin.close();
+
+	return true;
+
+
+
+
+	*/
+
 
 }
 
