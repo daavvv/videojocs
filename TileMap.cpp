@@ -4,8 +4,7 @@
 #include <vector>
 #include "TileMap.h"
 #include "json.hpp"
-#include <string>
-
+#include <stdlib.h>
 
 // for convenience
 using json = nlohmann::json;
@@ -56,21 +55,22 @@ void TileMap::free()
 
 void TileMap::loadLevelTest(const string &levelFile)
 {
-
+	string path = "levels/test_level.json";
 	
-	ifstream file(levelFile);
+	ifstream file(path);
 	ostringstream tmp;
 	tmp << file.rdbuf();
 
+	std::string jsonString = tmp.str();
+
+	cout << jsonString << endl;
+
 	
-
-	string jsonString = tmp.str();
-
-	//json j = json::parse(jsonString);
+	json j = json::parse(jsonString);
 
 	cout << "hola" << endl;
 	//cout << jsonString << endl;
-	//cout << j["height"] << endl;
+	cout << j["height"] << endl;
 
 }
 
@@ -79,6 +79,10 @@ void TileMap::loadLevelTest(const string &levelFile)
 
 bool TileMap::loadLevel(const string &levelFile)
 {
+
+
+	cout << "hola" << endl;
+
 	ifstream fin;
 	string line, tilesheetFile;
 	stringstream sstream;
