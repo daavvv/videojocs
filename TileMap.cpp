@@ -4,8 +4,9 @@
 #include <vector>
 #include "TileMap.h"
 #include <stdlib.h>
+#include <stdio.h>
 
-
+using json = nlohmann::json;
 
 
 
@@ -53,74 +54,85 @@ void TileMap::free()
 
 void TileMap::loadLevelTest(const string &levelFile)
 {
+
+
 	string path = "levels/test_level.json";
 	
-	ifstream file(path);
+	ifstream file(path, std::ifstream::binary);
 	ostringstream tmp;
 	tmp << file.rdbuf();
 	std::string jsonString = tmp.str();
 
-
 	
-	//cout << jsonString << endl;
-	//cout << j << endl;
+	auto j3 = json::parse(jsonString);
+	mapSize.y << int(j3["height"]);
+	mapSize.x << int(j3["width"]);
+	tileSize << blockSize << int(j3["tileheight"]);
 
-	/*
-	mapSize.x << mapSize.y << j["height"];
-	
-	tileSize << blockSize << j["tileheight"];
+	string tilesheet_path, data;
+	int imageHeight, imageWidth;
 
-	cout << mapSize.x << mapSize.y << endl << tileSize << blockSize << endl; 
-	*/
+	//cout << j3 << endl;
+
+	//cout << j3["tilesets"] << endl;
+	//cout << j3["tilesets"]["image"] << endl;
 
 
-	/*
-	getline(fin, line);
-	sstream.str(line);
-	sstream >> mapSize.x >> mapSize.y;
-	getline(fin, line);
-	sstream.str(line);
-	sstream >> tileSize >> blockSize;
-	getline(fin, line);
-	sstream.str(line);
-	
+	int counter = 0;
 
-	sstream >> tilesheetFile;
-	tilesheet.loadFromFile(tilesheetFile, TEXTURE_PIXEL_FORMAT_RGBA);
+	for (json::iterator it = j3["tilesets"].begin(); it != j3["tilesets"].end(); ++it) {
+  		//cout << *it << '\n';
+  		//cout << counter << endl;
+  		//counter++;
+
+
+
+		cout << *it << endl;
+
+
+
+
+
+		if (it.key() == "image"){
+			tilesheet_path = it.value();
+		}
+		if (it.key() == "imageheight"){
+			imageHeight = it.value();
+		}
+		if (it.key() == "imagewidth"){
+			imageWidth = it.value();
+		}
+	}
+
+
+
+	cout << tilesheet_path << endl << imageHeight << endl << imageWidth << endl;
+
+	tilesheet.loadFromFile(tilesheet_path, TEXTURE_PIXEL_FORMAT_RGBA);
 	tilesheet.setWrapS(GL_CLAMP_TO_EDGE);
 	tilesheet.setWrapT(GL_CLAMP_TO_EDGE);
 	tilesheet.setMinFilter(GL_NEAREST);
 	tilesheet.setMagFilter(GL_NEAREST);
-	getline(fin, line);
-	sstream.str(line);
-	sstream >> tilesheetSize.x >> tilesheetSize.y;
+
+	tilesheetSize.x << imageWidth;
+	tilesheetSize.y << imageHeight;
 	tileTexSize = glm::vec2(1.f / tilesheetSize.x, 1.f / tilesheetSize.y);
 
-	map = new int[mapSize.x * mapSize.y];
-	for(int j=0; j<mapSize.y; j++)
-	{
-	for(int i=0; i<mapSize.x; i++)
-	{
-	fin.get(tile);
-	if(tile == ' ')
-	map[j*mapSize.x+i] = 0;
-	else
-	map[j*mapSize.x+i] = tile - int('0');
+
+
+	for (json::iterator it = j3["layers"].begin(); it != j3["layers"].end(); ++it){
+
+
+		if (it.key() == "data"){
+
+			for (int i = 0; i < int(j3["height"])*int(j3["width"]); i++){
+				
+					map[i] = int(it.value()[i]);
+				
+			}
+
+		};
 	}
-	fin.get(tile);
-	#ifndef _WIN32
-	fin.get(tile);
-	#endif
-	}
-	fin.close();
-
-	return true;
-
-
-
-
-	*/
-
 
 }
 

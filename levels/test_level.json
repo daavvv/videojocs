@@ -1,6 +1,6 @@
 { "height":4,
- "layers":[
-        {
+ "layers":
+        [{
          "data":[0, 0, 0, 0, 2, 3, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5],
          "height":4,
          "name":"Capa de Patrones 1",
@@ -15,8 +15,8 @@
  "orientation":"orthogonal",
  "renderorder":"left-down",
  "tileheight":70,
- "tilesets":[
-        {
+ "tilesets":
+        [{
          "columns":14,
          "firstgid":1,
          "image":"..\/Downloads\/kenney_platformerpack_industrial\/Tilesheet\/platformerPack_industrial_tilesheet.png",
