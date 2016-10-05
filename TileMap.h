@@ -36,7 +36,7 @@ public:
 	
 private:
 	bool loadLevel(const string &levelFile);
-	void loadLevelTest(const string &levelFile);
+	bool loadLevelTest(const string &levelFile);
 	void prepareArrays(const glm::vec2 &minCoords, ShaderProgram &program);
 
 private:

@@ -23,8 +23,10 @@ TileMap *TileMap::createTileMap(const string &levelFile, const glm::vec2 &minCoo
 
 TileMap::TileMap(const string &levelFile, const glm::vec2 &minCoords, ShaderProgram &program)
 {
-	loadLevel(levelFile);
-	loadLevelTest(levelFile);
+	//loadLevel(levelFile);
+
+	string path = "levels/test_level.json";
+	loadLevelTest(path);
 	prepareArrays(minCoords, program);
 }
 
@@ -52,7 +54,7 @@ void TileMap::free()
 }
 
 
-void TileMap::loadLevelTest(const string &levelFile)
+bool TileMap::loadLevelTest(const string &levelFile)
 {
 
 
@@ -65,9 +67,9 @@ void TileMap::loadLevelTest(const string &levelFile)
 
 	
 	auto j3 = json::parse(jsonString);
-	mapSize.y << int(j3["height"]);
-	mapSize.x << int(j3["width"]);
-	tileSize << blockSize << int(j3["tileheight"]);
+	mapSize.y = int(j3["height"]);
+	mapSize.x = int(j3["width"]);
+	tileSize = blockSize = int(j3["tileheight"]);
 
 	string tilesheet_path, data;
 	int imageHeight, imageWidth;
@@ -78,35 +80,35 @@ void TileMap::loadLevelTest(const string &levelFile)
 	//cout << j3["tilesets"]["image"] << endl;
 
 
-	int counter = 0;
+	cout << "chivato" << endl;
 
 	for (json::iterator it = j3["tilesets"].begin(); it != j3["tilesets"].end(); ++it) {
   		//cout << *it << '\n';
   		//cout << counter << endl;
   		//counter++;
 
+  		json::iterator array = it->begin();
+
+  		for (array; array != it->end(); ++array){
 
 
-		cout << *it << endl;
+  			if (array.key() == "image"){
+				tilesheet_path = array.value();
+			}
+			if (array.key() == "imageheight"){
+				imageHeight = array.value();
+			}
+			if (array.key() == "imagewidth"){
+				imageWidth = array.value();
+			}
 
 
 
-
-
-		if (it.key() == "image"){
-			tilesheet_path = it.value();
-		}
-		if (it.key() == "imageheight"){
-			imageHeight = it.value();
-		}
-		if (it.key() == "imagewidth"){
-			imageWidth = it.value();
-		}
+  			cout << array.key() << ": " << array.value() << endl;
+  		}
 	}
 
-
-
-	cout << tilesheet_path << endl << imageHeight << endl << imageWidth << endl;
+	cout << "chivato" << endl;
 
 	tilesheet.loadFromFile(tilesheet_path, TEXTURE_PIXEL_FORMAT_RGBA);
 	tilesheet.setWrapS(GL_CLAMP_TO_EDGE);
@@ -114,25 +116,61 @@ void TileMap::loadLevelTest(const string &levelFile)
 	tilesheet.setMinFilter(GL_NEAREST);
 	tilesheet.setMagFilter(GL_NEAREST);
 
-	tilesheetSize.x << imageWidth;
-	tilesheetSize.y << imageHeight;
+	tilesheetSize.x = imageWidth/32;  //Numero de celdas en el tilesheet CAMBIAAARRR
+	tilesheetSize.y = imageHeight/32;
 	tileTexSize = glm::vec2(1.f / tilesheetSize.x, 1.f / tilesheetSize.y);
 
+	cout << "chivato" << endl;
 
+	map = new int[mapSize.x * mapSize.y];
 
 	for (json::iterator it = j3["layers"].begin(); it != j3["layers"].end(); ++it){
 
 
-		if (it.key() == "data"){
+		json::iterator array = it->begin();
 
-			for (int i = 0; i < int(j3["height"])*int(j3["width"]); i++){
-				
-					map[i] = int(it.value()[i]);
-				
-			}
+  		for (array; array != it->end(); ++array){
 
-		};
+
+  			if (array.key() == "data"){
+
+				for (int i = 0; i < int(j3["height"])*int(j3["width"]); i++){
+					
+						cout << "inner loop" << endl;
+						map[i] = int(array.value()[i]);
+					
+				}
+
+			};
+
+
+  			cout << array.key() << ": " << array.value() << endl;
+
+  			cout << "after cout" << endl;
+  		}
+		
+	}	
+
+	cout << "chivato" << endl;
+
+	for (int i = 0; i < mapSize.x * mapSize.y; ++i){
+		cout << map[i] << ",";
 	}
+	cout << endl;
+
+	cout << position.x << "," << position.y << endl << mapSize.x << "," << mapSize.y << endl << tilesheetSize.x << "," << tilesheetSize.y << endl;
+	cout << tileTexSize.x << tileTexSize.y << endl;
+
+	return true;
+
+	/*
+	glm::ivec2 position, mapSize, tilesheetSize;
+	int tileSize, blockSize;
+	Texture tilesheet;
+	glm::vec2 tileTexSize;
+	*/
+
+
 
 }
 
@@ -192,6 +230,12 @@ bool TileMap::loadLevel(const string &levelFile)
 #endif
 	}
 	fin.close();
+
+
+	cout << position.x << "," << position.y << endl << mapSize.x << "," << mapSize.y << endl << tilesheetSize.x << "," << tilesheetSize.y << endl;
+	cout << tileTexSize.x << tileTexSize.y << endl;
+
+
 	
 	return true;
 }
