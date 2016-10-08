@@ -1,13 +1,13 @@
-{ "height":4,
+{ "height":8,
  "layers":[
         {
-         "data":[4, 4, 4, 4, 4, 1, 1, 4, 4, 1, 1, 4, 4, 4, 4, 4],
-         "height":4,
+         "data":[17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 9, 9, 17, 17, 17, 17, 17, 17, 9, 9, 17, 17, 17, 23, 23, 23, 9, 9, 23, 23, 23, 23, 23, 23, 9, 9, 23, 23, 23, 23, 23, 23, 9, 9, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23],
+         "height":8,
          "name":"Capa de Patrones 1",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
-         "width":4,
+         "width":8,
          "x":0,
          "y":0
         }],
@@ -17,19 +17,19 @@
  "tileheight":32,
  "tilesets":[
         {
-         "columns":2,
+         "columns":8,
          "firstgid":1,
-         "image":"images/blocks.png",
-         "imageheight":64,
-         "imagewidth":64,
+         "image":"images/test3.png",
+         "imageheight":256,
+         "imagewidth":256,
          "margin":0,
-         "name":"blocks",
+         "name":"test3",
          "spacing":0,
-         "tilecount":4,
+         "tilecount":64,
          "tileheight":32,
          "tilewidth":32
         }],
  "tilewidth":32,
  "version":1,
- "width":4
+ "width":8
 }

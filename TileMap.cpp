@@ -72,7 +72,7 @@ bool TileMap::loadLevelTest(const string &levelFile)
 	tileSize = blockSize = int(j3["tileheight"]);
 
 	string tilesheet_path, data;
-	int imageHeight, imageWidth;
+	int imageHeight, imageWidth, tilecount, tilewidth;
 
 	//cout << j3 << endl;
 
@@ -80,8 +80,7 @@ bool TileMap::loadLevelTest(const string &levelFile)
 	//cout << j3["tilesets"]["image"] << endl;
 
 
-	cout << "chivato" << endl;
-
+	
 	for (json::iterator it = j3["tilesets"].begin(); it != j3["tilesets"].end(); ++it) {
   		//cout << *it << '\n';
   		//cout << counter << endl;
@@ -101,6 +100,12 @@ bool TileMap::loadLevelTest(const string &levelFile)
 			if (array.key() == "imagewidth"){
 				imageWidth = array.value();
 			}
+			if (array.key() == "tilecount"){
+				tilecount = array.value();
+			}
+			if (array.key() == "tilewidth"){
+				tilewidth = array.value();
+			}
 
 
 
@@ -108,7 +113,6 @@ bool TileMap::loadLevelTest(const string &levelFile)
   		}
 	}
 
-	cout << "chivato" << endl;
 
 	tilesheet.loadFromFile(tilesheet_path, TEXTURE_PIXEL_FORMAT_RGBA);
 	tilesheet.setWrapS(GL_CLAMP_TO_EDGE);
@@ -116,11 +120,16 @@ bool TileMap::loadLevelTest(const string &levelFile)
 	tilesheet.setMinFilter(GL_NEAREST);
 	tilesheet.setMagFilter(GL_NEAREST);
 
+	/*
 	tilesheetSize.x = imageWidth/32;  //Numero de celdas en el tilesheet CAMBIAAARRR
 	tilesheetSize.y = imageHeight/32;
+	*/
+
+	tilesheetSize.x = imageWidth/tilewidth;
+	tilesheetSize.y = imageHeight/tilewidth;
 	tileTexSize = glm::vec2(1.f / tilesheetSize.x, 1.f / tilesheetSize.y);
 
-	cout << "chivato" << endl;
+	
 
 	map = new int[mapSize.x * mapSize.y];
 
@@ -136,7 +145,7 @@ bool TileMap::loadLevelTest(const string &levelFile)
 
 				for (int i = 0; i < int(j3["height"])*int(j3["width"]); i++){
 					
-						cout << "inner loop" << endl;
+						
 						map[i] = int(array.value()[i]);
 					
 				}
@@ -146,20 +155,34 @@ bool TileMap::loadLevelTest(const string &levelFile)
 
   			cout << array.key() << ": " << array.value() << endl;
 
-  			cout << "after cout" << endl;
+  			
   		}
 		
 	}	
 
-	cout << "chivato" << endl;
+	
 
 	for (int i = 0; i < mapSize.x * mapSize.y; ++i){
 		cout << map[i] << ",";
+		if ((i%mapSize.x) == (mapSize.x - 1)){
+			cout << endl;
+		}
 	}
 	cout << endl;
 
-	cout << position.x << "," << position.y << endl << mapSize.x << "," << mapSize.y << endl << tilesheetSize.x << "," << tilesheetSize.y << endl;
-	cout << tileTexSize.x << tileTexSize.y << endl;
+
+	cout << "Position:" << position.x << "," << position.y << endl;
+	cout << "Map size:" << mapSize.x << "," << mapSize.y << endl;
+	cout << "Tilesheet size:" << tilesheetSize.x << "," << tilesheetSize.y << endl;
+	cout << "TileTex size:" << tileTexSize.x << "," << tileTexSize.y << endl;
+	cout << "Image width:" << imageWidth << endl;
+	cout << "Image height:" << imageHeight << endl;
+	cout << "Tilesheet width:" << tilesheet.width() << endl;
+	cout << "Tilesheet height:" << tilesheet.height() << endl;
+
+	cout << "Tile size:" << tileSize << endl;
+	cout << "Block size:" << blockSize << endl;
+
 
 	return true;
 
@@ -232,9 +255,30 @@ bool TileMap::loadLevel(const string &levelFile)
 	fin.close();
 
 
-	cout << position.x << "," << position.y << endl << mapSize.x << "," << mapSize.y << endl << tilesheetSize.x << "," << tilesheetSize.y << endl;
-	cout << tileTexSize.x << tileTexSize.y << endl;
 
+	cout << "Position:" << position.x << "," << position.y << endl;
+	cout << "Map size:" << mapSize.x << "," << mapSize.y << endl;
+	cout << "Tilesheet size:" << tilesheetSize.x << "," << tilesheetSize.y << endl;
+	cout << "TileTex size:" << tileTexSize.x << "," << tileTexSize.y << endl;
+	//cout << "Image width:" << imageWidth << endl;
+	//cout << "Image height:" << imageHeight << endl;
+
+	cout << "Tile size:" << tileSize << endl;
+	cout << "Block size:" << blockSize << endl;
+	cout << "Tilesheet width:" << tilesheet.width() << endl;
+	cout << "Tilesheet height:" << tilesheet.height() << endl;
+
+
+	for (int i = 0; i < mapSize.x * mapSize.y; ++i){
+		cout << map[i];
+		if ((i%mapSize.x) == (mapSize.x - 1)){
+			cout << endl;
+		}
+		else {
+			cout << ",";
+		}
+	}
+	cout << endl;
 
 	
 	return true;
@@ -246,6 +290,8 @@ void TileMap::prepareArrays(const glm::vec2 &minCoords, ShaderProgram &program)
 	glm::vec2 posTile, texCoordTile[2], halfTexel;
 	vector<float> vertices;
 	
+	cout << "Min coords:" << minCoords.x << "," << minCoords.y << endl;
+
 	halfTexel = glm::vec2(0.5f / tilesheet.width(), 0.5f / tilesheet.height());
 	for(int j=0; j<mapSize.y; j++)
 	{
@@ -257,10 +303,10 @@ void TileMap::prepareArrays(const glm::vec2 &minCoords, ShaderProgram &program)
 				// Non-empty tile
 				nTiles++;
 				posTile = glm::vec2(minCoords.x + i * tileSize, minCoords.y + j * tileSize);
-				texCoordTile[0] = glm::vec2(float((tile-1)%2) / tilesheetSize.x, float((tile-1)/2) / tilesheetSize.y);
+				texCoordTile[0] = glm::vec2(float((tile-1)%tilesheetSize.x) / tilesheetSize.x, float((tile-1)/tilesheetSize.y) / tilesheetSize.y);
 				texCoordTile[1] = texCoordTile[0] + tileTexSize;
 				//texCoordTile[0] += halfTexel;
-				texCoordTile[1] -= halfTexel;
+				//texCoordTile[1] -= halfTexel;
 				// First triangle
 				vertices.push_back(posTile.x); vertices.push_back(posTile.y);
 				vertices.push_back(texCoordTile[0].x); vertices.push_back(texCoordTile[0].y);

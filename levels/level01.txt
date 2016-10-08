@@ -4,6 +4,6 @@ TILEMAP
 images/blocks.png 	-- Tilesheet
 2 2 								-- Number of tiles in tilesheet
 1111
-1  1
-1  1
-1111
+1221
+1221
+1334
