@@ -5,11 +5,11 @@
 #include "Game.h"
 
 
-#define SCREEN_X 32
-#define SCREEN_Y 16
+#define SCREEN_X 64
+#define SCREEN_Y -96
 
-#define INIT_PLAYER_X_TILES 4
-#define INIT_PLAYER_Y_TILES 25
+#define INIT_PLAYER_X_TILES 0
+#define INIT_PLAYER_Y_TILES 14
 
 
 Scene::Scene()
@@ -25,6 +25,7 @@ Scene::~Scene()
 	if(player != NULL)
 		delete player;
 }
+
 
 
 void Scene::init()
@@ -47,13 +48,34 @@ void Scene::update(int deltaTime)
 
 void Scene::render()
 {
-	glm::mat4 modelview;
 
+	//cout << projection[0][0] << "," << projection[1][1] << "," << projection[2][2] << endl;
+	//cout << "Player position: " << player->getPosition().x/SCREEN_X << "," << player->getPosition().y/SCREEN_Y << endl;
+	//cout << "Camera position: " << projection[0][0] << "," << projection[1][1] << endl;
+
+
+	glm::mat4 modelview;
 	texProgram.use();
+	float px,py,left,right,bottom,top;
+
+	px = player->getPosition().x; py = player->getPosition().y;
+	left = px - (SCREEN_WIDTH/2.0);
+	top = py - (SCREEN_HEIGHT/2.0);
+	right = left + SCREEN_WIDTH;
+	bottom = top + SCREEN_HEIGHT;
+
+	//projection = glm::ortho(left,right,bottom,top);
+
+
 	texProgram.setUniformMatrix4f("projection", projection);
 	texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
 	modelview = glm::mat4(1.0f);
+	//modelview = glm::translate(modelview, glm::vec3(-(player->getPosition().x/SCREEN_WIDTH), -(player->getPosition().y/SCREEN_HEIGHT), 0.f));
+
 	texProgram.setUniformMatrix4f("modelview", modelview);
+
+
+
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
 	map->render();
 	player->render();

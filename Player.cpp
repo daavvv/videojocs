@@ -21,6 +21,11 @@ enum PlayerAnims
 };
 
 
+glm::ivec2 Player::getPosition(){
+	return posPlayer;
+}
+
+
 void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 {
 	bJumping = false;
@@ -50,6 +55,17 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	
 }
 
+
+void Player::printPosition(){
+	
+	cout << "Player position: " << this->getPosition().x << "," << this->getPosition().y << endl;
+	//projection = projection*glm::ortho()
+
+	//gluOrtho2D( Position.X - 600 / 2.0, Position.X + 600 / 2.0, Position.Y - 600 / 2.0, Position.Y + 600 / 2.0);
+
+}
+
+
 void Player::update(int deltaTime)
 {
 	sprite->update(deltaTime);
@@ -58,6 +74,7 @@ void Player::update(int deltaTime)
 		if(sprite->animation() != MOVE_LEFT)
 			sprite->changeAnimation(MOVE_LEFT);
 		posPlayer.x -= 2;
+		printPosition();
 		if(map->collisionMoveLeft(posPlayer, glm::ivec2(32, 32)))
 		{
 			posPlayer.x += 2;
@@ -69,6 +86,7 @@ void Player::update(int deltaTime)
 		if(sprite->animation() != MOVE_RIGHT)
 			sprite->changeAnimation(MOVE_RIGHT);
 		posPlayer.x += 2;
+		printPosition();
 		if(map->collisionMoveRight(posPlayer, glm::ivec2(32, 32)))
 		{
 			posPlayer.x -= 2;
@@ -77,6 +95,7 @@ void Player::update(int deltaTime)
 	}
 	else
 	{
+		
 		if(sprite->animation() == MOVE_LEFT)
 			sprite->changeAnimation(STAND_LEFT);
 		else if(sprite->animation() == MOVE_RIGHT)
@@ -97,6 +116,8 @@ void Player::update(int deltaTime)
 			if(jumpAngle > 90)
 				bJumping = !map->collisionMoveDown(posPlayer, glm::ivec2(32, 32), &posPlayer.y);
 		}
+
+		printPosition();
 	}
 	else
 	{

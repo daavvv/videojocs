@@ -38,6 +38,7 @@ public:
 	void mouseMove(int x, int y);
 	void mousePress(int button);
 	void mouseRelease(int button);
+
 	
 	bool getKey(int key) const;
 	bool getSpecialKey(int key) const;
