@@ -46,11 +46,18 @@ void TileMap::render() const
 	glEnableVertexAttribArray(texCoordLocation);
 	glDrawArrays(GL_TRIANGLES, 0, 6 * mapSize.x * mapSize.y);
 	glDisable(GL_TEXTURE_2D);
+
+	glBindVertexArray(vao2);
+	glEnableVertexAttribArray(posLocation2);
+	glEnableVertexAttribArray(texCoordLocation2);
+	glDrawArrays(GL_TRIANGLES, 0, 6 * mapSize.x * mapSize.y);
+	glDisable(GL_TEXTURE_2D);
 }
 
 void TileMap::free()
 {
 	glDeleteBuffers(1, &vbo);
+	glDeleteBuffers(1, &vbo2);
 }
 
 
@@ -74,17 +81,8 @@ bool TileMap::loadLevelTest(const string &levelFile)
 	string tilesheet_path, data;
 	int imageHeight, imageWidth, tilecount, tilewidth;
 
-	//cout << j3 << endl;
-
-	//cout << j3["tilesets"] << endl;
-	//cout << j3["tilesets"]["image"] << endl;
-
-
 	
-	for (json::iterator it = j3["tilesets"].begin(); it != j3["tilesets"].end(); ++it) {
-  		//cout << *it << '\n';
-  		//cout << counter << endl;
-  		//counter++;
+	for (json::iterator it = j3["tilesets"].begin(); it != j3["tilesets"].end(); ++it) { 	
 
   		json::iterator array = it->begin();
 
@@ -120,10 +118,7 @@ bool TileMap::loadLevelTest(const string &levelFile)
 	tilesheet.setMinFilter(GL_NEAREST);
 	tilesheet.setMagFilter(GL_NEAREST);
 
-	/*
-	tilesheetSize.x = imageWidth/32;  //Numero de celdas en el tilesheet CAMBIAAARRR
-	tilesheetSize.y = imageHeight/32;
-	*/
+
 
 	tilesheetSize.x = imageWidth/tilewidth;
 	tilesheetSize.y = imageHeight/tilewidth;
@@ -135,28 +130,6 @@ bool TileMap::loadLevelTest(const string &levelFile)
 	structMap = new Tile[mapSize.x*mapSize.y];
 	background = new Tile[mapSize.x*mapSize.y];
 
-	/*
-	for (json::iterator it = j3["layers"].begin(); it != j3["layers"].end(); ++it){
-		json::iterator array = it->begin();
-  		for (array; array != it->end(); ++array){
-  			if (array.key() == "data"){
-				for (int i = 0; i < int(j3["height"])*int(j3["width"]); i++){	
-						Tile tile;
-						if (int(array.value()[i]) == CIELO){
-							tile.isSolid = false;
-						} else {
-							tile.isSolid = true;	
-						}
-						//map[i] = int(array.value()[i]);
-						tile.ID = int(array.value()[i]);
-						structMap[i] = tile;		
-				}
-
-			};
-  			cout << array.key() << ": " << array.value() << endl;
-  		}
-	}*/
-
 
 	//Itera sobre las layers
 	for (int i = 0; i < j3["layers"].size(); ++i){
@@ -166,7 +139,7 @@ bool TileMap::loadLevelTest(const string &levelFile)
 				for (int j = 0; j < j3["layers"][i]["data"].size(); j++){
 
 					Tile tile;
-					if (int(j3["layers"][i]["data"][j]) == CIELO){
+					if (int(j3["layers"][i]["data"][j]) == SKY){
 							tile.isSolid = false;
 					} else {
 							tile.isSolid = true;	
@@ -183,7 +156,7 @@ bool TileMap::loadLevelTest(const string &levelFile)
 					//map[i] = int(array.value()[i]);
 					tile.ID = int(j3["layers"][i]["data"][j]);
 
-					if (tile.ID == 0){
+					if (tile.ID == 0 || tile.ID == LADDER){
 						tile.isSolid = false;
 					}else {
 						tile.isSolid = true;
@@ -329,8 +302,9 @@ bool TileMap::loadLevel(const string &levelFile)
 
 */
 
-void TileMap::prepareArrays(const glm::vec2 &minCoords, ShaderProgram &program)
-{
+
+void TileMap::prepareTerrain(const glm::vec2 &minCoords, ShaderProgram &program){
+
 	int tile, nTiles = 0;
 	glm::vec2 posTile, texCoordTile[2], halfTexel;
 	vector<float> vertices;
@@ -371,6 +345,61 @@ void TileMap::prepareArrays(const glm::vec2 &minCoords, ShaderProgram &program)
 		}
 	}
 
+	glGenVertexArrays(1, &vao2);
+	glBindVertexArray(vao2);
+	glGenBuffers(1, &vbo2);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo2);
+	glBufferData(GL_ARRAY_BUFFER, 24 * nTiles * sizeof(float), &vertices[0], GL_STATIC_DRAW);
+	posLocation2 = program.bindVertexAttribute("position", 2, 4*sizeof(float), 0);
+	texCoordLocation2 = program.bindVertexAttribute("texCoord", 2, 4*sizeof(float), (void *)(2*sizeof(float)));
+
+
+
+}
+
+
+void TileMap::prepareBackground(const glm::vec2 &minCoords, ShaderProgram &program){
+	
+	int tile, nTiles = 0;
+	glm::vec2 posTile, texCoordTile[2], halfTexel;
+	vector<float> vertices;
+	
+	cout << "Min coords:" << minCoords.x << "," << minCoords.y << endl;
+
+	halfTexel = glm::vec2(0.5f / tilesheet.width(), 0.5f / tilesheet.height());
+	for(int j=0; j<mapSize.y; j++)
+	{
+		for(int i=0; i<mapSize.x; i++)
+		{
+			tile = background[j * mapSize.x + i].ID;
+			if(tile != 0)
+			{
+				// Non-empty tile
+				nTiles++;
+				posTile = glm::vec2(minCoords.x + i * tileSize, minCoords.y + j * tileSize);
+				//texCoordTile[0] = glm::vec2(float((tile-1)%tilesheetSize.x)/tilesheetSize.x, float((tile-1)/tilesheetSize.y) / tilesheetSize.y);
+				texCoordTile[0] = glm::vec2(float((tile-1)%tilesheetSize.x)/tilesheetSize.x, float((tile-1)/tilesheetSize.x) / tilesheetSize.y);
+				texCoordTile[1] = texCoordTile[0] + tileTexSize;
+				texCoordTile[0] += halfTexel;
+				//texCoordTile[1] -= halfTexel;
+				// First triangle
+				vertices.push_back(posTile.x); vertices.push_back(posTile.y);
+				vertices.push_back(texCoordTile[0].x); vertices.push_back(texCoordTile[0].y);
+				vertices.push_back(posTile.x + blockSize); vertices.push_back(posTile.y);
+				vertices.push_back(texCoordTile[1].x); vertices.push_back(texCoordTile[0].y);
+				vertices.push_back(posTile.x + blockSize); vertices.push_back(posTile.y + blockSize);
+				vertices.push_back(texCoordTile[1].x); vertices.push_back(texCoordTile[1].y);
+				// Second triangle
+				vertices.push_back(posTile.x); vertices.push_back(posTile.y);
+				vertices.push_back(texCoordTile[0].x); vertices.push_back(texCoordTile[0].y);
+				vertices.push_back(posTile.x + blockSize); vertices.push_back(posTile.y + blockSize);
+				vertices.push_back(texCoordTile[1].x); vertices.push_back(texCoordTile[1].y);
+				vertices.push_back(posTile.x); vertices.push_back(posTile.y + blockSize);
+				vertices.push_back(texCoordTile[0].x); vertices.push_back(texCoordTile[1].y);
+			}
+		}
+	}
+
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
 	glGenBuffers(1, &vbo);
@@ -378,6 +407,20 @@ void TileMap::prepareArrays(const glm::vec2 &minCoords, ShaderProgram &program)
 	glBufferData(GL_ARRAY_BUFFER, 24 * nTiles * sizeof(float), &vertices[0], GL_STATIC_DRAW);
 	posLocation = program.bindVertexAttribute("position", 2, 4*sizeof(float), 0);
 	texCoordLocation = program.bindVertexAttribute("texCoord", 2, 4*sizeof(float), (void *)(2*sizeof(float)));
+
+
+
+}
+
+
+void TileMap::prepareArrays(const glm::vec2 &minCoords, ShaderProgram &program)
+{
+
+	prepareBackground(minCoords, program);
+	prepareTerrain(minCoords, program);
+
+
+	
 }
 
 // Collision tests for axis aligned bounding boxes.

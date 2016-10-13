@@ -7,7 +7,8 @@
 #include "ShaderProgram.h"
 #include "json.hpp"
 
-#define CIELO 94
+#define SKY 94
+#define LADDER 47
 
 struct Tile {
 	Tile():isSolid(false), ID(0) {}
@@ -47,11 +48,13 @@ private:
 	bool loadLevel(const string &levelFile);
 	bool loadLevelTest(const string &levelFile);
 	void prepareArrays(const glm::vec2 &minCoords, ShaderProgram &program);
-
+	void prepareBackground(const glm::vec2 &minCoords, ShaderProgram &program);
+	void prepareTerrain(const glm::vec2 &minCoords, ShaderProgram &program);
 private:
-	GLuint vao;
-	GLuint vbo;
+	GLuint vao,vao2;
+	GLuint vbo,vbo2;
 	GLint posLocation, texCoordLocation;
+	GLint posLocation2, texCoordLocation2;
 	glm::ivec2 position, mapSize, tilesheetSize;
 	int tileSize, blockSize;
 	Texture tilesheet;
