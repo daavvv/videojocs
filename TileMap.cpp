@@ -133,7 +133,9 @@ bool TileMap::loadLevelTest(const string &levelFile)
 
 	//map = new int[mapSize.x * mapSize.y];
 	structMap = new Tile[mapSize.x*mapSize.y];
+	background = new Tile[mapSize.x*mapSize.y];
 
+	/*
 	for (json::iterator it = j3["layers"].begin(); it != j3["layers"].end(); ++it){
 		json::iterator array = it->begin();
   		for (array; array != it->end(); ++array){
@@ -153,10 +155,54 @@ bool TileMap::loadLevelTest(const string &levelFile)
 			};
   			cout << array.key() << ": " << array.value() << endl;
   		}
-	}	
+	}*/
 
-	
 
+	//Itera sobre las layers
+	for (int i = 0; i < j3["layers"].size(); ++i){
+
+			if (j3["layers"][i]["name"] == "Background"){
+				
+				for (int j = 0; j < j3["layers"][i]["data"].size(); j++){
+
+					Tile tile;
+					if (int(j3["layers"][i]["data"][j]) == CIELO){
+							tile.isSolid = false;
+					} else {
+							tile.isSolid = true;	
+					}
+						//map[i] = int(array.value()[i]);
+					tile.ID = int(j3["layers"][i]["data"][j]);
+					background[j] = tile;		
+				}
+			}else if (j3["layers"][i]["name"] == "Terrain"){
+				
+				for (int j = 0; j < j3["layers"][i]["data"].size(); j++){
+
+					Tile tile;
+					//map[i] = int(array.value()[i]);
+					tile.ID = int(j3["layers"][i]["data"][j]);
+
+					if (tile.ID == 0){
+						tile.isSolid = false;
+					}else {
+						tile.isSolid = true;
+					}
+					structMap[j] = tile;		
+				}
+			}
+	}
+
+	//Background map
+	for (int i = 0; i < mapSize.x * mapSize.y; ++i){
+		cout << background[i].ID << ",";
+		if ((i%mapSize.x) == (mapSize.x - 1)){
+			cout << endl;
+		}
+	}
+	cout << endl;
+
+	//Terrain map
 	for (int i = 0; i < mapSize.x * mapSize.y; ++i){
 		cout << structMap[i].ID << ",";
 		if ((i%mapSize.x) == (mapSize.x - 1)){
@@ -165,6 +211,7 @@ bool TileMap::loadLevelTest(const string &levelFile)
 	}
 	cout << endl;
 
+	//Terrain map physical view
 	for (int i = 0; i < mapSize.x * mapSize.y; ++i){
 		if (structMap[i].isSolid){
 			cout << 1 << ",";

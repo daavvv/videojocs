@@ -58,6 +58,7 @@ private:
 	glm::vec2 tileTexSize;
 	//int *map;
 	Tile *structMap;
+	Tile *background;
 
 };
 
