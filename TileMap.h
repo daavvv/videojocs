@@ -7,7 +7,13 @@
 #include "ShaderProgram.h"
 #include "json.hpp"
 
+#define CIELO 94
 
+struct Tile {
+	Tile():isSolid(false), ID(0) {}
+	bool isSolid;
+	int ID;
+};
 
 // Class Tilemap is capable of loading a tile map from a text file in a very
 // simple format (see level01.txt for an example). With this information
@@ -29,6 +35,9 @@ public:
 	void free();
 	
 	int getTileSize() const { return tileSize; }
+	glm::ivec2 getMapSize() const {
+		return mapSize;
+	}
 
 	bool collisionMoveLeft(const glm::ivec2 &pos, const glm::ivec2 &size) const;
 	bool collisionMoveRight(const glm::ivec2 &pos, const glm::ivec2 &size) const;
@@ -47,7 +56,8 @@ private:
 	int tileSize, blockSize;
 	Texture tilesheet;
 	glm::vec2 tileTexSize;
-	int *map;
+	//int *map;
+	Tile *structMap;
 
 };
 

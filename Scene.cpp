@@ -8,8 +8,8 @@
 #define SCREEN_X 64
 #define SCREEN_Y -96
 
-#define INIT_PLAYER_X_TILES 0
-#define INIT_PLAYER_Y_TILES 14
+#define INIT_PLAYER_X_TILES 1
+#define INIT_PLAYER_Y_TILES 7
 
 
 Scene::Scene()
@@ -54,23 +54,54 @@ void Scene::render()
 	//cout << "Camera position: " << projection[0][0] << "," << projection[1][1] << endl;
 
 
+
 	glm::mat4 modelview;
 	texProgram.use();
 	float px,py,left,right,bottom,top;
+	/*
+	glm::ivec2 tileMapSize = map->getMapSize();
+	int tileSize = map->getTileSize();
+	int worldSize = tileSize*tileMapSize.x;
+
+	cout << "Map Size: " << tileMapSize.x*tileSize << "," << tileMapSize.y*tileSize << endl;
+	*/
 
 	px = player->getPosition().x; py = player->getPosition().y;
-	left = px - (SCREEN_WIDTH/2.0);
-	top = py - (SCREEN_HEIGHT/2.0);
+	left = px - (SCREEN_WIDTH/2.0)+64;
+	top = py - (SCREEN_HEIGHT/2.0)-64;
 	right = left + SCREEN_WIDTH;
 	bottom = top + SCREEN_HEIGHT;
+	/*
+	float offsetMaxX = worldSize - SCREEN_WIDTH;
+	float offsetMaxY = worldSize - SCREEN_HEIGHT;
+	float offsetMinX, offsetMinY;
+	offsetMinX = offsetMinY = 0; 
 
-	//projection = glm::ortho(left,right,bottom,top);
+	float camX = px - SCREEN_WIDTH/2.0;
+	float camY = py - SCREEN_HEIGHT/2.0;
+
+	if (camX > offsetMaxX){
+    	camX = offsetMaxX;
+	}
+	else if (camX < offsetMinX){
+    	camX = offsetMinX;
+	}
+
+	if (camY > offsetMaxY){
+		camY = offsetMaxX;
+	}
+    else if (camY < offsetMinY){
+    	camY = offsetMinY;
+    }*/
+    
+
+	projection = glm::ortho(left,right,bottom,top);
 
 
 	texProgram.setUniformMatrix4f("projection", projection);
 	texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
 	modelview = glm::mat4(1.0f);
-	//modelview = glm::translate(modelview, glm::vec3(-(player->getPosition().x/SCREEN_WIDTH), -(player->getPosition().y/SCREEN_HEIGHT), 0.f));
+	//modelview = glm::translate(modelview, glm::vec3(-camX, -camY, 0.f));
 
 	texProgram.setUniformMatrix4f("modelview", modelview);
 

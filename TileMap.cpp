@@ -16,7 +16,7 @@ using namespace std;
 TileMap *TileMap::createTileMap(const string &levelFile, const glm::vec2 &minCoords, ShaderProgram &program)
 {
 	TileMap *map = new TileMap(levelFile, minCoords, program);
-	
+
 	return map;
 }
 
@@ -32,8 +32,8 @@ TileMap::TileMap(const string &levelFile, const glm::vec2 &minCoords, ShaderProg
 
 TileMap::~TileMap()
 {
-	if(map != NULL)
-		delete map;
+	if(structMap != NULL)
+		delete structMap;
 }
 
 
@@ -131,7 +131,8 @@ bool TileMap::loadLevelTest(const string &levelFile)
 
 	
 
-	map = new int[mapSize.x * mapSize.y];
+	//map = new int[mapSize.x * mapSize.y];
+	structMap = new Tile[mapSize.x*mapSize.y];
 
 	for (json::iterator it = j3["layers"].begin(); it != j3["layers"].end(); ++it){
 
@@ -146,7 +147,21 @@ bool TileMap::loadLevelTest(const string &levelFile)
 				for (int i = 0; i < int(j3["height"])*int(j3["width"]); i++){
 					
 						
-						map[i] = int(array.value()[i]);
+						
+						Tile tile;
+
+						if (int(array.value()[i]) == CIELO){
+							tile.isSolid = false;
+							tile.ID = 0;
+
+						} else {
+							tile.isSolid = true;
+							tile.ID = int(array.value()[i]);
+						}
+						//map[i] = int(array.value()[i]);
+						
+						structMap[i] = tile;
+
 					
 				}
 
@@ -163,7 +178,21 @@ bool TileMap::loadLevelTest(const string &levelFile)
 	
 
 	for (int i = 0; i < mapSize.x * mapSize.y; ++i){
-		cout << map[i] << ",";
+		cout << structMap[i].ID << ",";
+		if ((i%mapSize.x) == (mapSize.x - 1)){
+			cout << endl;
+		}
+	}
+	cout << endl;
+
+	for (int i = 0; i < mapSize.x * mapSize.y; ++i){
+		
+		if (structMap[i].isSolid){
+			cout << 1 << ",";
+		} else {
+			cout << 0 << ",";
+		}	
+		
 		if ((i%mapSize.x) == (mapSize.x - 1)){
 			cout << endl;
 		}
@@ -197,7 +226,7 @@ bool TileMap::loadLevelTest(const string &levelFile)
 
 }
 
-
+/*
 
 
 bool TileMap::loadLevel(const string &levelFile)
@@ -284,6 +313,8 @@ bool TileMap::loadLevel(const string &levelFile)
 	return true;
 }
 
+*/
+
 void TileMap::prepareArrays(const glm::vec2 &minCoords, ShaderProgram &program)
 {
 	int tile, nTiles = 0;
@@ -297,7 +328,7 @@ void TileMap::prepareArrays(const glm::vec2 &minCoords, ShaderProgram &program)
 	{
 		for(int i=0; i<mapSize.x; i++)
 		{
-			tile = map[j * mapSize.x + i];
+			tile = structMap[j * mapSize.x + i].ID;
 			if(tile != 0)
 			{
 				// Non-empty tile
@@ -348,7 +379,7 @@ bool TileMap::collisionMoveLeft(const glm::ivec2 &pos, const glm::ivec2 &size) c
 	y1 = (pos.y + size.y - 1) / tileSize;
 	for(int y=y0; y<=y1; y++)
 	{
-		if(map[y*mapSize.x+x] != 0)
+		if(structMap[y*mapSize.x+x].ID != 0)
 			return true;
 	}
 	
@@ -364,7 +395,7 @@ bool TileMap::collisionMoveRight(const glm::ivec2 &pos, const glm::ivec2 &size) 
 	y1 = (pos.y + size.y - 1) / tileSize;
 	for(int y=y0; y<=y1; y++)
 	{
-		if(map[y*mapSize.x+x] != 0)
+		if(structMap[y*mapSize.x+x].ID != 0)
 			return true;
 	}
 	
@@ -380,7 +411,7 @@ bool TileMap::collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, i
 	y = (pos.y + size.y - 1) / tileSize;
 	for(int x=x0; x<=x1; x++)
 	{
-		if(map[y*mapSize.x+x] != 0)
+		if(structMap[y*mapSize.x+x].ID != 0)
 		{
 			if(*posY - tileSize * y + size.y <= 4)
 			{
