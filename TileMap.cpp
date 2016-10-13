@@ -135,44 +135,24 @@ bool TileMap::loadLevelTest(const string &levelFile)
 	structMap = new Tile[mapSize.x*mapSize.y];
 
 	for (json::iterator it = j3["layers"].begin(); it != j3["layers"].end(); ++it){
-
-
 		json::iterator array = it->begin();
-
   		for (array; array != it->end(); ++array){
-
-
   			if (array.key() == "data"){
-
-				for (int i = 0; i < int(j3["height"])*int(j3["width"]); i++){
-					
-						
-						
+				for (int i = 0; i < int(j3["height"])*int(j3["width"]); i++){	
 						Tile tile;
-
 						if (int(array.value()[i]) == CIELO){
 							tile.isSolid = false;
-							tile.ID = 0;
-
 						} else {
-							tile.isSolid = true;
-							tile.ID = int(array.value()[i]);
+							tile.isSolid = true;	
 						}
 						//map[i] = int(array.value()[i]);
-						
-						structMap[i] = tile;
-
-					
+						tile.ID = int(array.value()[i]);
+						structMap[i] = tile;		
 				}
 
 			};
-
-
   			cout << array.key() << ": " << array.value() << endl;
-
-  			
   		}
-		
 	}	
 
 	
@@ -186,13 +166,11 @@ bool TileMap::loadLevelTest(const string &levelFile)
 	cout << endl;
 
 	for (int i = 0; i < mapSize.x * mapSize.y; ++i){
-		
 		if (structMap[i].isSolid){
 			cout << 1 << ",";
 		} else {
 			cout << 0 << ",";
 		}	
-		
 		if ((i%mapSize.x) == (mapSize.x - 1)){
 			cout << endl;
 		}
@@ -208,21 +186,10 @@ bool TileMap::loadLevelTest(const string &levelFile)
 	cout << "Image height:" << imageHeight << endl;
 	cout << "Tilesheet width:" << tilesheet.width() << endl;
 	cout << "Tilesheet height:" << tilesheet.height() << endl;
-
 	cout << "Tile size:" << tileSize << endl;
 	cout << "Block size:" << blockSize << endl;
 
-
 	return true;
-
-	/*
-	glm::ivec2 position, mapSize, tilesheetSize;
-	int tileSize, blockSize;
-	Texture tilesheet;
-	glm::vec2 tileTexSize;
-	*/
-
-
 
 }
 
@@ -379,7 +346,7 @@ bool TileMap::collisionMoveLeft(const glm::ivec2 &pos, const glm::ivec2 &size) c
 	y1 = (pos.y + size.y - 1) / tileSize;
 	for(int y=y0; y<=y1; y++)
 	{
-		if(structMap[y*mapSize.x+x].ID != 0)
+		if(structMap[y*mapSize.x+x].ID != 0 && structMap[y*mapSize.x+x].isSolid)
 			return true;
 	}
 	
@@ -395,7 +362,7 @@ bool TileMap::collisionMoveRight(const glm::ivec2 &pos, const glm::ivec2 &size) 
 	y1 = (pos.y + size.y - 1) / tileSize;
 	for(int y=y0; y<=y1; y++)
 	{
-		if(structMap[y*mapSize.x+x].ID != 0)
+		if(structMap[y*mapSize.x+x].ID != 0 && structMap[y*mapSize.x+x].isSolid)
 			return true;
 	}
 	
@@ -411,7 +378,7 @@ bool TileMap::collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, i
 	y = (pos.y + size.y - 1) / tileSize;
 	for(int x=x0; x<=x1; x++)
 	{
-		if(structMap[y*mapSize.x+x].ID != 0)
+		if(structMap[y*mapSize.x+x].ID != 0 && structMap[y*mapSize.x+x].isSolid)
 		{
 			if(*posY - tileSize * y + size.y <= 4)
 			{
@@ -420,7 +387,6 @@ bool TileMap::collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, i
 			}
 		}
 	}
-	
 	return false;
 }
 
