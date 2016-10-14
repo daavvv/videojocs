@@ -24,7 +24,7 @@ public:
 	glm::ivec2 getPosition();
 	
 private:
-	bool bJumping;
+	bool bJumping,bdownLadder;
 	glm::ivec2 tileMapDispl, posPlayer;
 	int jumpAngle, startY;
 	Texture spritesheet;

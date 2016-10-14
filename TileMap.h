@@ -8,7 +8,10 @@
 #include "json.hpp"
 
 #define SKY 94
-#define LADDER 47
+#define LADDER 319
+#define SUPPORT_TERRAIN 227
+#define WATER 13
+#define WATER_1 14
 
 struct Tile {
 	Tile():isSolid(false), ID(0) {}
@@ -50,11 +53,14 @@ private:
 	void prepareArrays(const glm::vec2 &minCoords, ShaderProgram &program);
 	void prepareBackground(const glm::vec2 &minCoords, ShaderProgram &program);
 	void prepareTerrain(const glm::vec2 &minCoords, ShaderProgram &program);
+	void prepareBackgroundObjects(const glm::vec2 &minCoords, ShaderProgram &program);
+	void prepareForegroundObjects(const glm::vec2 &minCoords, ShaderProgram &program);
+
 private:
-	GLuint vao,vao2;
-	GLuint vbo,vbo2;
-	GLint posLocation, texCoordLocation;
-	GLint posLocation2, texCoordLocation2;
+	GLuint vao_background,vao_terrain, vao_background_objects, vao_foreground_objects;
+	GLuint vbo_background,vbo_terrain, vbo_background_objects, vbo_foreground_objects;
+	GLint posLocation_background, texCoordLocation_background, posLocation_background_objects, texCoordLocation_background_objects;
+	GLint posLocation_terrain, texCoordLocation_terrain, posLocation_foreground_objects, texCoordLocation_foreground_objects;
 	glm::ivec2 position, mapSize, tilesheetSize;
 	int tileSize, blockSize;
 	Texture tilesheet;
@@ -62,6 +68,8 @@ private:
 	//int *map;
 	Tile *structMap;
 	Tile *background;
+	Tile *background_objects;
+	Tile *foreground_objects;
 
 };
 
