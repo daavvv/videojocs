@@ -59,7 +59,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 
 void Player::printPosition(){
 	
-	cout << "Player position: " << this->getPosition().x << "," << this->getPosition().y << endl;
+	//cout << "Player position: " << this->getPosition().x << "," << this->getPosition().y << endl;
 	//projection = projection*glm::ortho()
 
 	//gluOrtho2D( Position.X - 600 / 2.0, Position.X + 600 / 2.0, Position.Y - 600 / 2.0, Position.Y + 600 / 2.0);
@@ -75,7 +75,7 @@ void Player::update(int deltaTime)
 		
 		glm::ivec2 tileToDestroy;
 
-		if (map->bottomTileIsDiggable(posPlayer, glm::ivec2(32,32))){
+		//if (map->bottomTileIsDiggable(posPlayer, glm::ivec2(32,32))){
 			
 			/*tilex = posPlayer.x / tileSize;
 			tiley = (posPlayer.y + size.y - 1) / tileSize;
@@ -83,7 +83,7 @@ void Player::update(int deltaTime)
 
 
 
-		}
+		//}
 
 	}
 
@@ -110,6 +110,14 @@ void Player::update(int deltaTime)
 		{
 			posPlayer.x -= 2;
 			sprite->changeAnimation(STAND_RIGHT);
+		}
+	}
+
+	else if (Game::instance().getSpecialKey(GLUT_KEY_DOWN))
+	{
+		if (map->bottomTileIsDiggable(posPlayer, glm::ivec2(32, 32)))
+		{
+			cout << "estic fent un forat" << endl;
 		}
 	}
 	else

@@ -27,7 +27,9 @@ TileMap::TileMap(const string &levelFile, const glm::vec2 &minCoords, ShaderProg
 
 	string path = "levels/test_level.json";
 	loadLevelTest(path);
-	prepareArrays(minCoords, program);
+	coordenadas = minCoords;
+	programa = program;
+	prepareArrays();
 }
 
 TileMap::~TileMap()
@@ -37,8 +39,9 @@ TileMap::~TileMap()
 }
 
 
-void TileMap::render() const
+void TileMap::render()
 {
+	prepareArrays();
 	glEnable(GL_TEXTURE_2D);
 	tilesheet.use();
 	glBindVertexArray(vao_background);
@@ -165,8 +168,10 @@ bool TileMap::loadLevelTest(const string &levelFile)
 					Tile tile;
 					if (int(j3["layers"][i]["data"][j]) == SKY){
 							tile.isSolid = false;
+							tile.estat = 0;
 					} else {
-							tile.isSolid = true;	
+							tile.isSolid = true;
+							tile.estat = 1;
 					}
 						//map[i] = int(array.value()[i]);
 					tile.ID = int(j3["layers"][i]["data"][j]);
@@ -183,12 +188,15 @@ bool TileMap::loadLevelTest(const string &levelFile)
 					if (tile.ID == GRASS){
 						tile.isSolid = true;
 						tile.isDiggable = true;
+						tile.estat = 1;
 					}
 
 					if (tile.ID == 0 || tile.ID == WATER || tile.ID == WATER_1){
 						tile.isSolid = false;
+						tile.estat = 0;
 					}else {
 						tile.isSolid = true;
+						tile.estat = 1;
 					}
 					structMap[j] = tile;		
 				}
@@ -200,7 +208,7 @@ bool TileMap::loadLevelTest(const string &levelFile)
 					//map[i] = int(array.value()[i]);
 					tile.ID = int(j3["layers"][i]["data"][j]);
 					tile.isSolid = false;
-					
+					tile.estat = 0;
 					background_objects[j] = tile;		
 				}
 			}
@@ -212,7 +220,7 @@ bool TileMap::loadLevelTest(const string &levelFile)
 					//map[i] = int(array.value()[i]);
 					tile.ID = int(j3["layers"][i]["data"][j]);
 					tile.isSolid = false;
-					
+					tile.estat = 0;
 					foreground_objects[j] = tile;		
 				}
 			}
@@ -273,7 +281,7 @@ void TileMap::prepareBackgroundObjects(const glm::vec2 &minCoords, ShaderProgram
 	glm::vec2 posTile, texCoordTile[2], halfTexel;
 	vector<float> vertices;
 	
-	cout << "Min coords:" << minCoords.x << "," << minCoords.y << endl;
+	//cout << "Min coords:" << minCoords.x << "," << minCoords.y << endl;
 
 	halfTexel = glm::vec2(0.5f / tilesheet.width(), 0.5f / tilesheet.height());
 	for(int j=0; j<mapSize.y; j++)
@@ -326,7 +334,7 @@ void TileMap::prepareForegroundObjects(const glm::vec2 &minCoords, ShaderProgram
 	glm::vec2 posTile, texCoordTile[2], halfTexel;
 	vector<float> vertices;
 	
-	cout << "Min coords:" << minCoords.x << "," << minCoords.y << endl;
+	//cout << "Min coords:" << minCoords.x << "," << minCoords.y << endl;
 
 	halfTexel = glm::vec2(0.5f / tilesheet.width(), 0.5f / tilesheet.height());
 	for(int j=0; j<mapSize.y; j++)
@@ -389,7 +397,7 @@ void TileMap::prepareTerrain(const glm::vec2 &minCoords, ShaderProgram &program)
 	glm::vec2 posTile, texCoordTile[2], halfTexel;
 	vector<float> vertices;
 	
-	cout << "Min coords:" << minCoords.x << "," << minCoords.y << endl;
+	//cout << "Min coords:" << minCoords.x << "," << minCoords.y << endl;
 
 	halfTexel = glm::vec2(0.5f / tilesheet.width(), 0.5f / tilesheet.height());
 	for(int j=0; j<mapSize.y; j++)
@@ -444,7 +452,7 @@ void TileMap::prepareBackground(const glm::vec2 &minCoords, ShaderProgram &progr
 	glm::vec2 posTile, texCoordTile[2], halfTexel;
 	vector<float> vertices;
 	
-	cout << "Min coords:" << minCoords.x << "," << minCoords.y << endl;
+	//cout << "Min coords:" << minCoords.x << "," << minCoords.y << endl;
 
 	halfTexel = glm::vec2(0.5f / tilesheet.width(), 0.5f / tilesheet.height());
 	for(int j=0; j<mapSize.y; j++)
@@ -493,13 +501,13 @@ void TileMap::prepareBackground(const glm::vec2 &minCoords, ShaderProgram &progr
 }
 
 
-void TileMap::prepareArrays(const glm::vec2 &minCoords, ShaderProgram &program)
+void TileMap::prepareArrays()
 {
 
-	prepareBackground(minCoords, program);
-	prepareTerrain(minCoords, program);
-	prepareBackgroundObjects(minCoords, program);
-	prepareForegroundObjects(minCoords, program);
+	prepareBackground(coordenadas, programa);
+	prepareTerrain(coordenadas, programa);
+	prepareBackgroundObjects(coordenadas, programa);
+	prepareForegroundObjects(coordenadas, programa);
 
 
 	
@@ -516,11 +524,13 @@ bool TileMap::collisionMoveLeft(const glm::ivec2 &pos, const glm::ivec2 &size) c
 	x = pos.x / tileSize;
 	y0 = pos.y / tileSize;
 	y1 = (pos.y + size.y - 1) / tileSize;
-	for(int y=y0; y<=y1; y++)
+	for (int y = y0; y <= y1; y++)
 	{
-		if(structMap[y*mapSize.x+x].ID != 0 && structMap[y*mapSize.x+x].isSolid)
+		if (structMap[y*mapSize.x + x].ID != 0 && structMap[y*mapSize.x + x].isSolid) {
+			structMap[y*mapSize.x + x].ID = 0;
+			structMap[y*mapSize.x + x].isSolid = false;
 			return true;
-
+		}
 	}
 	
 	return false;
@@ -535,8 +545,11 @@ bool TileMap::collisionMoveRight(const glm::ivec2 &pos, const glm::ivec2 &size) 
 	y1 = (pos.y + size.y - 1) / tileSize;
 	for(int y=y0; y<=y1; y++)
 	{
-		if(structMap[y*mapSize.x+x].ID != 0 && structMap[y*mapSize.x+x].isSolid)
+		if (structMap[y*mapSize.x + x].ID != 0 && structMap[y*mapSize.x + x].isSolid) {
+			structMap[y*mapSize.x + x].ID = 0;
+			structMap[y*mapSize.x + x].isSolid = false;
 			return true;
+		}
 	}
 	
 	return false;
@@ -551,15 +564,16 @@ bool TileMap::collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, i
 	y = (pos.y + size.y - 1) / tileSize; //352+32-1 / 32 = 11
 	for(int x=x0; x<=x1; x++)
 	{
-
 		if(structMap[y*mapSize.x+x].ID != 0 && structMap[y*mapSize.x+x].isSolid)
 		{
+			cout << structMap[y*mapSize.x + x].isSolid  << " " << structMap[y*mapSize.x + x].ID  << endl;
 			if(*posY - tileSize * y + size.y <= 4)
 			{
 				*posY = tileSize * y - size.y;
 				return true;
 			}
 		}
+		cout << "entrooooooooo" << endl;
 	}
 	return false;
 }
@@ -574,8 +588,11 @@ bool TileMap::bottomTileIsDiggable(const glm::ivec2 &playerPos, const glm::ivec2
 	tiley = (playerPos.y + size.y - 1) / tileSize;
 
 
-	if (structMap[(tiley+1)*mapSize.x+tilex].isDiggable){
+	if (structMap[(tiley+1)*mapSize.x+tilex].isDiggable && structMap[(tiley + 1)*mapSize.x + tilex].isSolid){
 		cout << "Is diggable" << endl;
+		structMap[(tiley + 1)*mapSize.x + tilex].isDiggable = false;
+		structMap[(tiley + 1)*mapSize.x + tilex].ID = 0;
+		structMap[(tiley + 1)*mapSize.x + tilex].isSolid = false;
 		return true;
 	}
 	return false;

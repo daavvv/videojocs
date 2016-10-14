@@ -18,6 +18,7 @@ struct Tile {
 	Tile():isSolid(false), ID(0), isDiggable(false) {}
 	bool isSolid;
 	bool isDiggable;
+	int estat;// estat 0 = destruit; 1 = viu; 2 = destruint-se 
 	int ID;
 };
 
@@ -37,7 +38,7 @@ public:
 	TileMap(const string &levelFile, const glm::vec2 &minCoords, ShaderProgram &program);
 	~TileMap();
 
-	void render() const;
+	void render();
 	void free();
 	
 	int getTileSize() const { return tileSize; }
@@ -55,7 +56,7 @@ public:
 private:
 	bool loadLevel(const string &levelFile);
 	bool loadLevelTest(const string &levelFile);
-	void prepareArrays(const glm::vec2 &minCoords, ShaderProgram &program);
+	void prepareArrays();
 	void prepareBackground(const glm::vec2 &minCoords, ShaderProgram &program);
 	void prepareTerrain(const glm::vec2 &minCoords, ShaderProgram &program);
 	void prepareBackgroundObjects(const glm::vec2 &minCoords, ShaderProgram &program);
@@ -69,7 +70,8 @@ private:
 	glm::ivec2 position, mapSize, tilesheetSize;
 	int tileSize, blockSize;
 	Texture tilesheet;
-	glm::vec2 tileTexSize;
+	glm::vec2 tileTexSize, coordenadas;
+	ShaderProgram programa;
 	//int *map;
 	Tile *structMap;
 	Tile *background;
