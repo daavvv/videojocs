@@ -559,6 +559,14 @@ bool TileMap::collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, i
 {
 	int x0, x1, y;
 	
+	for (int i = 0; i < mapSize.x * mapSize.y; ++i) {
+		cout << (structMap[i].isSolid && structMap[i].ID != 0) << ",";
+		if ((i%mapSize.x) == (mapSize.x - 1)) {
+			cout << endl;
+		}
+	}
+
+
 	x0 = pos.x / tileSize; //32/32 = 1
 	x1 = (pos.x + size.x - 1) / tileSize; //32+32-1 = 63/32 = 1
 	y = (pos.y + size.y - 1) / tileSize; //352+32-1 / 32 = 11
@@ -573,7 +581,6 @@ bool TileMap::collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, i
 				return true;
 			}
 		}
-		cout << "entrooooooooo" << endl;
 	}
 	return false;
 }
