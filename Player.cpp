@@ -70,6 +70,24 @@ void Player::printPosition(){
 void Player::update(int deltaTime)
 {
 	sprite->update(deltaTime);
+
+	if(Game::instance().getKey('c')){
+		
+		glm::ivec2 tileToDestroy;
+
+		if (map->bottomTileIsDiggable(posPlayer, glm::ivec2(32,32))){
+			
+			/*tilex = posPlayer.x / tileSize;
+			tiley = (posPlayer.y + size.y - 1) / tileSize;
+			tiley += 1;*/
+
+
+
+		}
+
+	}
+
+
 	if(Game::instance().getSpecialKey(GLUT_KEY_LEFT))
 	{
 		if(sprite->animation() != MOVE_LEFT)
@@ -106,7 +124,7 @@ void Player::update(int deltaTime)
 	
 	if(bJumping)
 	{
-		cout << "Jumping" << endl;
+		
 		jumpAngle += JUMP_ANGLE_STEP;
 		if(jumpAngle == 180)
 		{
@@ -124,7 +142,7 @@ void Player::update(int deltaTime)
 	}
 	else
 	{
-		cout << "Not jumping" << endl;
+		
 		posPlayer.y += FALL_STEP;
 		if(map->collisionMoveDown(posPlayer, glm::ivec2(32, 32), &posPlayer.y))
 		{

@@ -12,10 +12,12 @@
 #define SUPPORT_TERRAIN 227
 #define WATER 13
 #define WATER_1 14
+#define GRASS 237
 
 struct Tile {
-	Tile():isSolid(false), ID(0) {}
+	Tile():isSolid(false), ID(0), isDiggable(false) {}
 	bool isSolid;
+	bool isDiggable;
 	int ID;
 };
 
@@ -46,6 +48,9 @@ public:
 	bool collisionMoveLeft(const glm::ivec2 &pos, const glm::ivec2 &size) const;
 	bool collisionMoveRight(const glm::ivec2 &pos, const glm::ivec2 &size) const;
 	bool collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, int *posY) const;
+	bool bottomTileIsDiggable(const glm::ivec2 &playerPos, const glm::ivec2 &size) const;
+
+
 	
 private:
 	bool loadLevel(const string &levelFile);

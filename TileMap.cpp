@@ -180,6 +180,10 @@ bool TileMap::loadLevelTest(const string &levelFile)
 					//map[i] = int(array.value()[i]);
 					tile.ID = int(j3["layers"][i]["data"][j]);
 					
+					if (tile.ID == GRASS){
+						tile.isSolid = true;
+						tile.isDiggable = true;
+					}
 
 					if (tile.ID == 0 || tile.ID == WATER || tile.ID == WATER_1){
 						tile.isSolid = false;
@@ -542,9 +546,9 @@ bool TileMap::collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, i
 {
 	int x0, x1, y;
 	
-	x0 = pos.x / tileSize;
-	x1 = (pos.x + size.x - 1) / tileSize;
-	y = (pos.y + size.y - 1) / tileSize;
+	x0 = pos.x / tileSize; //32/32 = 1
+	x1 = (pos.x + size.x - 1) / tileSize; //32+32-1 = 63/32 = 1
+	y = (pos.y + size.y - 1) / tileSize; //352+32-1 / 32 = 11
 	for(int x=x0; x<=x1; x++)
 	{
 
@@ -556,6 +560,23 @@ bool TileMap::collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, i
 				return true;
 			}
 		}
+	}
+	return false;
+}
+
+
+bool TileMap::bottomTileIsDiggable(const glm::ivec2 &playerPos, const glm::ivec2 &size) const 
+{
+
+	int tilex, tiley;
+
+	tilex = playerPos.x / tileSize;
+	tiley = (playerPos.y + size.y - 1) / tileSize;
+
+
+	if (structMap[(tiley+1)*mapSize.x+tilex].isDiggable){
+		cout << "Is diggable" << endl;
+		return true;
 	}
 	return false;
 }
