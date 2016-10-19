@@ -38,6 +38,7 @@ void Scene::init()
 	player->setTileMap(map);
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
 	currentTime = 0.0f;
+
 }
 
 void Scene::update(int deltaTime)
@@ -45,6 +46,8 @@ void Scene::update(int deltaTime)
 	currentTime += deltaTime;
 	player->update(deltaTime);
 }
+
+
 
 void Scene::render()
 {
@@ -104,7 +107,6 @@ void Scene::render()
 	//modelview = glm::translate(modelview, glm::vec3(-camX, -camY, 0.f));
 
 	texProgram.setUniformMatrix4f("modelview", modelview);
-
 
 
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);

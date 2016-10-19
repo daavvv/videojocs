@@ -226,6 +226,7 @@ bool TileMap::loadLevelTest(const string &levelFile)
 			}
 	}
 
+	
 	//Background map
 	for (int i = 0; i < mapSize.x * mapSize.y; ++i){
 		cout << background[i].ID << ",";
@@ -256,6 +257,7 @@ bool TileMap::loadLevelTest(const string &levelFile)
 		}
 	}
 	cout << endl;
+	
 
 
 	cout << "Position:" << position.x << "," << position.y << endl;
@@ -559,12 +561,14 @@ bool TileMap::collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, i
 {
 	int x0, x1, y;
 	
+	/*
 	for (int i = 0; i < mapSize.x * mapSize.y; ++i) {
 		cout << (structMap[i].isSolid && structMap[i].ID != 0) << ",";
 		if ((i%mapSize.x) == (mapSize.x - 1)) {
 			cout << endl;
 		}
 	}
+	*/
 
 
 	x0 = pos.x / tileSize; //32/32 = 1
