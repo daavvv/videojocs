@@ -8,9 +8,9 @@ void UI::init(){
 	glGenVertexArrays(1, &VertexArrayID);
 	glBindVertexArray(VertexArrayID);
 
-	GLfloat g_vertex_buffer_data[] = {-1.0f, -1.0f, 0.0f,1.0f, -1.0f, 0.0f,0.0f,  1.0f, 0.0f};
+	//GLfloat g_vertex_buffer_data[] = {-1.0f, -1.0f, 0.0f,1.0f, -1.0f, 0.0f,0.0f,  1.0f, 0.0f}
+	GLfloat g_vertex_buffer_data[] = {-0.5f, -0.5f, 0.0f,0.5f, -0.5f, 0.0f,0.5f,  0.5f, 0.0f,-0.5f,  0.5f, 0.0f};
 
-	
 	// Generate 1 buffer, put the resulting identifier in vertexbuffer
 	glGenBuffers(1, &vertexbuffer);
 	// The following commands will talk about our 'vertexbuffer' buffer
