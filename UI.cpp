@@ -2,9 +2,19 @@
 
 
 void UI::init(){
+	glm::vec2 geom[2] = {glm::vec2(0.f, 0.f), glm::vec2(0.5f, 0.5f)};
+	glm::vec2 texCoords[2] = {glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f)};
+
 	initShaders();
 
+
+	texCoords[0] = glm::vec2(0.f, 0.f); texCoords[1] = glm::vec2(0.5f, 0.5f);
+	addUIElement(geom,texCoords,UIProgram,"images/rocks.jpg");
+	/*texCoords[0] = glm::vec2(0.5f, 0.5f); texCoords[1] = glm::vec2(1.f, 1.f);
+	addUIElement(geom,texCoords,UIProgram,"images/rocks.jpg");*/
+
 	
+	/*
 	glGenVertexArrays(1, &VertexArrayID);
 	glBindVertexArray(VertexArrayID);
 
@@ -17,15 +27,29 @@ void UI::init(){
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 	// Give our vertices to OpenGL.
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
+	*/
 
 }
+
+void UI::addUIElement(glm::vec2 geom[2], glm::vec2 texCoords[2], ShaderProgram &program, string path){
+	TexturedQuad *texQuad = TexturedQuad::createTexturedQuad(geom, texCoords, program);
+	UIElements.push_back(texQuad);
+	Texture tex;
+	if(tex.loadFromFile(path,TEXTURE_PIXEL_FORMAT_RGB)){
+		cout << "loaded" << endl;
+	}
+	else {
+		cout << "not loaded" << endl;
+	}
+	textures.push_back(tex);
+}
+
 
 
 
 void UI::initShaders(){
 	
 	Shader vShader, fShader;
-
 	vShader.initFromFile(VERTEX_SHADER, "shaders/UI.vert");
 	if(!vShader.isCompiled())
 	{
@@ -49,7 +73,8 @@ void UI::initShaders(){
 	}
 	UIProgram.bindFragmentOutput("outColor");
 	vShader.free();
-	fShader.free();	
+	fShader.free();
+	
 }
 
 void UI::update(int deltatime){
@@ -58,6 +83,8 @@ void UI::update(int deltatime){
 
 
 void UI::render(){
+	
+	/*
 	UIProgram.use();
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
@@ -71,5 +98,13 @@ void UI::render(){
 	);
 // Draw the triangle !
 	glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
-	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(0);*/
+
+	UIProgram.use();
+
+	for (int i = 0; i < UIElements.size(); ++i){
+		cout << i;
+		UIElements[i]->render(textures[i]);
+	}cout << endl;
+	
 }

@@ -1,5 +1,7 @@
 #include <SOIL.h>
 #include "Texture.h"
+#include <iostream>
+
 
 
 using namespace std;
@@ -18,6 +20,7 @@ bool Texture::loadFromFile(const string &filename, PixelFormat format)
 {
 	unsigned char *image = NULL;
 	
+	cout << filename << endl;
 	switch(format)
 	{
 	case TEXTURE_PIXEL_FORMAT_RGB:
