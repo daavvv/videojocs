@@ -1,15 +1,19 @@
 #include "UI.h"
+#include "Game.h"
 
 
 void UI::init(){
-	glm::vec2 geom[2] = {glm::vec2(0.f, 0.f), glm::vec2(0.5f, 0.5f)};
-	glm::vec2 texCoords[2] = {glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f)};
+	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(128.f, 128.f) };
+	glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
+
 
 	initShaders();
 
 
 	texCoords[0] = glm::vec2(0.f, 0.f); texCoords[1] = glm::vec2(0.5f, 0.5f);
 	addUIElement(geom,texCoords,UIProgram,"images/rocks.jpg");
+	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
+	currentTime = 0.0f;
 	/*texCoords[0] = glm::vec2(0.5f, 0.5f); texCoords[1] = glm::vec2(1.f, 1.f);
 	addUIElement(geom,texCoords,UIProgram,"images/rocks.jpg");*/
 
@@ -77,8 +81,8 @@ void UI::initShaders(){
 	
 }
 
-void UI::update(int deltatime){
-	cout << "update" << endl;
+void UI::update(int deltaTime){
+	currentTime += deltaTime;
 }
 
 
@@ -100,7 +104,35 @@ void UI::render(){
 	glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
 	glDisableVertexAttribArray(0);*/
 
+
+
+	/*
+	texProgram.use();
+	texProgram.setUniformMatrix4f("projection", projection);
+	texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+
+	modelview = glm::translate(glm::mat4(1.0f), glm::vec3(384.f, 48.f, 0.f));
+	modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
+	modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
+	modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
+	texProgram.setUniformMatrix4f("modelview", modelview);
+	texQuad[0]->render(texs[0]);*/
+
+
+	glm::mat4 modelview;
+
+
 	UIProgram.use();
+
+	UIProgram.setUniformMatrix4f("projection", projection);
+	UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+
+	modelview = glm::translate(glm::mat4(1.0f), glm::vec3(128.f, 304.f, 0.f));
+	modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
+	modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
+	modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
+	UIProgram.setUniformMatrix4f("modelview", modelview);
+	
 
 	for (int i = 0; i < UIElements.size(); ++i){
 		cout << i;

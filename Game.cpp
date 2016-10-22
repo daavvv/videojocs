@@ -11,14 +11,14 @@ void Game::init()
 {
 	bPlay = true;
 	glClearColor(0.87f, 0.98f, 1.0f, 1.0f);
-	//scene.init();
-	ui.init();
+	scene.init();
+	//ui.init();
 }
 
 bool Game::update(int deltaTime)
 {
-	//scene.update(deltaTime);
-	
+	scene.update(deltaTime);
+	//ui.update(deltaTime);
 	return bPlay;
 }
 
@@ -27,8 +27,8 @@ bool Game::update(int deltaTime)
 void Game::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	//scene.render();
-	ui.render();
+	scene.render();
+	//ui.render();
 
 }
 
