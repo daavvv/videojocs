@@ -10,8 +10,8 @@ void UI::init(){
 	initShaders();
 
 
-	texCoords[0] = glm::vec2(0.f, 0.f); texCoords[1] = glm::vec2(0.5f, 0.5f);
-	addUIElement(geom,texCoords,UIProgram,"images/rocks.jpg");
+	texCoords[0] = glm::vec2(0.f, 0.f); texCoords[1] = glm::vec2(1.f, 1.f);
+	addUIElement(geom,texCoords,UIProgram,"images/UI/hud_2.png");
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
 	currentTime = 0.0f;
 	/*texCoords[0] = glm::vec2(0.5f, 0.5f); texCoords[1] = glm::vec2(1.f, 1.f);
@@ -120,23 +120,22 @@ void UI::render(){
 
 
 	glm::mat4 modelview;
-
-
 	UIProgram.use();
-
 	UIProgram.setUniformMatrix4f("projection", projection);
 	UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
 
-	modelview = glm::translate(glm::mat4(1.0f), glm::vec3(128.f, 304.f, 0.f));
+	modelview = glm::translate(glm::mat4(1.0f), glm::vec3(5.f, 5.f, 0.f));
 	modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
-	modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
+	//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
+	modelview = glm::scale(modelview,glm::vec3( 0.3f, 0.3f, 0.3f ));
 	modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
 	UIProgram.setUniformMatrix4f("modelview", modelview);
 	
-
 	for (int i = 0; i < UIElements.size(); ++i){
-		cout << i;
 		UIElements[i]->render(textures[i]);
+
 	}cout << endl;
 	
 }
+
+
