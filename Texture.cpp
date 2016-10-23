@@ -30,8 +30,10 @@ bool Texture::loadFromFile(const string &filename, PixelFormat format)
 		image = SOIL_load_image(filename.c_str(), &widthTex, &heightTex, 0, SOIL_LOAD_RGBA);
 		break;
 	}
-	if(image == NULL)
-		return false;
+	if (image == NULL) {
+		printf("SOIL loading error: '%s'\n", SOIL_last_result());
+		return false;	
+	}
 	glGenTextures(1, &texId);
 	glBindTexture(GL_TEXTURE_2D, texId);
 	switch(format)

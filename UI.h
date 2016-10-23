@@ -10,6 +10,7 @@
 #include <vector>
 #include <glm/gtc/matrix_transform.hpp>
 #include <cmath>
+#include "Player.h"
 
 
 using namespace std;
@@ -27,8 +28,9 @@ public:
 
 	void init();
 	void update(int deltaTime);
-	void render();
+	void render(float playerlife);
 	void initShaders();
+	void renderHearts(float life);
 	void addUIElement(glm::vec2 geom[2], glm::vec2 texCoords[2], ShaderProgram &program, string path);
 
 private:

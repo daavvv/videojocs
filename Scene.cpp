@@ -48,6 +48,10 @@ void Scene::update(int deltaTime)
 }
 
 
+float Scene::getPlayerLife() {
+	return player->getLife();
+}
+
 
 void Scene::render()
 {

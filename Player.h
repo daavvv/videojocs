@@ -21,6 +21,8 @@ public:
 	void setTileMap(TileMap *tileMap);
 	void setPosition(const glm::vec2 &pos);
 	void printPosition();
+	float getLife();
+	void setLife(float life);
 	glm::ivec2 getPosition();
 	
 private:
@@ -30,6 +32,7 @@ private:
 	Texture spritesheet;
 	Sprite *sprite;
 	TileMap *map;
+	float life;
 
 };
 

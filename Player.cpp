@@ -28,6 +28,7 @@ glm::ivec2 Player::getPosition(){
 
 void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 {
+	life = 3.0f;
 	bJumping = false;
 	bdownLadder = false;
 	spritesheet.loadFromFile("images/bub.png", TEXTURE_PIXEL_FORMAT_RGBA);
@@ -54,6 +55,15 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	tileMapDispl = tileMapPos;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 	
+}
+
+
+float Player::getLife() {
+	return this->life;
+}
+
+void Player::setLife(float life) {
+	this->life = life;
 }
 
 
