@@ -2,6 +2,19 @@
 #include "Game.h"
 
 
+
+#define LIFEUIOFFSETX -35
+#define LIFEUIOFFSETY -35
+#define LIFEUIOFFSETX_PADDING 35
+#define LIFESCALEFACTOR  0.2
+
+#define MATERIALSUIOFFSETX -35
+#define MATERIALSUIOFFSETY 10
+
+#define MATERIALSCALEFACTOR 0.35
+#define NUMBERSSEPARATION 40
+
+
 void UI::init(){
 	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(128.f, 128.f) };
 	glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
@@ -9,13 +22,22 @@ void UI::init(){
 
 	initShaders();
 
-
+	//LOAD HEARTS
 	texCoords[0] = glm::vec2(0.f, 0.f); texCoords[1] = glm::vec2(1.f,1.f); 
 	addUIElement(geom, texCoords, UIProgram, "images/UI/UI_HEART_FULL.png");//0
 	texCoords[0] = glm::vec2(0.f, 0.f); texCoords[1] = glm::vec2(1.f, 1.f);
 	addUIElement(geom, texCoords, UIProgram, "images/UI/UI_HEART_HALF.png");//1
 	texCoords[0] = glm::vec2(0.f, 0.f); texCoords[1] = glm::vec2(1.f, 1.f);
 	addUIElement(geom, texCoords, UIProgram, "images/UI/UI_HEART_EMPTY.png");//2
+
+	//LOAD MATERIALS
+
+	//STONE
+	texCoords[0] = glm::vec2(0.f, 0.f); texCoords[1] = glm::vec2(1.f, 1.f);
+	addUIElement(geom, texCoords, UIProgram, "images/UI/stone.png");//3
+	//STONE COUNTER
+	texCoords[0] = glm::vec2(0.f, 0.f); texCoords[1] = glm::vec2(1.f, 1.f);
+	addUIElement(geom, texCoords, UIProgram, "images/UI/numbers/hud_0.png");//4
 
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
 	currentTime = 0.0f;
@@ -76,245 +98,116 @@ void UI::update(int deltaTime){
 
 void UI::renderHearts(float life) {
 
-	if (life == 1.0f) {
-
-		//RENDER FULL HEART
+		//RENDER FIRST HEART
 		glm::mat4 modelview;
 		UIProgram.use();
 		UIProgram.setUniformMatrix4f("projection", projection);
 		UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
 
-		modelview = glm::translate(glm::mat4(1.0f), glm::vec3(5.f, 5.f, 0.f));
+		modelview = glm::translate(glm::mat4(1.0f), glm::vec3(LIFEUIOFFSETX + 0.f,LIFEUIOFFSETY + 0.f, 0.f));
 		modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
 		//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
-		modelview = glm::scale(modelview, glm::vec3(0.5f, 0.5f, 0.5f));
+		modelview = glm::scale(modelview, glm::vec3(LIFESCALEFACTOR, LIFESCALEFACTOR, LIFESCALEFACTOR));
 		modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
 		UIProgram.setUniformMatrix4f("modelview", modelview);
-		UIElements[0]->render(textures[0]);
 
-		//RENDER EMPTY HEART
+		if (life >= 1.0f) {
+			UIElements[0]->render(textures[0]);
+		}
+		else if (life == 0.5f) {
+			UIElements[1]->render(textures[1]);
+		}
+		else  {
+			UIElements[2]->render(textures[2]);
+		}
+
+
+		//RENDER SECOND HEART
+		UIProgram.use();
+		UIProgram.setUniformMatrix4f("projection", projection);
+		UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+
+		modelview = glm::translate(glm::mat4(1.0f), glm::vec3(LIFEUIOFFSETX + LIFEUIOFFSETX_PADDING,LIFEUIOFFSETY + 0.f, 0.f));
+		modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
+		//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
+		modelview = glm::scale(modelview, glm::vec3(LIFESCALEFACTOR, LIFESCALEFACTOR, LIFESCALEFACTOR));
+		modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
+		UIProgram.setUniformMatrix4f("modelview", modelview);
 		
+		if (life >= 2.0f) {
+			UIElements[0]->render(textures[0]);
+		}
+		else if (life == 1.5f) {
+			UIElements[1]->render(textures[1]);
+		}
+		else if (life < 1.5f) {
+			UIElements[2]->render(textures[2]);
+		}
+
+
+		//RENDER THIRD HEART
 		UIProgram.use();
 		UIProgram.setUniformMatrix4f("projection", projection);
 		UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
 
-		modelview = glm::translate(glm::mat4(1.0f), glm::vec3(85.f, 5.f, 0.f));
+		modelview = glm::translate(glm::mat4(1.0f), glm::vec3(LIFEUIOFFSETX + LIFEUIOFFSETX_PADDING*2,LIFEUIOFFSETY + 0.f, 0.f));
 		modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
 		//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
-		modelview = glm::scale(modelview, glm::vec3(0.5f, 0.5f, 0.5f));
+		modelview = glm::scale(modelview, glm::vec3(LIFESCALEFACTOR, LIFESCALEFACTOR, LIFESCALEFACTOR));
 		modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
 		UIProgram.setUniformMatrix4f("modelview", modelview);
-		UIElements[2]->render(textures[2]);
-
-		//RENDER EMPTY HEART
-		
-		UIProgram.use();
-		UIProgram.setUniformMatrix4f("projection", projection);
-		UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
-
-		modelview = glm::translate(glm::mat4(1.0f), glm::vec3(165.f, 5.f, 0.f));
-		modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
-		//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
-		modelview = glm::scale(modelview, glm::vec3(0.5f, 0.5f, 0.5f));
-		modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
-		UIProgram.setUniformMatrix4f("modelview", modelview);
-		UIElements[2]->render(textures[2]);
-
-
-	}
-
-	if (life == 1.5f) {
-
-		//RENDER FULL HEART
-		glm::mat4 modelview;
-		UIProgram.use();
-		UIProgram.setUniformMatrix4f("projection", projection);
-		UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
-
-		modelview = glm::translate(glm::mat4(1.0f), glm::vec3(5.f, 5.f, 0.f));
-		modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
-		//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
-		modelview = glm::scale(modelview, glm::vec3(0.5f, 0.5f, 0.5f));
-		modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
-		UIProgram.setUniformMatrix4f("modelview", modelview);
-		UIElements[0]->render(textures[0]);
-
-		//RENDER EMPTY HEART
-
-		UIProgram.use();
-		UIProgram.setUniformMatrix4f("projection", projection);
-		UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
-
-		modelview = glm::translate(glm::mat4(1.0f), glm::vec3(85.f, 5.f, 0.f));
-		modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
-		//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
-		modelview = glm::scale(modelview, glm::vec3(0.5f, 0.5f, 0.5f));
-		modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
-		UIProgram.setUniformMatrix4f("modelview", modelview);
-		UIElements[1]->render(textures[1]);
-
-		//RENDER EMPTY HEART
-
-		UIProgram.use();
-		UIProgram.setUniformMatrix4f("projection", projection);
-		UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
-
-		modelview = glm::translate(glm::mat4(1.0f), glm::vec3(165.f, 5.f, 0.f));
-		modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
-		//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
-		modelview = glm::scale(modelview, glm::vec3(0.5f, 0.5f, 0.5f));
-		modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
-		UIProgram.setUniformMatrix4f("modelview", modelview);
-		UIElements[2]->render(textures[2]);
-	}
-
-	if (life == 2.0f) {
-
-		//RENDER FULL HEART
-		glm::mat4 modelview;
-		UIProgram.use();
-		UIProgram.setUniformMatrix4f("projection", projection);
-		UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
-
-		modelview = glm::translate(glm::mat4(1.0f), glm::vec3(5.f, 5.f, 0.f));
-		modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
-		//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
-		modelview = glm::scale(modelview, glm::vec3(0.5f, 0.5f, 0.5f));
-		modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
-		UIProgram.setUniformMatrix4f("modelview", modelview);
-		UIElements[0]->render(textures[0]);
-
-		//RENDER EMPTY HEART
-
-		UIProgram.use();
-		UIProgram.setUniformMatrix4f("projection", projection);
-		UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
-
-		modelview = glm::translate(glm::mat4(1.0f), glm::vec3(85.f, 5.f, 0.f));
-		modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
-		//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
-		modelview = glm::scale(modelview, glm::vec3(0.5f, 0.5f, 0.5f));
-		modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
-		UIProgram.setUniformMatrix4f("modelview", modelview);
-		UIElements[0]->render(textures[0]);
-
-		//RENDER EMPTY HEART
-
-		UIProgram.use();
-		UIProgram.setUniformMatrix4f("projection", projection);
-		UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
-
-		modelview = glm::translate(glm::mat4(1.0f), glm::vec3(165.f, 5.f, 0.f));
-		modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
-		//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
-		modelview = glm::scale(modelview, glm::vec3(0.5f, 0.5f, 0.5f));
-		modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
-		UIProgram.setUniformMatrix4f("modelview", modelview);
-		UIElements[2]->render(textures[2]);
-
-	}
-
-	if (life == 2.5f) {
-
-		//RENDER FULL HEART
-		glm::mat4 modelview;
-		UIProgram.use();
-		UIProgram.setUniformMatrix4f("projection", projection);
-		UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
-
-		modelview = glm::translate(glm::mat4(1.0f), glm::vec3(5.f, 5.f, 0.f));
-		modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
-		//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
-		modelview = glm::scale(modelview, glm::vec3(0.5f, 0.5f, 0.5f));
-		modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
-		UIProgram.setUniformMatrix4f("modelview", modelview);
-		UIElements[0]->render(textures[0]);
-
-		//RENDER EMPTY HEART
-
-		UIProgram.use();
-		UIProgram.setUniformMatrix4f("projection", projection);
-		UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
-
-		modelview = glm::translate(glm::mat4(1.0f), glm::vec3(85.f, 5.f, 0.f));
-		modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
-		//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
-		modelview = glm::scale(modelview, glm::vec3(0.5f, 0.5f, 0.5f));
-		modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
-		UIProgram.setUniformMatrix4f("modelview", modelview);
-		UIElements[0]->render(textures[0]);
-
-		//RENDER EMPTY HEART
-
-		UIProgram.use();
-		UIProgram.setUniformMatrix4f("projection", projection);
-		UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
-
-		modelview = glm::translate(glm::mat4(1.0f), glm::vec3(165.f, 5.f, 0.f));
-		modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
-		//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
-		modelview = glm::scale(modelview, glm::vec3(0.5f, 0.5f, 0.5f));
-		modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
-		UIProgram.setUniformMatrix4f("modelview", modelview);
-		UIElements[1]->render(textures[1]);
-
-	}
-
-	if (life == 3.0f) {
-
-		//RENDER FULL HEART
-		glm::mat4 modelview;
-		UIProgram.use();
-		UIProgram.setUniformMatrix4f("projection", projection);
-		UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
-
-		modelview = glm::translate(glm::mat4(1.0f), glm::vec3(5.f, 5.f, 0.f));
-		modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
-		//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
-		modelview = glm::scale(modelview, glm::vec3(0.5f, 0.5f, 0.5f));
-		modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
-		UIProgram.setUniformMatrix4f("modelview", modelview);
-		UIElements[0]->render(textures[0]);
-
-		//RENDER FULL HEART
-
-		UIProgram.use();
-		UIProgram.setUniformMatrix4f("projection", projection);
-		UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
-
-		modelview = glm::translate(glm::mat4(1.0f), glm::vec3(85.f, 5.f, 0.f));
-		modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
-		//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
-		modelview = glm::scale(modelview, glm::vec3(0.5f, 0.5f, 0.5f));
-		modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
-		UIProgram.setUniformMatrix4f("modelview", modelview);
-		UIElements[0]->render(textures[0]);
-
-		//RENDER FULL HEART
-
-		UIProgram.use();
-		UIProgram.setUniformMatrix4f("projection", projection);
-		UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
-
-		modelview = glm::translate(glm::mat4(1.0f), glm::vec3(165.f, 5.f, 0.f));
-		modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
-		//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
-		modelview = glm::scale(modelview, glm::vec3(0.5f, 0.5f, 0.5f));
-		modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
-		UIProgram.setUniformMatrix4f("modelview", modelview);
-		UIElements[0]->render(textures[0]);
-
-
-	}
+	
+		if (life == 3.0f) {
+			UIElements[0]->render(textures[0]);
+		}
+		else if (life == 2.5f) {
+			UIElements[1]->render(textures[1]);
+		}
+		else if (life == 2.0f) {
+			UIElements[2]->render(textures[2]);
+		}
+		else if (life < 1.5f) {
+			UIElements[2]->render(textures[2]);
+		}
 }
 
+void UI::renderMaterials() {
 
+	//STONES ICON
+	glm::mat4 modelview;
+	UIProgram.use();
+	UIProgram.setUniformMatrix4f("projection", projection);
+	UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+
+	modelview = glm::translate(glm::mat4(1.0f), glm::vec3(MATERIALSUIOFFSETX + 0.f, MATERIALSUIOFFSETY + 0.f, 0.f));
+	modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
+	//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
+	modelview = glm::scale(modelview, glm::vec3(MATERIALSCALEFACTOR, MATERIALSCALEFACTOR, MATERIALSCALEFACTOR));
+	modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
+	UIProgram.setUniformMatrix4f("modelview", modelview);
+	UIElements[3]->render(textures[3]);
+
+	//STONES VALUE
+	
+	UIProgram.use();
+	UIProgram.setUniformMatrix4f("projection", projection);
+	UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+
+	modelview = glm::translate(glm::mat4(1.0f), glm::vec3(MATERIALSUIOFFSETX + NUMBERSSEPARATION, MATERIALSUIOFFSETY + 0.f, 0.f));
+	modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
+	//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
+	modelview = glm::scale(modelview, glm::vec3(0.1f, 0.1f, 0.1f));
+	modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
+	UIProgram.setUniformMatrix4f("modelview", modelview);
+	UIElements[4]->render(textures[4]);
+	
+
+
+}
 
 void UI::render(float playerlife){
-
 	renderHearts(playerlife);
-
-	
+	renderMaterials();
 }
 
 

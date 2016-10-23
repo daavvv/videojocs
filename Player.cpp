@@ -28,7 +28,7 @@ glm::ivec2 Player::getPosition(){
 
 void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 {
-	life = 3.0f;
+	life = 3.f;
 	bJumping = false;
 	bdownLadder = false;
 	spritesheet.loadFromFile("images/bub.png", TEXTURE_PIXEL_FORMAT_RGBA);
@@ -84,17 +84,6 @@ void Player::update(int deltaTime)
 	if(Game::instance().getKey('c')){
 		
 		glm::ivec2 tileToDestroy;
-
-		//if (map->bottomTileIsDiggable(posPlayer, glm::ivec2(32,32))){
-			
-			/*tilex = posPlayer.x / tileSize;
-			tiley = (posPlayer.y + size.y - 1) / tileSize;
-			tiley += 1;*/
-
-
-
-		//}
-
 	}
 
 
