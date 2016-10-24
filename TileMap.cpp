@@ -460,8 +460,6 @@ void TileMap::prepareTerrain(const glm::vec2 &minCoords, ShaderProgram &program)
 	posLocation_terrain = program.bindVertexAttribute("position", 2, 4*sizeof(float), 0);
 	texCoordLocation_terrain = program.bindVertexAttribute("texCoord", 2, 4*sizeof(float), (void *)(2*sizeof(float)));
 
-
-
 }
 
 
@@ -609,6 +607,28 @@ bool TileMap::collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, i
 }
 
 
+
+
+bool TileMap::canJump(const glm::ivec2 &playerPos, const glm::ivec2 &size) const {
+
+	int tilex, tiley;
+
+	tilex = playerPos.x / tileSize;
+	tiley = (playerPos.y + size.y - 1) / tileSize;
+
+	tiley = tiley - 1;
+
+	if (structMap[(tiley)*mapSize.x + tilex].ID == GRASS || structMap[(tiley)*mapSize.x + tilex].ID == DIRT || structMap[(tiley)*mapSize.x + tilex].ID == SUPPORT_TERRAIN) {
+		return false;
+	}
+
+	return true;
+}
+
+
+
+
+
 bool TileMap::bottomTileIsDiggable(const glm::ivec2 &playerPos, const glm::ivec2 &size) 
 {
 
@@ -635,12 +655,172 @@ bool TileMap::bottomTileIsDiggable(const glm::ivec2 &playerPos, const glm::ivec2
 	return false;
 }
 
-bool TileMap::digTile() {
+
+bool TileMap::bottomTileIsBuildable(const glm::ivec2 &playerPos, const glm::ivec2 &size, int *posY) 
+{
+	int tilex, tiley;
+	tilex = playerPos.x / tileSize;
+	tiley = (playerPos.y + size.y - 1) / tileSize;
+
+	if (structMap[(tiley + 1)*mapSize.x + tilex].isSolid) {
+		*posY = (tiley-1)*32;
+		tileToBeBuilded.x = tilex;
+		tileToBeBuilded.y = tiley;
+		return true;
+	}
+	return false;
+}
+
+
+bool TileMap::leftTileIsBuildable(const glm::ivec2 &playerPos, const glm::ivec2 &size)
+{
+	int tilex, tiley;
+	tilex = playerPos.x / tileSize;
+	tiley = (playerPos.y + size.y - 1) / tileSize;
+
+	if (!structMap[(tiley)*mapSize.x + tilex-1].isSolid) {
+		tileToBeBuilded.x = tilex-1;
+		tileToBeBuilded.y = tiley;
+		return true;
+	}
+	return false;
+}
+
+bool TileMap::rightTileIsBuildable(const glm::ivec2 &playerPos, const glm::ivec2 &size)
+{
+	int tilex, tiley;
+	tilex = playerPos.x / tileSize;
+	tiley = (playerPos.y + size.y - 1) / tileSize;
+
+	if (!structMap[(tiley)*mapSize.x + tilex + 1].isSolid) {
+		tileToBeBuilded.x = tilex + 1;
+		tileToBeBuilded.y = tiley;
+		return true;
+	}
+	return false;
+}
+
+
+
+
+
+bool TileMap::buildTile(int ID) {
+
+	structMap[tileToBeBuilded.y*mapSize.x + tileToBeBuilded.x].ID = ID;
+	structMap[tileToBeBuilded.y*mapSize.x + tileToBeBuilded.x].isSolid = true;
+	structMap[tileToBeBuilded.y*mapSize.x + tileToBeBuilded.x].isDiggable = true;
+
+	prepareArrays();
+
+	return true;
+}
+
+
+
+
+bool TileMap::topTileIsDiggable(const glm::ivec2 &playerPos, const glm::ivec2 &size)
+{
+
+	int tilex, tiley;
+
+	tilex = playerPos.x / tileSize;
+	tiley = (playerPos.y + size.y - 1) / tileSize;
+
+
+	if (structMap[(tiley - 1)*mapSize.x + tilex].isDiggable && structMap[(tiley - 1)*mapSize.x + tilex].isSolid) {
+		//cout << "Is diggable" << endl;
+		tileToBeDigged.x = tilex;
+		tileToBeDigged.y = tiley - 1;
+		/*
+		structMap[(tiley + 1)*mapSize.x + tilex].isDiggable = false;
+		structMap[(tiley + 1)*mapSize.x + tilex].ID = 0;
+		structMap[(tiley + 1)*mapSize.x + tilex].isSolid = false;
+		*/
+		return true;
+	}
+	else {
+		//cout << "Is not diggable" << endl;
+	}
+	return false;
+}
+
+
+
+
+bool TileMap::rightTileIsDiggable(const glm::ivec2 &playerPos, const glm::ivec2 &size)
+{
+
+	int tilex, tiley;
+
+	tilex = playerPos.x / tileSize;
+	tiley = (playerPos.y + size.y - 1) / tileSize;
+
+
+	if (structMap[(tiley)*mapSize.x + tilex+1].isDiggable && structMap[(tiley)*mapSize.x + tilex+1].isSolid) {
+		//cout << "Is diggable" << endl;
+		tileToBeDigged.x = tilex+1;
+		tileToBeDigged.y = tiley;
+		/*
+		structMap[(tiley + 1)*mapSize.x + tilex].isDiggable = false;
+		structMap[(tiley + 1)*mapSize.x + tilex].ID = 0;
+		structMap[(tiley + 1)*mapSize.x + tilex].isSolid = false;
+		*/
+		return true;
+	}
+	else {
+		//cout << "Is not diggable" << endl;
+	}
+	return false;
+}
+
+
+bool TileMap::leftTileIsDiggable(const glm::ivec2 &playerPos, const glm::ivec2 &size)
+{
+
+	int tilex, tiley;
+
+	tilex = playerPos.x / tileSize;
+	tiley = (playerPos.y + size.y - 1) / tileSize;
+
+
+	if (structMap[(tiley)*mapSize.x + tilex - 1].isDiggable && structMap[(tiley)*mapSize.x + tilex - 1].isSolid) {
+		//cout << "Is diggable" << endl;
+		tileToBeDigged.x = tilex - 1;
+		tileToBeDigged.y = tiley;
+		/*
+		structMap[(tiley + 1)*mapSize.x + tilex].isDiggable = false;
+		structMap[(tiley + 1)*mapSize.x + tilex].ID = 0;
+		structMap[(tiley + 1)*mapSize.x + tilex].isSolid = false;
+		*/
+		return true;
+	}
+	else {
+		//cout << "Is not diggable" << endl;
+	}
+	return false;
+}
+
+
+
+
+
+
+
+
+
+
+int TileMap::digTile() {
+
+	int tile;
+	tile = structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].ID;
+
 	structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].isDiggable = false;
 	structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].ID = 0;
 	structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].isSolid = false;
 
 	prepareArrays();
+
+
 
 	for (int i = 0; i < mapSize.x * mapSize.y; ++i) {
 		if (structMap[i].isSolid) {
@@ -654,7 +834,7 @@ bool TileMap::digTile() {
 		}
 	}
 
-	return true;
+	return tile;
 }
 
 

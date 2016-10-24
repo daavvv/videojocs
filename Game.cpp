@@ -20,6 +20,8 @@ bool Game::update(int deltaTime)
 	scene.update(deltaTime);
 	ui.update(deltaTime);
 	return bPlay;
+
+
 }
 
 
@@ -58,8 +60,15 @@ void Game::mouseMove(int x, int y)
 {
 }
 
-void Game::mousePress(int button)
+void Game::mousePress(int button, int x, int y)
 {
+	cout << "clicked on " << x << "," << y << endl;
+
+	if ((x >= 8 && x <= 120) && (y >= 8 && y <= 50)) {
+		cout << "Clicked on life panel!" << endl;
+	}
+
+
 }
 
 void Game::mouseRelease(int button)

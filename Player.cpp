@@ -13,7 +13,7 @@
 #define JUMP_ANGLE_STEP 4
 #define JUMP_HEIGHT 96
 #define FALL_STEP 4
-#define DIGCOOLDOWN 3250
+#define DIGCOOLDOWN 6250
 
 enum PlayerAnims
 {
@@ -28,11 +28,14 @@ glm::ivec2 Player::getPosition(){
 
 void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 {
+	bag = new Item[24];
 	life = 3.f;
 	bJumping = false;
 	bdownLadder = false;
 	bdigging = false;
+	bbuilding = false;
 	digCounter = DIGCOOLDOWN;
+	buildCounter = DIGCOOLDOWN;
 	spritesheet.loadFromFile("images/bub.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(32, 32), glm::vec2(0.25, 0.25), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(4);
@@ -87,10 +90,16 @@ void Player::update(int deltaTime)
 		digCounter = DIGCOOLDOWN;
 	}
 	else {
-		cout << digCounter << endl;
 		digCounter -= deltaTime*40;
 	}
 
+
+	if ((buildCounter - (deltaTime * 40)) < 0) {
+		buildCounter = DIGCOOLDOWN;
+	}
+	else {
+		buildCounter -= deltaTime * 40;
+	}
 
 
 	if(Game::instance().getSpecialKey(GLUT_KEY_LEFT))
@@ -135,6 +144,48 @@ void Player::update(int deltaTime)
 	}
 
 
+	if (bbuilding) {
+		bbuilding = false;
+		cout << "Building" << endl;
+		map->buildTile(220);
+	}
+	else {
+		if(Game::instance().getKey('2')) {
+			if (map->bottomTileIsBuildable(posPlayer, glm::ivec2(32, 32), &posPlayer.y)) {
+				if (buildCounter == DIGCOOLDOWN) {
+					posPlayer.y = posPlayer.y-10;
+					bbuilding = true;
+				}
+			}
+			else {
+				buildCounter = DIGCOOLDOWN;
+			}
+		}
+		if (Game::instance().getKey('3')) {
+			if (map->rightTileIsBuildable(posPlayer, glm::ivec2(32, 32))) {				
+					bbuilding = true;				
+			}			
+		}
+		if (Game::instance().getKey('1')) {
+			if (map->leftTileIsBuildable(posPlayer, glm::ivec2(32, 32))) {
+					bbuilding = true;
+				
+			}
+		}
+
+
+		/*if (map->bottomTileIsDiggable(posPlayer, glm::ivec2(32, 32))) {
+				if (digCounter == DIGCOOLDOWN) {
+					bdigging = true;
+				}
+			}
+			else {
+				digCounter = DIGCOOLDOWN;
+			}*/
+	}
+
+
+
 	if (bdigging)
 	{
 		
@@ -145,8 +196,9 @@ void Player::update(int deltaTime)
 
 	}
 	else {
-		if (map->bottomTileIsDiggable(posPlayer, glm::ivec2(32, 32))) {	
-			if (Game::instance().getKey('c')) {
+		if (Game::instance().getKey('s')) {
+
+			if (map->bottomTileIsDiggable(posPlayer, glm::ivec2(32, 32))) {
 				if (digCounter == DIGCOOLDOWN) {
 					bdigging = true;
 				}
@@ -156,17 +208,55 @@ void Player::update(int deltaTime)
 			}
 		}
 
+		if (Game::instance().getKey('d')) {
+
+			if (map->rightTileIsDiggable(posPlayer, glm::ivec2(32, 32))) {
+				if (digCounter == DIGCOOLDOWN) {
+					bdigging = true;
+				}
+			}
+			else {
+				digCounter = DIGCOOLDOWN;
+			}
+		}
+
+		if (Game::instance().getKey('w')) {
+
+			if (map->topTileIsDiggable(posPlayer, glm::ivec2(32, 32))) {
+				if (digCounter == DIGCOOLDOWN) {
+					bdigging = true;
+				}
+			}
+			else {
+				digCounter = DIGCOOLDOWN;
+			}
+		}
+
+		if (Game::instance().getKey('a')) {
+
+			if (map->leftTileIsDiggable(posPlayer, glm::ivec2(32, 32))) {
+				if (digCounter == DIGCOOLDOWN) {
+					bdigging = true;
+				}
+			}
+			else {
+				digCounter = DIGCOOLDOWN;
+			}
+		}
 	}
+
+
+
 
 
 
 	
 	if(bJumping)
 	{
-		
+	
 		jumpAngle += JUMP_ANGLE_STEP;
 
-		if(jumpAngle == 180)
+		if (jumpAngle == 180 || !map->canJump(posPlayer, glm::ivec2(32, 32)))
 		{
 			bJumping = false;
 			posPlayer.y = startY;
@@ -174,7 +264,7 @@ void Player::update(int deltaTime)
 		else
 		{
 			posPlayer.y = int(startY - 96 * sin(3.14159f * jumpAngle / 180.f));
-			if(jumpAngle > 90)
+			if (jumpAngle > 90)
 				bJumping = !map->collisionMoveDown(posPlayer, glm::ivec2(32, 32), &posPlayer.y);
 		}
 
@@ -186,7 +276,7 @@ void Player::update(int deltaTime)
 		posPlayer.y += FALL_STEP;
 		if(map->collisionMoveDown(posPlayer, glm::ivec2(32, 32), &posPlayer.y))
 		{
-			if(Game::instance().getSpecialKey(GLUT_KEY_UP))
+			if(Game::instance().getSpecialKey(GLUT_KEY_UP) && map->canJump(posPlayer,glm::ivec2(32,32)))
 			{
 
 				bJumping = true;

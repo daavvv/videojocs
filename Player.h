@@ -10,8 +10,19 @@
 // all properties it needs to track its movement, jumping, and collisions.
 
 
+struct Item {
+	Item() :buildable(false), ID(0), type("none"), amount(0) {}
+	bool buildable;
+	string type;
+	int ID;
+	int amount;
+};
+
+
 class Player
 {
+
+
 
 public:
 	void init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram);
@@ -26,14 +37,15 @@ public:
 	glm::ivec2 getPosition();
 	
 private:
-	bool bJumping,bdownLadder,bdigging;
+	bool bJumping,bdownLadder,bdigging, bbuilding;
 	glm::ivec2 tileMapDispl, posPlayer;
 	int jumpAngle, startY;
 	Texture spritesheet;
 	Sprite *sprite;
 	TileMap *map;
 	float life;
-	int digCounter;
+	int digCounter,buildCounter;
+	Item *bag;
 
 };
 

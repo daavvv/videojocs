@@ -45,6 +45,13 @@ void Scene::update(int deltaTime)
 {
 	currentTime += deltaTime;
 	player->update(deltaTime);
+
+
+
+
+
+
+
 }
 
 
@@ -65,20 +72,20 @@ void Scene::render()
 	glm::mat4 modelview;
 	texProgram.use();
 	float px,py,left,right,bottom,top;
-	/*
+	
 	glm::ivec2 tileMapSize = map->getMapSize();
 	int tileSize = map->getTileSize();
 	int worldSize = tileSize*tileMapSize.x;
 
-	cout << "Map Size: " << tileMapSize.x*tileSize << "," << tileMapSize.y*tileSize << endl;
-	*/
+	//cout << "Map Size: " << tileMapSize.x*tileSize << "," << tileMapSize.y*tileSize << endl;
+	
 
 	px = player->getPosition().x; py = player->getPosition().y;
 	left = px - (SCREEN_WIDTH/2.0)+64;
 	top = py - (SCREEN_HEIGHT/2.0)-64;
 	right = left + SCREEN_WIDTH;
 	bottom = top + SCREEN_HEIGHT;
-	/*
+	
 	float offsetMaxX = worldSize - SCREEN_WIDTH;
 	float offsetMaxY = worldSize - SCREEN_HEIGHT;
 	float offsetMinX, offsetMinY;
@@ -87,7 +94,7 @@ void Scene::render()
 	float camX = px - SCREEN_WIDTH/2.0;
 	float camY = py - SCREEN_HEIGHT/2.0;
 
-	if (camX > offsetMaxX){
+	/*if (camX > offsetMaxX){
     	camX = offsetMaxX;
 	}
 	else if (camX < offsetMinX){
@@ -107,8 +114,14 @@ void Scene::render()
 
 	texProgram.setUniformMatrix4f("projection", projection);
 	texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
-	modelview = glm::mat4(1.0f);
-	//modelview = glm::translate(modelview, glm::vec3(-camX, -camY, 0.f));
+
+
+
+	//modelview = glm::mat4(1.0f);
+	//modelview = glm::translate(modelview, glm::vec3(-400, -400.f,0));
+
+
+	
 
 	texProgram.setUniformMatrix4f("modelview", modelview);
 

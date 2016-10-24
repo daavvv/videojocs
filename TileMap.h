@@ -51,7 +51,17 @@ public:
 	bool collisionMoveRight(const glm::ivec2 &pos, const glm::ivec2 &size) const;
 	bool collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, int *posY) const;
 	bool bottomTileIsDiggable(const glm::ivec2 &playerPos, const glm::ivec2 &size);
-	bool digTile();
+	bool topTileIsDiggable(const glm::ivec2 &playerPos, const glm::ivec2 &size);
+	bool leftTileIsDiggable(const glm::ivec2 &playerPos, const glm::ivec2 &size);
+	bool rightTileIsDiggable(const glm::ivec2 &playerPos, const glm::ivec2 &size);
+	bool canJump(const glm::ivec2 &playerPos, const glm::ivec2 &size) const;
+
+	bool bottomTileIsBuildable(const glm::ivec2 &playerPos, const glm::ivec2 &size, int *posY);
+	bool leftTileIsBuildable(const glm::ivec2 &playerPos, const glm::ivec2 &size);
+	bool rightTileIsBuildable(const glm::ivec2 &playerPos, const glm::ivec2 &size);
+
+	bool buildTile(int ID);
+	int digTile();
 
 
 	
@@ -70,7 +80,7 @@ private:
 	GLuint vbo_background,vbo_terrain, vbo_background_objects, vbo_foreground_objects;
 	GLint posLocation_background, texCoordLocation_background, posLocation_background_objects, texCoordLocation_background_objects;
 	GLint posLocation_terrain, texCoordLocation_terrain, posLocation_foreground_objects, texCoordLocation_foreground_objects;
-	glm::ivec2 position, mapSize, tilesheetSize, tileToBeDigged;
+	glm::ivec2 position, mapSize, tilesheetSize, tileToBeDigged, tileToBeBuilded;
 	int tileSize, blockSize;
 	Texture tilesheet;
 	glm::vec2 tileTexSize, coordenadas;

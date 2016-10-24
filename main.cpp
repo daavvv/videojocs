@@ -58,7 +58,7 @@ static void motionCallback(int x, int y)
 static void mouseCallback(int button, int state, int x, int y)
 {
 	if(state == GLUT_DOWN)
-		Game::instance().mousePress(button);
+		Game::instance().mousePress(button, x, y);
 	else if(state == GLUT_UP)
 		Game::instance().mouseRelease(button);
 }
@@ -82,6 +82,12 @@ static void idleCallback()
 		prevTime = currentTime;
 		glutPostRedisplay();
 	}
+}
+
+
+void resize(int width, int height) {
+	// we ignore the params and do:
+	glutReshapeWindow(SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
 
@@ -113,6 +119,8 @@ int main(int argc, char **argv)
 	glutSpecialUpFunc(specialUpCallback);
 	glutMouseFunc(mouseCallback);
 	glutMotionFunc(motionCallback);
+
+	glutReshapeFunc(resize);
 
 	// GLEW will take care of OpenGL extension functions
 	glewExperimental = GL_TRUE;

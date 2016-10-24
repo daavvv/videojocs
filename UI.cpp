@@ -96,6 +96,7 @@ void UI::update(int deltaTime){
 }
 
 
+
 void UI::renderHearts(float life) {
 
 		//RENDER FIRST HEART
