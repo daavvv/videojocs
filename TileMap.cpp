@@ -190,6 +190,11 @@ bool TileMap::loadLevelTest(const string &levelFile)
 						tile.isDiggable = true;
 						tile.estat = 1;
 					}
+					if (tile.ID == DIRT) {
+						tile.isSolid = true;
+						tile.isDiggable = true;
+						tile.estat = 1;
+					}
 
 					if (tile.ID == 0 || tile.ID == WATER || tile.ID == WATER_1){
 						tile.isSolid = false;

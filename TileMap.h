@@ -13,6 +13,7 @@
 #define WATER 13
 #define WATER_1 14
 #define GRASS 237
+#define DIRT 220
 
 struct Tile {
 	Tile():isSolid(false), ID(0), isDiggable(false) {}
