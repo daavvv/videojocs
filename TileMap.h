@@ -54,6 +54,7 @@ public:
 
 	
 private:
+	void printPhysicalView();
 	bool loadLevel(const string &levelFile);
 	bool loadLevelTest(const string &levelFile);
 	void prepareArrays();

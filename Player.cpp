@@ -81,10 +81,6 @@ void Player::update(int deltaTime)
 {
 	sprite->update(deltaTime);
 
-	if(Game::instance().getKey('c')){
-		
-		glm::ivec2 tileToDestroy;
-	}
 
 
 	if(Game::instance().getSpecialKey(GLUT_KEY_LEFT))
@@ -92,7 +88,7 @@ void Player::update(int deltaTime)
 		if(sprite->animation() != MOVE_LEFT)
 			sprite->changeAnimation(MOVE_LEFT);
 		posPlayer.x -= 2;
-		printPosition();
+		//printPosition();
 		if(map->collisionMoveLeft(posPlayer, glm::ivec2(32, 32)))
 		{
 			posPlayer.x += 2;
@@ -104,7 +100,7 @@ void Player::update(int deltaTime)
 		if(sprite->animation() != MOVE_RIGHT)
 			sprite->changeAnimation(MOVE_RIGHT);
 		posPlayer.x += 2;
-		printPosition();
+		//printPosition();
 		if(map->collisionMoveRight(posPlayer, glm::ivec2(32, 32)))
 		{
 			posPlayer.x -= 2;
@@ -112,7 +108,7 @@ void Player::update(int deltaTime)
 		}
 	}
 
-	else if (Game::instance().getSpecialKey(GLUT_KEY_DOWN))
+	else if (Game::instance().getKey('c'))
 	{
 		if (map->bottomTileIsDiggable(posPlayer, glm::ivec2(32, 32)))
 		{
@@ -133,6 +129,13 @@ void Player::update(int deltaTime)
 	{
 		
 		jumpAngle += JUMP_ANGLE_STEP;
+
+		if (map->collisionMoveDown(posPlayer, glm::ivec2(32, 32), &posPlayer.y)) {
+			bJumping = false;
+			posPlayer.y = startY;
+		}
+
+
 		if(jumpAngle == 180)
 		{
 			bJumping = false;
@@ -145,7 +148,7 @@ void Player::update(int deltaTime)
 				bJumping = !map->collisionMoveDown(posPlayer, glm::ivec2(32, 32), &posPlayer.y);
 		}
 
-		printPosition();
+		//printPosition();
 	}
 	else
 	{

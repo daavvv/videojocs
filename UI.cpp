@@ -188,7 +188,6 @@ void UI::renderMaterials() {
 	UIElements[3]->render(textures[3]);
 
 	//STONES VALUE
-	
 	UIProgram.use();
 	UIProgram.setUniformMatrix4f("projection", projection);
 	UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
