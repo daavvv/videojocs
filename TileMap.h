@@ -50,7 +50,8 @@ public:
 	bool collisionMoveLeft(const glm::ivec2 &pos, const glm::ivec2 &size) const;
 	bool collisionMoveRight(const glm::ivec2 &pos, const glm::ivec2 &size) const;
 	bool collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, int *posY) const;
-	bool bottomTileIsDiggable(const glm::ivec2 &playerPos, const glm::ivec2 &size) const;
+	bool bottomTileIsDiggable(const glm::ivec2 &playerPos, const glm::ivec2 &size);
+	bool digTile();
 
 
 	
@@ -69,7 +70,7 @@ private:
 	GLuint vbo_background,vbo_terrain, vbo_background_objects, vbo_foreground_objects;
 	GLint posLocation_background, texCoordLocation_background, posLocation_background_objects, texCoordLocation_background_objects;
 	GLint posLocation_terrain, texCoordLocation_terrain, posLocation_foreground_objects, texCoordLocation_foreground_objects;
-	glm::ivec2 position, mapSize, tilesheetSize;
+	glm::ivec2 position, mapSize, tilesheetSize, tileToBeDigged;
 	int tileSize, blockSize;
 	Texture tilesheet;
 	glm::vec2 tileTexSize, coordenadas;
@@ -79,6 +80,7 @@ private:
 	Tile *background;
 	Tile *background_objects;
 	Tile *foreground_objects;
+	
 
 };
 

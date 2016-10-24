@@ -13,7 +13,7 @@
 #define JUMP_ANGLE_STEP 4
 #define JUMP_HEIGHT 96
 #define FALL_STEP 4
-
+#define DIGCOOLDOWN 3250
 
 enum PlayerAnims
 {
@@ -31,6 +31,8 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	life = 3.f;
 	bJumping = false;
 	bdownLadder = false;
+	bdigging = false;
+	digCounter = DIGCOOLDOWN;
 	spritesheet.loadFromFile("images/bub.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(32, 32), glm::vec2(0.25, 0.25), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(4);
@@ -81,6 +83,14 @@ void Player::update(int deltaTime)
 {
 	sprite->update(deltaTime);
 
+	if ((digCounter - (deltaTime*40)) < 0) {
+		digCounter = DIGCOOLDOWN;
+	}
+	else {
+		cout << digCounter << endl;
+		digCounter -= deltaTime*40;
+	}
+
 
 
 	if(Game::instance().getSpecialKey(GLUT_KEY_LEFT))
@@ -107,14 +117,14 @@ void Player::update(int deltaTime)
 			sprite->changeAnimation(STAND_RIGHT);
 		}
 	}
-
+	/*
 	else if (Game::instance().getKey('c'))
 	{
 		if (map->bottomTileIsDiggable(posPlayer, glm::ivec2(32, 32)))
 		{
 			cout << "estic fent un forat" << endl;
 		}
-	}
+	}*/
 	else
 	{
 		
@@ -123,6 +133,32 @@ void Player::update(int deltaTime)
 		else if(sprite->animation() == MOVE_RIGHT)
 			sprite->changeAnimation(STAND_RIGHT);
 	}
+
+
+	if (bdigging)
+	{
+		
+		bdigging = false;
+		cout << "Digging" << endl;
+		map->digTile();
+		
+
+	}
+	else {
+		if (map->bottomTileIsDiggable(posPlayer, glm::ivec2(32, 32))) {	
+			if (Game::instance().getKey('c')) {
+				if (digCounter == DIGCOOLDOWN) {
+					bdigging = true;
+				}
+			}
+			else {
+				digCounter = DIGCOOLDOWN;
+			}
+		}
+
+	}
+
+
 
 	
 	if(bJumping)
@@ -152,6 +188,7 @@ void Player::update(int deltaTime)
 		{
 			if(Game::instance().getSpecialKey(GLUT_KEY_UP))
 			{
+
 				bJumping = true;
 				jumpAngle = 0;
 				startY = posPlayer.y;

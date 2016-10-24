@@ -41,7 +41,7 @@ TileMap::~TileMap()
 
 void TileMap::render()
 {
-	prepareArrays();
+	
 	glEnable(GL_TEXTURE_2D);
 	tilesheet.use();
 	glBindVertexArray(vao_background);
@@ -609,7 +609,7 @@ bool TileMap::collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, i
 }
 
 
-bool TileMap::bottomTileIsDiggable(const glm::ivec2 &playerPos, const glm::ivec2 &size) const 
+bool TileMap::bottomTileIsDiggable(const glm::ivec2 &playerPos, const glm::ivec2 &size) 
 {
 
 	int tilex, tiley;
@@ -619,26 +619,42 @@ bool TileMap::bottomTileIsDiggable(const glm::ivec2 &playerPos, const glm::ivec2
 
 
 	if (structMap[(tiley+1)*mapSize.x+tilex].isDiggable && structMap[(tiley + 1)*mapSize.x + tilex].isSolid){
-		cout << "Is diggable" << endl;
+		//cout << "Is diggable" << endl;
+		tileToBeDigged.x = tilex;
+		tileToBeDigged.y = tiley+1;
+		/*
 		structMap[(tiley + 1)*mapSize.x + tilex].isDiggable = false;
 		structMap[(tiley + 1)*mapSize.x + tilex].ID = 0;
 		structMap[(tiley + 1)*mapSize.x + tilex].isSolid = false;
-
-		for (int i = 0; i < mapSize.x * mapSize.y; ++i) {
-			if (structMap[i].isSolid) {
-				cout << 1 << ",";
-			}
-			else {
-				cout << 0 << ",";
-			}
-			if ((i%mapSize.x) == (mapSize.x - 1)) {
-				cout << endl;
-			}
-		}
-
+		*/
 		return true;
 	}
+	else {
+		//cout << "Is not diggable" << endl;
+	}
 	return false;
+}
+
+bool TileMap::digTile() {
+	structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].isDiggable = false;
+	structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].ID = 0;
+	structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].isSolid = false;
+
+	prepareArrays();
+
+	for (int i = 0; i < mapSize.x * mapSize.y; ++i) {
+		if (structMap[i].isSolid) {
+			cout << 1 << ",";
+		}
+		else {
+			cout << 0 << ",";
+		}
+		if ((i%mapSize.x) == (mapSize.x - 1)) {
+			cout << endl;
+		}
+	}
+
+	return true;
 }
 
 

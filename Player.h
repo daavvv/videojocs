@@ -26,13 +26,14 @@ public:
 	glm::ivec2 getPosition();
 	
 private:
-	bool bJumping,bdownLadder;
+	bool bJumping,bdownLadder,bdigging;
 	glm::ivec2 tileMapDispl, posPlayer;
 	int jumpAngle, startY;
 	Texture spritesheet;
 	Sprite *sprite;
 	TileMap *map;
 	float life;
+	int digCounter;
 
 };
 
