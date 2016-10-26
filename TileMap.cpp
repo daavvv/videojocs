@@ -925,6 +925,27 @@ int TileMap::digTile() {
 
 
 
+bool TileMap::Exists_platform(const glm::ivec2 &pos, const glm::ivec2 &size)
+{
+	int x0, x1, y;
+
+	x0 = pos.x / tileSize;
+	x1 = (pos.x + size.x - 1) / tileSize;
+	y = (pos.y + size.y - 1) / tileSize;
+	for (int y_max = y + 4; y < y_max; --y_max) {
+		for (int x = x0; x <= x1; x++)
+		{
+			if (structMap[y_max*mapSize.x + x].estat != 0)
+			{
+				return true;
+			}
+
+		}
+	}
+
+	return false;
+
+}
 
 
 

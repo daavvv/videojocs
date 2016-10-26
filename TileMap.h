@@ -52,6 +52,8 @@ public:
 	glm::ivec2 getMapSize() const {
 		return mapSize;
 	}
+	bool Exists_platform(const glm::ivec2 &pos, const glm::ivec2 &size);
+
 	glm::vec2 get_animation(int ID, int estat, int instant_estat);
 	bool collisionMoveLeft(const glm::ivec2 &pos, const glm::ivec2 &size) const;
 	bool collisionMoveRight(const glm::ivec2 &pos, const glm::ivec2 &size) const;
