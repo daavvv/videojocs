@@ -6,6 +6,8 @@
 #include "Texture.h"
 #include "ShaderProgram.h"
 #include "json.hpp"
+#include "AnimKeyframes.h"
+
 
 #define SKY 94
 #define LADDER 319
@@ -20,6 +22,8 @@ struct Tile {
 	bool isSolid;
 	bool isDiggable;
 	int estat;// estat 0 = destruit; 1 = viu; 2 = destruint-se 
+	int instant_estat;
+	int timeAnimation;
 	int ID;
 };
 
@@ -41,12 +45,14 @@ public:
 
 	void render();
 	void free();
+	void update(int deltatime);
+
 	
 	int getTileSize() const { return tileSize; }
 	glm::ivec2 getMapSize() const {
 		return mapSize;
 	}
-
+	glm::vec2 get_animation(int ID, int estat, int instant_estat);
 	bool collisionMoveLeft(const glm::ivec2 &pos, const glm::ivec2 &size) const;
 	bool collisionMoveRight(const glm::ivec2 &pos, const glm::ivec2 &size) const;
 	bool collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, int *posY) const;
@@ -66,6 +72,7 @@ public:
 
 	
 private:
+	void create_animations(int ID);
 	void printPhysicalView();
 	bool loadLevel(const string &levelFile);
 	bool loadLevelTest(const string &levelFile);
@@ -90,8 +97,7 @@ private:
 	Tile *background;
 	Tile *background_objects;
 	Tile *foreground_objects;
-	
-
+	vector<AnimKeyframes> animations;
 };
 
 

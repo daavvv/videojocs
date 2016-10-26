@@ -25,10 +25,23 @@ TileMap::TileMap(const string &levelFile, const glm::vec2 &minCoords, ShaderProg
 {
 	//loadLevel(levelFile);
 
-	string path = "levels/test_level.json";
-	loadLevelTest(path);
 	coordenadas = minCoords;
 	programa = program;
+
+	string path = "levels/test_level.json";
+	loadLevelTest(path);
+
+	//creo animacions
+	animations.clear();
+	animations.resize(3500);
+
+	create_animations(SKY);
+	create_animations(LADDER);
+	create_animations(SUPPORT_TERRAIN);
+	create_animations(WATER);
+	create_animations(WATER_1);
+	create_animations(GRASS);
+	create_animations(DIRT);
 	prepareArrays();
 }
 
@@ -36,6 +49,39 @@ TileMap::~TileMap()
 {
 	if(structMap != NULL)
 		delete structMap;
+}
+
+
+void TileMap::update(int deltatime)
+{
+	bool modificat = false;
+	for (int j = 0; j < mapSize.y; j++)
+	{
+		for (int i = 0; i < mapSize.x; i++)
+		{
+			if (structMap[j * mapSize.x + i].estat == 2) {
+				structMap[j * mapSize.x + i].timeAnimation += deltatime;
+				cout << " HE entrat!!!!" << endl;
+				while (structMap[j * mapSize.x + i].timeAnimation > animations[structMap[j * mapSize.x + i].ID *10 + structMap[j * mapSize.x + i].estat].millisecsPerKeyframe)
+				{
+					cout << " aqui tambe entro obviament" << endl;
+					structMap[j * mapSize.x + i].timeAnimation -= animations[structMap[j * mapSize.x + i].ID *10 + structMap[j * mapSize.x + i].estat].millisecsPerKeyframe;
+					if (structMap[j * mapSize.x + i].instant_estat < 2) {
+						structMap[j * mapSize.x + i].instant_estat = structMap[j * mapSize.x + i].instant_estat + 1;
+					}
+					else {
+						structMap[j * mapSize.x + i].instant_estat = 0;
+						structMap[j * mapSize.x + i].estat = 1;// structMap[j * mapSize.x + i].ID = 0;
+					}
+					modificat = true;
+				}
+
+			}
+		}
+	}
+	if (modificat) {
+		prepareArrays();
+	}
 }
 
 
@@ -85,7 +131,27 @@ void TileMap::free()
 	
 }
 
+void TileMap::create_animations(int ID) 
+{
+	//frames per segon
+	cout << ID << endl;
 
+	animations[ID * 10 + 0].millisecsPerKeyframe = 125.f;
+	animations[ID * 10 + 1].millisecsPerKeyframe = 125.f;
+	animations[ID * 10 + 2].millisecsPerKeyframe = 125.f;
+	
+	int tile = ID;
+	cout << ID * 10 << endl;
+	//afegir estats als blocs 0-> no existeix, 1-> existeix, 2 -> transicio  
+	animations[ID * 10 + 1].keyframeDispl.push_back(glm::vec2(float((tile - 1) % tilesheetSize.x) / tilesheetSize.x, float((tile - 1) / tilesheetSize.x) / tilesheetSize.y));
+
+	animations[ID * 10 + 2].keyframeDispl.push_back(glm::vec2(float((tile - 1) % tilesheetSize.x)/ tilesheetSize.x + 0.5f, float((tile - 1) / tilesheetSize.x) / tilesheetSize.y));
+	animations[ID * 10 + 2].keyframeDispl.push_back(glm::vec2(float((tile - 1) % tilesheetSize.x)/ tilesheetSize.x + 1.0f, float((tile - 1) / tilesheetSize.x) / tilesheetSize.y));
+	animations[ID * 10 + 2].keyframeDispl.push_back(glm::vec2(float((tile - 1) % tilesheetSize.x)/ tilesheetSize.x + 1.5f, float((tile - 1) / tilesheetSize.x) / tilesheetSize.y));
+
+	animations[ID * 10 + 0].keyframeDispl.push_back(glm::vec2(float((tile - 1) % tilesheetSize.x) + 2.0f / tilesheetSize.x, float((tile - 1) / tilesheetSize.x) / tilesheetSize.y));
+
+}
 bool TileMap::loadLevelTest(const string &levelFile)
 {
 
@@ -169,9 +235,13 @@ bool TileMap::loadLevelTest(const string &levelFile)
 					if (int(j3["layers"][i]["data"][j]) == SKY){
 							tile.isSolid = false;
 							tile.estat = 0;
+							tile.instant_estat = 0;
+							tile.timeAnimation = 0;
 					} else {
 							tile.isSolid = true;
 							tile.estat = 1;
+							tile.instant_estat = 0;
+							tile.timeAnimation = 0;
 					}
 						//map[i] = int(array.value()[i]);
 					tile.ID = int(j3["layers"][i]["data"][j]);
@@ -184,24 +254,33 @@ bool TileMap::loadLevelTest(const string &levelFile)
 					Tile tile;
 					//map[i] = int(array.value()[i]);
 					tile.ID = int(j3["layers"][i]["data"][j]);
-					
+					//create_animations(tile.ID);
+
 					if (tile.ID == GRASS){
 						tile.isSolid = true;
 						tile.isDiggable = true;
 						tile.estat = 1;
+						tile.instant_estat = 0;
+						tile.timeAnimation= 0;
 					}
 					if (tile.ID == DIRT) {
 						tile.isSolid = true;
 						tile.isDiggable = true;
 						tile.estat = 1;
+						tile.instant_estat = 0;
+						tile.timeAnimation = 0;
 					}
 
 					if (tile.ID == 0 || tile.ID == WATER || tile.ID == WATER_1){
 						tile.isSolid = false;
 						tile.estat = 0;
+						tile.instant_estat = 0;
+						tile.timeAnimation = 0;
 					}else {
 						tile.isSolid = true;
 						tile.estat = 1;
+						tile.instant_estat = 0;
+						tile.timeAnimation = 0;
 					}
 					structMap[j] = tile;		
 				}
@@ -214,6 +293,8 @@ bool TileMap::loadLevelTest(const string &levelFile)
 					tile.ID = int(j3["layers"][i]["data"][j]);
 					tile.isSolid = false;
 					tile.estat = 0;
+					tile.instant_estat = 0;
+					tile.timeAnimation = 0;
 					background_objects[j] = tile;		
 				}
 			}
@@ -226,6 +307,8 @@ bool TileMap::loadLevelTest(const string &levelFile)
 					tile.ID = int(j3["layers"][i]["data"][j]);
 					tile.isSolid = false;
 					tile.estat = 0;
+					tile.instant_estat = 0;
+					tile.timeAnimation = 0;
 					foreground_objects[j] = tile;		
 				}
 			}
@@ -404,7 +487,10 @@ void TileMap::prepareForegroundObjects(const glm::vec2 &minCoords, ShaderProgram
 
 
 
-
+glm::vec2 TileMap::get_animation(int ID, int estat, int instant_estat) {
+	cout << animations[130 + estat].keyframeDispl[instant_estat].x << " " << animations[130 + estat].keyframeDispl[instant_estat].y << endl;
+	return animations[130 + estat].keyframeDispl[instant_estat];//return animations[ID + estat].keyframeDispl[instant_estat];
+}
 
 
 
@@ -412,7 +498,8 @@ void TileMap::prepareForegroundObjects(const glm::vec2 &minCoords, ShaderProgram
 
 void TileMap::prepareTerrain(const glm::vec2 &minCoords, ShaderProgram &program){
 
-	int tile, nTiles = 0;
+	int nTiles = 0;
+	Tile tile;
 	glm::vec2 posTile, texCoordTile[2], halfTexel;
 	vector<float> vertices;
 	
@@ -423,14 +510,14 @@ void TileMap::prepareTerrain(const glm::vec2 &minCoords, ShaderProgram &program)
 	{
 		for(int i=0; i<mapSize.x; i++)
 		{
-			tile = structMap[j * mapSize.x + i].ID;
-			if(tile != 0)
+			tile = structMap[j * mapSize.x + i];
+			if(tile.ID != 0)
 			{
 				// Non-empty tile
 				nTiles++;
 				posTile = glm::vec2(minCoords.x + i * tileSize, minCoords.y + j * tileSize);
 				//texCoordTile[0] = glm::vec2(float((tile-1)%tilesheetSize.x)/tilesheetSize.x, float((tile-1)/tilesheetSize.y) / tilesheetSize.y);
-				texCoordTile[0] = glm::vec2(float((tile-1)%tilesheetSize.x)/tilesheetSize.x, float((tile-1)/tilesheetSize.x) / tilesheetSize.y);
+				texCoordTile[0] = get_animation(tile.ID, tile.estat, tile.instant_estat);//glm::vec2(float((tile-1)%tilesheetSize.x)/tilesheetSize.x, float((tile-1)/tilesheetSize.x) / tilesheetSize.y);
 				texCoordTile[1] = texCoordTile[0] + tileTexSize;
 				texCoordTile[0] += halfTexel;
 				//texCoordTile[1] -= halfTexel;
@@ -815,9 +902,8 @@ int TileMap::digTile() {
 	tile = structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].ID;
 
 	structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].isDiggable = false;
-	structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].ID = 0;
+	structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].estat = 2;
 	structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].isSolid = false;
-
 	prepareArrays();
 
 
