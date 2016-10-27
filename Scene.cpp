@@ -77,7 +77,8 @@ void Scene::render()
 
 	glm::mat4 modelview;
 	texProgram.use();
-	float px,py,left,right,bottom,top;
+	double left,right,bottom,top;
+	int px, py;
 	
 	glm::ivec2 tileMapSize = map->getMapSize();
 	int tileSize = map->getTileSize();
@@ -91,32 +92,8 @@ void Scene::render()
 	top = py - (SCREEN_HEIGHT/2.0)-64;
 	right = left + SCREEN_WIDTH;
 	bottom = top + SCREEN_HEIGHT;
-	
-	float offsetMaxX = worldSize - SCREEN_WIDTH;
-	float offsetMaxY = worldSize - SCREEN_HEIGHT;
-	float offsetMinX, offsetMinY;
-	offsetMinX = offsetMinY = 0; 
-
-	float camX = px - SCREEN_WIDTH/2.0;
-	float camY = py - SCREEN_HEIGHT/2.0;
-
-	/*if (camX > offsetMaxX){
-    	camX = offsetMaxX;
-	}
-	else if (camX < offsetMinX){
-    	camX = offsetMinX;
-	}
-
-	if (camY > offsetMaxY){
-		camY = offsetMaxX;
-	}
-    else if (camY < offsetMinY){
-    	camY = offsetMinY;
-    }*/
-    
 
 	projection = glm::ortho(left,right,bottom,top);
-
 
 	texProgram.setUniformMatrix4f("projection", projection);
 	texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
