@@ -489,7 +489,7 @@ void TileMap::prepareForegroundObjects(const glm::vec2 &minCoords, ShaderProgram
 
 glm::vec2 TileMap::get_animation(int ID, int estat, int instant_estat) {
 	cout << animations[130 + estat].keyframeDispl[instant_estat].x << " " << animations[130 + estat].keyframeDispl[instant_estat].y << endl;
-	return animations[130 + estat].keyframeDispl[instant_estat];//return animations[ID + estat].keyframeDispl[instant_estat];
+	return animations[DIRT*10 + estat].keyframeDispl[instant_estat];//return animations[ID + estat].keyframeDispl[instant_estat];
 }
 
 

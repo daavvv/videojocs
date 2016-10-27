@@ -84,6 +84,11 @@ void Player::printPosition(){
 
 void Player::update(int deltaTime)
 {
+	int xpos, ypos;
+	/*Game::instance().mouseMove() {
+
+	}*/
+
 	sprite->update(deltaTime);
 
 	if ((digCounter - (deltaTime*40)) < 0) {
@@ -101,7 +106,7 @@ void Player::update(int deltaTime)
 		buildCounter -= deltaTime * 40;
 	}
 
-
+	
 	if(Game::instance().getSpecialKey(GLUT_KEY_LEFT))
 	{
 		if(sprite->animation() != MOVE_LEFT)
