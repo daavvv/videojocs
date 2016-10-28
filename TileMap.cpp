@@ -100,7 +100,7 @@ void TileMap::update(int deltatime)
 
 void TileMap::render()
 {
-	if(cabar)sprite->render();
+	
 	glEnable(GL_TEXTURE_2D);
 	//use_tilesheet();
 	tilesheet.use();
@@ -130,7 +130,7 @@ void TileMap::render()
 	glDrawArrays(GL_TRIANGLES, 0, 6 * mapSize.x * mapSize.y);
 	glDisable(GL_TEXTURE_2D);
 	
-
+	if (cabar)sprite->render();
 }
 
 void TileMap::free()
