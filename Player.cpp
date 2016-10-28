@@ -212,7 +212,8 @@ void Player::update(int deltaTime)
 
 	if (bdigging)
 	{
-		
+		map->setCavar(true);
+		map->render();
 		bdigging = false;
 		cout << "Digging" << endl;
 		int tile = map->digTile();

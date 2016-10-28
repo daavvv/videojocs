@@ -47,6 +47,7 @@ public:
 	void render();
 	void free();
 	void update(int deltatime);
+	void setCavar(bool cavar);
 
 	
 	int getTileSize() const { return tileSize; }

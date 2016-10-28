@@ -98,6 +98,11 @@ void TileMap::update(int deltatime)
 	}*/
 }
 
+void TileMap::setCavar(bool cavar)
+{
+	this->cabar = cavar;
+}
+
 
 void TileMap::render()
 {
@@ -131,7 +136,10 @@ void TileMap::render()
 	glDrawArrays(GL_TRIANGLES, 0, 6 * mapSize.x * mapSize.y);
 	glDisable(GL_TEXTURE_2D);
 	
-	if (cabar)sprite->render();
+	if (cabar) {
+		sprite->setPosition(glm::vec2(float((tileToBeDigged.x + 2)*tileSize), float((tileToBeDigged.y - 3)*tileSize)));
+		sprite->render();
+	}
 }
 
 void TileMap::free()
@@ -919,10 +927,9 @@ int TileMap::digTile() {
 	structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].ID = 0;
 	//structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].estat = 2;
 	structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].isSolid = false;
-	sprite->setPosition(glm::vec2(float((tileToBeDigged.x+2)*tileSize), float((tileToBeDigged.y-3)*tileSize)));
+	//sprite->setPosition(glm::vec2(float((tileToBeDigged.x+2)*tileSize), float((tileToBeDigged.y-3)*tileSize)));
 	prepareArrays();
-	cabar = true;
-
+	cabar = false;
 
 
 	for (int i = 0; i < mapSize.x * mapSize.y; ++i) {
