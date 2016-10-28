@@ -45,9 +45,10 @@ public:
 	bool getSpecialKey(int key) const;
 
 private:
-	bool bPlay;                       // Continue to play game?
+	bool bPlay, bMaterialInventoryOpened;
+	int MaterialsInventory;                       // Continue to play game?
 	Scene scene;
-	UI ui;                      // Scene to render
+	UI ui;// Scene to render
 	bool keys[256], specialKeys[256]; // Store key states so that 
 	                                  // we can have access at any time
 

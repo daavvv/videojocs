@@ -65,6 +65,11 @@ float Scene::getPlayerLife() {
 	return player->getLife();
 }
 
+vector<Item> Scene::getPlayerBag()
+{
+	return player->getBag();
+}
+
 
 void Scene::render()
 {

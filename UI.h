@@ -28,11 +28,15 @@ public:
 
 	void init();
 	void update(int deltaTime);
+	void updateBag(const vector<Item>& bag);
 	void render(float playerlife);
 	void initShaders();
 	void renderHearts(float life);
 	void renderMaterials();
+	void renderMaterialInventory();
+	void renderObjectsInInventory();
 	void addUIElement(glm::vec2 geom[2], glm::vec2 texCoords[2], ShaderProgram &program, string path);
+	void addInventoryItem(glm::vec2 geom[2], glm::vec2 texCoords[2], ShaderProgram &program, string path);
 
 private:
 	float currentTime;
@@ -41,7 +45,8 @@ private:
 	GLuint vertexbuffer;
 	ShaderProgram UIProgram;
 	vector<TexturedQuad*> UIElements;
-	vector<Texture> textures;
+	vector<TexturedQuad*> Inventory;
+	vector<Texture> textures, inventoryTextures;
 };
 
 
