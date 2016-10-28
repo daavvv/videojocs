@@ -33,13 +33,14 @@ TileMap::TileMap(const string &levelFile, const glm::vec2 &minCoords, ShaderProg
 
 	spritesheet.loadFromFile("images/blocks.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(32, 32), glm::vec2(0.25, 0.25), &spritesheet, &program);
-	sprite->setNumberAnimations(4);
+	sprite->setNumberAnimations(1);
 
 	sprite->setAnimationSpeed(0, 8);
 	sprite->addKeyframe(0, glm::vec2(0.f, 0.f));
 	sprite->addKeyframe(0, glm::vec2(0.5f, 0.f));
 	sprite->addKeyframe(0, glm::vec2(0.f, 0.5f));
 	sprite->addKeyframe(0, glm::vec2(0.5f, 0.5f));
+	sprite->changeAnimation(0);
 
 
 	//creo animacions

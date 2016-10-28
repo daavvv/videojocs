@@ -22,6 +22,11 @@ enum PlayerAnims
 
 void OnMouseClick(int button, int state, int x, int y)
 {
+	cout << glutGet(GLUT_WINDOW_WIDTH)  <<' ' << x << endl;
+	cout << glutGet(GLUT_WINDOW_HEIGHT) << ' '<< y<< endl;
+	int centrex = glutGet(GLUT_WINDOW_WIDTH)/2;
+	int centrey= glutGet(GLUT_WINDOW_HEIGHT)/2;
+	cout << centrex << " " << centrey;
 	if (button == GLUT_MIDDLE_BUTTON)
 	{
 		//store the x,y value where the click happened
@@ -41,6 +46,7 @@ vector<Item> Player::getBag() {
 
 void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 {
+	
 	glutMouseFunc(OnMouseClick);
 	life = 3.f;
 	bJumping = false;
