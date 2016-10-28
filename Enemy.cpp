@@ -17,7 +17,7 @@ enum EnemyAnims
 
 void Enemy::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 {
-	cout << "aqui entro" << endl;
+	//cout << "aqui entro" << endl;
 	spritesheet.loadFromFile("images/bub.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(32, 32), glm::vec2(0.25, 0.25), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(4);
@@ -96,10 +96,10 @@ void Enemy::update(int deltaTime, int Posplayerx, int Posplayery)
 		posEnemy.y += FALL_STEP;
 		if (map->collisionMoveDown(posEnemy, glm::ivec2(32, 32), &posEnemy.y))
 		{
-			cout << Posplayery << " " << posEnemy.y << " " << diferenciay << " " << diferenciax << endl;
+			//cout << Posplayery << " " << posEnemy.y << " " << diferenciay << " " << diferenciax << endl;
 			if (Posplayery < posEnemy.y && diferenciay > diferenciax &&  map->Exists_platform(posEnemy, glm::ivec2(32, 32)))
 			{
-				cout << "entro" << endl;
+				//cout << "entro" << endl;
 				bJumping = true;
 				jumpAngle = 0;
 				startY = posEnemy.y;

@@ -9,7 +9,7 @@
 // Player is basically a Sprite that represents the player. As such it has
 // all properties it needs to track its movement, jumping, and collisions.
 
-
+void OnMouseClick(int button, int state, int x, int y);
 struct Item {
 	Item() :buildable(false), ID(0), type("none"), amount(0) {}
 	bool buildable;
@@ -21,6 +21,7 @@ struct Item {
 
 class Player
 {
+
 
 
 

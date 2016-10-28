@@ -25,9 +25,15 @@ glm::ivec2 Player::getPosition(){
 	return posPlayer;
 }
 
+void OnMouseClick(int button, int state, int x, int y) {
+	if (button == GLUT_MIDDLE_BUTTON) {
+		cout << x << " " << y << endl;
+	}
+}
 
 void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 {
+	glutMouseFunc(OnMouseClick);
 	bag = new Item[24];
 	life = 3.f;
 	bJumping = false;
@@ -85,9 +91,6 @@ void Player::printPosition(){
 void Player::update(int deltaTime)
 {
 	int xpos, ypos;
-	/*Game::instance().mouseMove() {
-
-	}*/
 
 	sprite->update(deltaTime);
 
