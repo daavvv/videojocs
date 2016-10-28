@@ -48,6 +48,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 {
 	
 	glutMouseFunc(OnMouseClick);
+	dig = 2;
 	life = 3.f;
 	bJumping = false;
 	bdownLadder = false;
@@ -110,12 +111,13 @@ void Player::update(int deltaTime)
 
 	sprite->update(deltaTime);
 
+	/*
 	if ((digCounter - (deltaTime*40)) < 0) {
 		digCounter = DIGCOOLDOWN;
 	}
 	else {
 		digCounter -= deltaTime*40;
-	}
+	}*/
 
 
 	if ((buildCounter - (deltaTime * 40)) < 0) {
@@ -209,7 +211,55 @@ void Player::update(int deltaTime)
 	}
 
 
+	if (Game::instance().getKey('s')) {
+		if (map->bottomTileIsDiggable(posPlayer, glm::ivec2(32, 32))) {
 
+			if (dig == 2 && !bdigging){
+
+				map->setCavar(true);
+				map->render();
+
+				dig--;
+				return;
+			}
+		}
+	}
+	else if (Game::instance().getKey('a')) {
+		if (map->leftTileIsDiggable(posPlayer, glm::ivec2(32, 32))) {
+
+			if (dig == 2 && !bdigging) {
+
+				map->setCavar(true);
+				map->render();
+
+				dig--;
+				return;
+			}
+		}
+	}
+	else if (Game::instance().getKey('d')) {
+		if (map->rightTileIsDiggable(posPlayer, glm::ivec2(32, 32))) {
+
+			if (dig == 2 && !bdigging) {
+
+				map->setCavar(true);
+				map->render();
+
+				dig--;
+				return;
+			}
+		}
+	}
+	else {
+		if (dig == 1 && !bdigging) {
+			//bdigging = true;
+			map->digTile();
+			dig = 2;
+		}
+	}
+
+
+	/*
 	if (bdigging)
 	{
 		map->setCavar(true);
@@ -268,7 +318,7 @@ void Player::update(int deltaTime)
 				digCounter = DIGCOOLDOWN;
 			}
 		}
-	}
+	}*/
 
 
 
