@@ -24,12 +24,23 @@ TileMap *TileMap::createTileMap(const string &levelFile, const glm::vec2 &minCoo
 TileMap::TileMap(const string &levelFile, const glm::vec2 &minCoords, ShaderProgram &program)
 {
 	//loadLevel(levelFile);
-
+	cabar = false;
 	coordenadas = minCoords;
 	programa = program;
 
 	string path = "levels/test_level.json";
 	loadLevelTest(path);
+
+	spritesheet.loadFromFile("images/blocks.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	sprite = Sprite::createSprite(glm::ivec2(32, 32), glm::vec2(0.25, 0.25), &spritesheet, &program);
+	sprite->setNumberAnimations(4);
+
+	sprite->setAnimationSpeed(0, 8);
+	sprite->addKeyframe(0, glm::vec2(0.f, 0.f));
+	sprite->addKeyframe(0, glm::vec2(0.5f, 0.f));
+	sprite->addKeyframe(0, glm::vec2(0.f, 0.5f));
+	sprite->addKeyframe(0, glm::vec2(0.5f, 0.5f));
+
 
 	//creo animacions
 	animations.clear();
@@ -54,6 +65,7 @@ TileMap::~TileMap()
 
 void TileMap::update(int deltatime)
 {
+	sprite->update(deltatime);/*
 	bool modificat = false;
 	for (int j = 0; j < mapSize.y; j++)
 	{
@@ -62,7 +74,7 @@ void TileMap::update(int deltatime)
 			if (structMap[j * mapSize.x + i].estat == 2) {
 				structMap[j * mapSize.x + i].timeAnimation += deltatime;
 				cout << " HE entrat!!!!" << endl;
-				while (structMap[j * mapSize.x + i].timeAnimation > animations[structMap[j * mapSize.x + i].ID *10 + structMap[j * mapSize.x + i].estat].millisecsPerKeyframe)
+				if (structMap[j * mapSize.x + i].timeAnimation > animations[structMap[j * mapSize.x + i].ID *10 + structMap[j * mapSize.x + i].estat].millisecsPerKeyframe)
 				{
 					cout << " aqui tambe entro obviament" << endl;
 					structMap[j * mapSize.x + i].timeAnimation -= animations[structMap[j * mapSize.x + i].ID *10 + structMap[j * mapSize.x + i].estat].millisecsPerKeyframe;
@@ -71,7 +83,8 @@ void TileMap::update(int deltatime)
 					}
 					else {
 						structMap[j * mapSize.x + i].instant_estat = 0;
-						structMap[j * mapSize.x + i].estat = 1;// structMap[j * mapSize.x + i].ID = 0;
+						structMap[j * mapSize.x + i].estat = 1;
+						structMap[j * mapSize.x + i].ID = 0;
 					}
 					modificat = true;
 				}
@@ -81,13 +94,13 @@ void TileMap::update(int deltatime)
 	}
 	if (modificat) {
 		prepareArrays();
-	}
+	}*/
 }
 
 
 void TileMap::render()
 {
-	
+	if(cabar)sprite->render();
 	glEnable(GL_TEXTURE_2D);
 	//use_tilesheet();
 	tilesheet.use();
@@ -118,8 +131,6 @@ void TileMap::render()
 	glDisable(GL_TEXTURE_2D);
 	
 
-
-
 }
 
 void TileMap::free()
@@ -146,9 +157,9 @@ void TileMap::create_animations(int ID)
 	//afegir estats als blocs 0-> no existeix, 1-> existeix, 2 -> transicio  
 	animations[ID * 10 + 1].keyframeDispl.push_back(glm::vec2(float((tile - 1) % tilesheetSize.x) / tilesheetSize.x, float((tile - 1) / tilesheetSize.x) / tilesheetSize.y));
 
-	animations[ID * 10 + 2].keyframeDispl.push_back(glm::vec2(float((tile - 1) % tilesheetSize.x)/ tilesheetSize.x + 0.5f, float((tile - 1) / tilesheetSize.x) / tilesheetSize.y));
-	animations[ID * 10 + 2].keyframeDispl.push_back(glm::vec2(float((tile - 1) % tilesheetSize.x)/ tilesheetSize.x + 1.0f, float((tile - 1) / tilesheetSize.x) / tilesheetSize.y));
-	animations[ID * 10 + 2].keyframeDispl.push_back(glm::vec2(float((tile - 1) % tilesheetSize.x)/ tilesheetSize.x + 1.5f, float((tile - 1) / tilesheetSize.x) / tilesheetSize.y));
+	animations[ID * 10 + 2].keyframeDispl.push_back(glm::vec2(float((tile - 1) % tilesheetSize.x)/ tilesheetSize.x + 0.2f, float((tile - 1) / tilesheetSize.x) / tilesheetSize.y));
+	animations[ID * 10 + 2].keyframeDispl.push_back(glm::vec2(float((tile - 1) % tilesheetSize.x)/ tilesheetSize.x + 0.4f, float((tile - 1) / tilesheetSize.x) / tilesheetSize.y));
+	animations[ID * 10 + 2].keyframeDispl.push_back(glm::vec2(float((tile - 1) % tilesheetSize.x)/ tilesheetSize.x + 0.6f, float((tile - 1) / tilesheetSize.x) / tilesheetSize.y));
 
 	animations[ID * 10 + 0].keyframeDispl.push_back(glm::vec2(float((tile - 1) % tilesheetSize.x) + 2.0f / tilesheetSize.x, float((tile - 1) / tilesheetSize.x) / tilesheetSize.y));
 
@@ -518,8 +529,8 @@ void TileMap::prepareTerrain(const glm::vec2 &minCoords, ShaderProgram &program)
 				nTiles++;
 				posTile = glm::vec2(minCoords.x + i * tileSize, minCoords.y + j * tileSize);
 				//texCoordTile[0] = glm::vec2(float((tile-1)%tilesheetSize.x)/tilesheetSize.x, float((tile-1)/tilesheetSize.y) / tilesheetSize.y);
-				//texCoordTile[0] = get_animation(tile.ID, tile.estat, tile.instant_estat);
-				texCoordTile[0] = glm::vec2(float((tile.ID-1)%tilesheetSize.x)/tilesheetSize.x, float((tile.ID-1)/tilesheetSize.x) / tilesheetSize.y);
+				texCoordTile[0] = get_animation(tile.ID, tile.estat, tile.instant_estat);
+				//texCoordTile[0] = glm::vec2(float((tile.ID-1)%tilesheetSize.x)/tilesheetSize.x, float((tile.ID-1)/tilesheetSize.x) / tilesheetSize.y);
 				texCoordTile[1] = texCoordTile[0] + tileTexSize;
 				texCoordTile[0] += halfTexel;
 				//texCoordTile[1] -= halfTexel;
@@ -904,9 +915,12 @@ int TileMap::digTile() {
 	tile = structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].ID;
 
 	structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].isDiggable = false;
-	structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].estat = 2;
+	structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].ID = 0;
+	//structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].estat = 2;
 	structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].isSolid = false;
+	sprite->setPosition(glm::vec2(float(tileToBeDigged.x*tileSize), float(tileToBeDigged.y*tileSize)));
 	prepareArrays();
+	cabar = true;
 
 
 

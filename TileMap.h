@@ -4,6 +4,7 @@
 
 #include <glm/glm.hpp>
 #include "Texture.h"
+#include "Sprite.h"
 #include "ShaderProgram.h"
 #include "json.hpp"
 #include "AnimKeyframes.h"
@@ -91,11 +92,14 @@ private:
 	GLint posLocation_terrain, texCoordLocation_terrain, posLocation_foreground_objects, texCoordLocation_foreground_objects;
 	glm::ivec2 position, mapSize, tilesheetSize, tileToBeDigged, tileToBeBuilded;
 	int tileSize, blockSize;
-	Texture tilesheet;
+	Texture tilesheet, spritesheet;
+
 	glm::vec2 tileTexSize, coordenadas;
 	ShaderProgram programa;
 	//int *map;
 	Tile *structMap;
+	bool cabar;
+	Sprite *sprite;
 	Tile *background;
 	Tile *background_objects;
 	Tile *foreground_objects;
