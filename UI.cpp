@@ -7,6 +7,7 @@
 #define LIFEUIOFFSETY -35
 #define LIFEUIOFFSETX_PADDING 35
 #define LIFESCALEFACTOR  0.2
+#define MATERIALSINVENTORYSCALE 3
 
 #define MATERIALSUIOFFSETX -35
 #define MATERIALSUIOFFSETY 10
@@ -14,6 +15,12 @@
 #define MATERIALSCALEFACTOR 0.35
 #define NUMBERSSEPARATION 40
 
+
+#define INVENTORYITEMSCALE 1
+#define INVENTORYITEMSOFFSETX 430
+#define INVENTORYITEMSOFFSETY 230
+#define INVENTORYITEMPADDINGX 68.7
+#define INVENTORYITEMPADDINGY 65
 
 void UI::init(){
 	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(128.f, 128.f) };
@@ -39,9 +46,17 @@ void UI::init(){
 	texCoords[0] = glm::vec2(0.f, 0.f); texCoords[1] = glm::vec2(1.f, 1.f);
 	addUIElement(geom, texCoords, UIProgram, "images/UI/numbers/hud_0.png");//4
 
+	//LOAD MATERIAL INVENTORY HUD
+	geom[0] = glm::vec2(0.f, 0.f);
+	geom[1] = glm::vec2(165.f, 256.f);
+	texCoords[0] = glm::vec2(0.f, 0.f); texCoords[1] = glm::vec2(1.f, 1.f);
+	addUIElement(geom, texCoords, UIProgram, "images/UI/materials.png");//5
+
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
 	currentTime = 0.0f;
-	
+
+
+	//LOAD INVENTORY ITEMS
 
 }
 
@@ -56,6 +71,19 @@ void UI::addUIElement(glm::vec2 geom[2], glm::vec2 texCoords[2], ShaderProgram &
 		cout << "not loaded" << endl;
 	}
 	textures.push_back(tex);
+}
+
+void UI::addInventoryItem(glm::vec2 geom[2], glm::vec2 texCoords[2], ShaderProgram &program, string path) {
+	TexturedQuad *texQuad = TexturedQuad::createTexturedQuad(geom, texCoords, program);
+	Inventory.push_back(texQuad);
+	Texture tex;
+	if (tex.loadFromFile(path, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	else {
+		cout << "not loaded" << endl;
+	}
+	inventoryTextures.push_back(tex);
 }
 
 
@@ -94,6 +122,89 @@ void UI::initShaders(){
 void UI::update(int deltaTime){
 	currentTime += deltaTime;
 }
+
+void UI::updateBag(const vector<Item>& bag)
+{
+
+	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(128.f, 128.f) };
+	glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
+
+
+	int bagSize = bag.size();
+
+	cout << "Print bag size:" << bagSize << endl;
+
+	for (int i = 0; i < bagSize; ++i) {
+		texCoords[0] = glm::vec2(0.f, 0.f); texCoords[1] = glm::vec2(1.f, 1.f);
+		addInventoryItem(geom, texCoords, UIProgram, "images/UI/stone.png");//0
+	}
+
+
+
+
+}
+
+
+
+
+
+void UI::renderMaterialInventory() {
+
+	glm::mat4 modelview;
+	UIProgram.use();
+	UIProgram.setUniformMatrix4f("projection", projection);
+	UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+
+	modelview = glm::translate(glm::mat4(1.0f), glm::vec3(512.f,240.f, 0.f));
+	modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
+	//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
+	modelview = glm::scale(modelview, glm::vec3(MATERIALSINVENTORYSCALE, MATERIALSINVENTORYSCALE, MATERIALSINVENTORYSCALE));
+	modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
+	UIProgram.setUniformMatrix4f("modelview", modelview);
+	UIElements[5]->render(textures[5]);
+
+	renderObjectsInInventory();
+}
+
+
+void UI::renderObjectsInInventory() {
+
+	int index = 0;
+
+
+	for (int i = 0; i < Inventory.size(); ++i) {
+
+
+		glm::mat4 modelview;
+		UIProgram.use();
+		UIProgram.setUniformMatrix4f("projection", projection);
+		UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+		modelview = glm::translate(glm::mat4(1.0f), glm::vec3(INVENTORYITEMSOFFSETX + (i%6)*INVENTORYITEMPADDINGX, INVENTORYITEMSOFFSETY + (i/6)*INVENTORYITEMPADDINGY, 0.f));
+		modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
+		//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
+		modelview = glm::scale(modelview, glm::vec3(INVENTORYITEMSCALE, INVENTORYITEMSCALE, INVENTORYITEMSCALE));
+		modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
+		UIProgram.setUniformMatrix4f("modelview", modelview);
+		Inventory[i]->render(inventoryTextures[i]);
+
+
+	}
+	/*
+	glm::mat4 modelview;
+	UIProgram.use();
+	UIProgram.setUniformMatrix4f("projection", projection);
+	UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+
+	modelview = glm::translate(glm::mat4(1.0f), glm::vec3(INVENTORYITEMSOFFSETX+index*INVENTORYITEMPADDINGX, INVENTORYITEMSOFFSETY+index*INVENTORYITEMPADDINGY, 0.f));
+	modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
+	//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
+	modelview = glm::scale(modelview, glm::vec3(INVENTORYITEMSCALE, INVENTORYITEMSCALE, INVENTORYITEMSCALE));
+	modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
+	UIProgram.setUniformMatrix4f("modelview", modelview);
+	Inventory[0]->render(inventoryTextures[0]);*/
+
+}
+
 
 
 
@@ -208,6 +319,7 @@ void UI::renderMaterials() {
 void UI::render(float playerlife){
 	renderHearts(playerlife);
 	renderMaterials();
+	//renderMaterialInventory();
 }
 
 

@@ -26,9 +26,13 @@ glm::ivec2 Player::getPosition(){
 }
 
 
+vector<Item> Player::getBag() {
+	return this->bag;
+}
+
+
 void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 {
-	bag = new Item[24];
 	life = 3.f;
 	bJumping = false;
 	bdownLadder = false;
@@ -196,8 +200,8 @@ void Player::update(int deltaTime)
 		
 		bdigging = false;
 		cout << "Digging" << endl;
-		map->digTile();
-		
+		int tile = map->digTile();
+		addItemToBag(tile);
 
 	}
 	else {
@@ -293,6 +297,30 @@ void Player::update(int deltaTime)
 	
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 }
+
+
+bool Player::isItemInBag(int tileID) {
+	for (int i = 0; i < bag.size(); ++i) {
+		if (tileID == bag[i].ID) {
+			return true;
+		}
+	}
+	return false;
+}
+
+
+void Player::addItemToBag(int tileID) {
+
+	if (!isItemInBag(tileID)) {
+		bag.push_back(Item());
+		int size = bag.size();
+		bag[size - 1].ID = tileID;
+		bag[size - 1].amount = bag[size - 1].amount + 1;
+	}
+
+}
+
+
 
 void Player::render()
 {

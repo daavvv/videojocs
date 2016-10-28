@@ -32,7 +32,10 @@ public:
 	void setTileMap(TileMap *tileMap);
 	void setPosition(const glm::vec2 &pos);
 	void printPosition();
+	void addItemToBag(int tileID);
+	bool isItemInBag(int tileID);
 	float getLife();
+	vector<Item> getBag();
 	void setLife(float life);
 	glm::ivec2 getPosition();
 	
@@ -45,7 +48,7 @@ private:
 	TileMap *map;
 	float life;
 	int digCounter,buildCounter;
-	Item *bag;
+	vector<Item> bag;
 
 };
 

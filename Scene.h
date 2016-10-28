@@ -24,6 +24,7 @@ public:
 	void update(int deltaTime);
 	void render();
 	float getPlayerLife();
+	vector<Item> getPlayerBag();
 	
 	
 

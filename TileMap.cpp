@@ -517,7 +517,8 @@ void TileMap::prepareTerrain(const glm::vec2 &minCoords, ShaderProgram &program)
 				nTiles++;
 				posTile = glm::vec2(minCoords.x + i * tileSize, minCoords.y + j * tileSize);
 				//texCoordTile[0] = glm::vec2(float((tile-1)%tilesheetSize.x)/tilesheetSize.x, float((tile-1)/tilesheetSize.y) / tilesheetSize.y);
-				texCoordTile[0] = get_animation(tile.ID, tile.estat, tile.instant_estat);//glm::vec2(float((tile-1)%tilesheetSize.x)/tilesheetSize.x, float((tile-1)/tilesheetSize.x) / tilesheetSize.y);
+				//texCoordTile[0] = get_animation(tile.ID, tile.estat, tile.instant_estat);
+				texCoordTile[0] = glm::vec2(float((tile.ID-1)%tilesheetSize.x)/tilesheetSize.x, float((tile.ID-1)/tilesheetSize.x) / tilesheetSize.y);
 				texCoordTile[1] = texCoordTile[0] + tileTexSize;
 				texCoordTile[0] += halfTexel;
 				//texCoordTile[1] -= halfTexel;

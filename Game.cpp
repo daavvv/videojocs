@@ -9,6 +9,8 @@
 
 void Game::init()
 {
+	MaterialsInventory = 4;
+	bMaterialInventoryOpened = false;
 	bPlay = true;
 	glClearColor(0.87f, 0.98f, 1.0f, 1.0f);
 	scene.init();
@@ -19,9 +21,9 @@ bool Game::update(int deltaTime)
 {
 	scene.update(deltaTime);
 	ui.update(deltaTime);
+	//vector<Item> bag = scene.getPlayerBag();
+	//ui.updateBag(bag);
 	return bPlay;
-
-
 }
 
 
@@ -32,6 +34,35 @@ void Game::render()
 	float playerlife = scene.getPlayerLife();
 	scene.render();
 	ui.render(playerlife);
+	
+
+	if (getKey('i')) {
+
+
+		if (MaterialsInventory == 4 && !bMaterialInventoryOpened) {
+			MaterialsInventory--;
+			return;
+		}
+		if (MaterialsInventory == 2 && bMaterialInventoryOpened) {
+			MaterialsInventory--;
+			return;
+		}
+	}
+	else {
+		if (MaterialsInventory == 3) {
+			ui.renderMaterialInventory();
+			MaterialsInventory--;
+			bMaterialInventoryOpened = true;
+		}
+		if (MaterialsInventory == 1) {
+			MaterialsInventory = 4;
+			bMaterialInventoryOpened = false;
+		}
+
+		if (bMaterialInventoryOpened) {
+			ui.renderMaterialInventory();
+		}
+	}
 }
 
 void Game::keyPressed(int key)
