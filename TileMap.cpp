@@ -918,7 +918,7 @@ int TileMap::digTile() {
 	structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].ID = 0;
 	//structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].estat = 2;
 	structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].isSolid = false;
-	sprite->setPosition(glm::vec2(float(tileToBeDigged.x*tileSize), float(tileToBeDigged.y*tileSize)));
+	sprite->setPosition(glm::vec2(float((tileToBeDigged.x+2)*tileSize), float((tileToBeDigged.y-3)*tileSize)));
 	prepareArrays();
 	cabar = true;
 
