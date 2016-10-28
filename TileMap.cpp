@@ -137,7 +137,7 @@ void TileMap::render()
 	glDisable(GL_TEXTURE_2D);
 	
 	if (cabar) {
-		sprite->setPosition(glm::vec2(float((tileToBeDigged.x + 2)*tileSize), float((tileToBeDigged.y - 3)*tileSize)));
+		sprite->setPosition(glm::vec2(float((tileToBeDigged.x + 2)*tileSize), float((tileToBeDigged.y - 4)*tileSize)));
 		sprite->render();
 	}
 }
@@ -929,7 +929,7 @@ int TileMap::digTile() {
 	structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].isSolid = false;
 	//sprite->setPosition(glm::vec2(float((tileToBeDigged.x+2)*tileSize), float((tileToBeDigged.y-3)*tileSize)));
 	prepareArrays();
-	cabar = false;
+	//cabar = false;
 
 
 	for (int i = 0; i < mapSize.x * mapSize.y; ++i) {
