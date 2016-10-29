@@ -259,11 +259,11 @@ void UI::updateBag(const vector<Item>& bag)
 	cout << "Print bag size:" << bagSize << endl;
 
 	for (int i = 0; i < bagSize; ++i) {
-		if (bag[i].ID == DIRT) {
+		if (bag[i].ID == DIRT && bag[i].amount > 0) {
 			addInventoryItem(geom, texCoords, UIProgram, "stone",bag[i].amount);//0
 			ids.push_back(bag[i].ID);
 		}
-		if (bag[i].ID == GRASS) {
+		if (bag[i].ID == GRASS && bag[i].amount > 0) {
 			addInventoryItem(geom, texCoords, UIProgram, "grass", bag[i].amount);//0
 			ids.push_back(bag[i].ID);
 		}

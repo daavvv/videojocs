@@ -210,6 +210,7 @@ void Player::update(int deltaTime)
 		else {
 			if (build == 1 && !bbuilding) {
 				map->buildTile(this->buildTile);
+				substractOne(this->buildTile);
 				build = 2;
 			}
 		}
@@ -324,7 +325,11 @@ bool Player::isItemInBag(int tileID) {
 }
 
 void Player::substractOne(int tileID) {
-	cout << "Substract one" << endl;
+	for (int i = 0; i < bag.size(); ++i) {
+		if (tileID == bag[i].ID) {
+			bag[i].amount = bag[i].amount - 1;
+		}
+	}
 }
 
 
