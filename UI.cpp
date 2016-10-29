@@ -260,9 +260,11 @@ void UI::updateBag(const vector<Item>& bag)
 	for (int i = 0; i < bagSize; ++i) {
 		if (bag[i].ID == DIRT) {
 			addInventoryItem(geom, texCoords, UIProgram, "stone",bag[i].amount);//0
+			ids.push_back(bag[i].ID);
 		}
 		if (bag[i].ID == GRASS) {
 			addInventoryItem(geom, texCoords, UIProgram, "grass", bag[i].amount);//0
+			ids.push_back(bag[i].ID);
 		}
 	}
 }
@@ -329,25 +331,33 @@ void UI::renderCounters() {
 void UI::click(int x, int y)
 {
 
-	int left, right, top, bottom;
+	double left, right, top, bottom;
 	
 	double scalex = INVENTORYITEMRAWSCALEX*INVENTORYITEMSCALE;
 	double scaley = INVENTORYITEMRAWSCALEY*INVENTORYITEMSCALE;
+	double paddingx = INVENTORYITEMPADDINGX - scalex;
+	double paddingy = INVENTORYITEMPADDINGY - scaley;
+	double offsetx = INVENTORYITEMSOFFSETX;
+	double offsety = INVENTORYITEMSOFFSETY;
 
-	for (int i = 0; i < Inventory.size(); ++i) {
-		left = INVENTORYITEMSOFFSETX + (scalex + INVENTORYITEMPADDINGX)*i;
+	int size = Inventory.size();
+
+
+	for (int i = 0; i < size; ++i) {
+		left = offsetx + (scalex+paddingx)*(i%6);
 		right = left + scalex;
-		top = INVENTORYITEMSOFFSETY + (scaley*(i/6)) + (i/6)*INVENTORYITEMPADDINGY;
+		top = offsety + (scaley + paddingy)*(i/6);
 		bottom = top + scaley;
 
+		/*
 		cout << "Left: " << left << endl;
 		cout << "Right: " << right << endl;
 		cout << "Bottom: " << bottom << endl;
 		cout << "Top: " << top << endl;
-
+		*/
 
 		if (x >= left && x <= right && y >= top && y <= bottom) {
-			cout << "Clicked on inventory: " << i << endl << endl;
+			cout << "Clicked on inventory: " << ids[i] << endl << endl;
 		}
 	}
 

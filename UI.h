@@ -50,6 +50,7 @@ private:
 	vector<TexturedQuad*> UIElements, MaterialsLeftBar,CountersLeftBar;
 	vector<TexturedQuad*> Inventory;
 	vector<TexturedQuad*> CountersBox;
+	vector<int> ids;
 	vector<Texture> textures, inventoryTextures, Counters;
 };
 

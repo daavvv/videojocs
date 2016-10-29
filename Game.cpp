@@ -125,6 +125,7 @@ void Game::mousePress(int button, int x, int y)
 	cout << "clicked on " << x << "," << y << endl;
 
 	//Esto dejamelo así please
+
 	if (bMaterialInventoryOpened) {
 		ui.click(x, y);
 	}
