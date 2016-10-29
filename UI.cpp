@@ -30,7 +30,8 @@
 #define NINEIMGPATH "images/UI/numbers/hud_9.png"
 
 
-
+#define INVENTORYITEMRAWSCALEX 64.f
+#define INVENTORYITEMRAWSCALEY 64.f
 #define INVENTORYITEMSCALE 1
 #define INVENTORYITEMSOFFSETX 430
 #define INVENTORYITEMSOFFSETY 230
@@ -249,7 +250,7 @@ void UI::updateBag(const vector<Item>& bag)
 	inventoryTextures.clear();
 	Counters.clear();
 
-	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(64.f, 64.f) };
+	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(INVENTORYITEMRAWSCALEX, INVENTORYITEMRAWSCALEY) };
 	glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
 
 	int bagSize = bag.size();
@@ -323,6 +324,40 @@ void UI::renderCounters() {
 		UIProgram.setUniformMatrix4f("modelview", modelview);
 		CountersBox[i]->render(Counters[i]);
 	}
+}
+
+void UI::click(int x, int y)
+{
+
+	int left, right, top, bottom;
+	
+	double scalex = INVENTORYITEMRAWSCALEX*INVENTORYITEMSCALE;
+	double scaley = INVENTORYITEMRAWSCALEY*INVENTORYITEMSCALE;
+
+	for (int i = 0; i < Inventory.size(); ++i) {
+		left = INVENTORYITEMSOFFSETX + (scalex + INVENTORYITEMPADDINGX)*i;
+		right = left + scalex;
+		top = INVENTORYITEMSOFFSETY + (scaley*(i/6)) + (i/6)*INVENTORYITEMPADDINGY;
+		bottom = top + scaley;
+
+		cout << "Left: " << left << endl;
+		cout << "Right: " << right << endl;
+		cout << "Bottom: " << bottom << endl;
+		cout << "Top: " << top << endl;
+
+
+		if (x >= left && x <= right && y >= top && y <= bottom) {
+			cout << "Clicked on inventory: " << i << endl << endl;
+		}
+	}
+
+	/*
+	left = INVENTORYITEMSOFFSETX + INVENTORYITEMRAWSCALEX*INVENTORYITEMSCALE + INVENTORYITEMPADDINGX
+	INVENTORYITEMSOFFSETX + INVENTORYITEMRAWSCALEX*INVENTORYITEMSCALE +
+	*/
+
+
+	cout << "click" << endl;
 }
 
 

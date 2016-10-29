@@ -20,6 +20,7 @@ enum PlayerAnims
 	STAND_LEFT, STAND_RIGHT, MOVE_LEFT, MOVE_RIGHT
 };
 
+/*
 void OnMouseClick(int button, int state, int x, int y)
 {
 	cout << glutGet(GLUT_WINDOW_WIDTH)  <<' ' << x << endl;
@@ -49,7 +50,7 @@ void OnMouseClick(int button, int state, int x, int y)
 			}
 		}
 	}
-}
+}*/
 
 glm::ivec2 Player::getPosition(){
 	return posPlayer;
@@ -64,7 +65,7 @@ vector<Item> Player::getBag() {
 void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 {
 	
-	glutMouseFunc(OnMouseClick);
+	//glutMouseFunc(OnMouseClick);
 	dig = 2;
 	build = 2;
 	life = 3.f;
