@@ -33,8 +33,10 @@ public:
 	void setTileMap(TileMap *tileMap);
 	void setPosition(const glm::vec2 &pos);
 	void printPosition();
+	void setBuildTile(int tileID);
 	void addItemToBag(int tileID);
 	bool isItemInBag(int tileID);
+	void substractOne(int tileID);
 	float getLife();
 	vector<Item> getBag();
 	void setLife(float life);
@@ -42,7 +44,7 @@ public:
 	
 private:
 	bool bJumping,bdownLadder,bdigging, bbuilding;
-	int dig, build;
+	int dig, build, buildTile;
 	glm::ivec2 tileMapDispl, posPlayer;
 	int jumpAngle, startY;
 	Texture spritesheet;

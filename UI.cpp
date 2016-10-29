@@ -245,6 +245,7 @@ void UI::updateBag(const vector<Item>& bag)
 		delete Inventory[i];
 		delete CountersBox[i];
 	}
+	ids.clear();
 	CountersBox.clear();
 	Inventory.clear();
 	inventoryTextures.clear();
@@ -328,7 +329,7 @@ void UI::renderCounters() {
 	}
 }
 
-void UI::click(int x, int y)
+bool UI::clickOnInventoryItem(int x, int y, int* tile)
 {
 
 	double left, right, top, bottom;
@@ -342,6 +343,8 @@ void UI::click(int x, int y)
 
 	int size = Inventory.size();
 
+	for (int i = 0; i < ids.size(); ++i) cout << ids[i] << ",";
+	cout << endl;
 
 	for (int i = 0; i < size; ++i) {
 		left = offsetx + (scalex+paddingx)*(i%6);
@@ -357,17 +360,13 @@ void UI::click(int x, int y)
 		*/
 
 		if (x >= left && x <= right && y >= top && y <= bottom) {
-			cout << "Clicked on inventory: " << ids[i] << endl << endl;
+			cout << "Clicked on inventory: " << i << endl << endl;
+			*tile = ids[i];
+			return true;
 		}
 	}
 
-	/*
-	left = INVENTORYITEMSOFFSETX + INVENTORYITEMRAWSCALEX*INVENTORYITEMSCALE + INVENTORYITEMPADDINGX
-	INVENTORYITEMSOFFSETX + INVENTORYITEMRAWSCALEX*INVENTORYITEMSCALE +
-	*/
-
-
-	cout << "click" << endl;
+	return false;
 }
 
 

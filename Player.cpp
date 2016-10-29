@@ -66,6 +66,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 {
 	
 	//glutMouseFunc(OnMouseClick);
+	buildTile = 0;
 	dig = 2;
 	build = 2;
 	life = 3.f;
@@ -118,6 +119,11 @@ void Player::printPosition(){
 
 	//gluOrtho2D( Position.X - 600 / 2.0, Position.X + 600 / 2.0, Position.Y - 600 / 2.0, Position.Y + 600 / 2.0);
 
+}
+
+void Player::setBuildTile(int tileID)
+{
+	this->buildTile = tileID;
 }
 
 
@@ -175,47 +181,40 @@ void Player::update(int deltaTime)
 	}
 
 	
-
-
-	if (Game::instance().getKey('2')) {
-		if (map->bottomTileIsBuildable(posPlayer, glm::ivec2(32, 32), &posPlayer.y)) {
-			if (build == 2 && !bbuilding) {
-				posPlayer.y = posPlayer.y - 60;
-				build--;
-				return;
+	if (this->buildTile != 0) {
+		if (Game::instance().getKey('2')) {
+			if (map->bottomTileIsBuildable(posPlayer, glm::ivec2(32, 32), &posPlayer.y)) {
+				if (build == 2 && !bbuilding) {
+					posPlayer.y = posPlayer.y - 60;
+					build--;
+					return;
+				}
 			}
 		}
-	}
-	if (Game::instance().getKey('3')) {
-		if (map->rightTileIsBuildable(posPlayer, glm::ivec2(32, 32))) {
-			if (build == 2 && !bbuilding) {
-				build--;
-				return;
+		if (Game::instance().getKey('3')) {
+			if (map->rightTileIsBuildable(posPlayer, glm::ivec2(32, 32))) {
+				if (build == 2 && !bbuilding) {
+					build--;
+					return;
+				}
 			}
 		}
-	}
-	if (Game::instance().getKey('1')) {
-		if (map->leftTileIsBuildable(posPlayer, glm::ivec2(32, 32))) {
-			if (build == 2 && !bbuilding) {
-				build--;
-				return;
+		if (Game::instance().getKey('1')) {
+			if (map->leftTileIsBuildable(posPlayer, glm::ivec2(32, 32))) {
+				if (build == 2 && !bbuilding) {
+					build--;
+					return;
+				}
 			}
 		}
-	}
-	else {
-		if (build == 1 && !bbuilding) {
-			map->buildTile(220);
-			build = 2;
+		else {
+			if (build == 1 && !bbuilding) {
+				map->buildTile(this->buildTile);
+				build = 2;
+			}
 		}
 	}
 	
-
-
-
-
-
-
-
 	if (Game::instance().getKey('s')) {
 		if (map->bottomTileIsDiggable(posPlayer, glm::ivec2(32, 32))) {
 
@@ -322,6 +321,10 @@ bool Player::isItemInBag(int tileID) {
 		}
 	}
 	return false;
+}
+
+void Player::substractOne(int tileID) {
+	cout << "Substract one" << endl;
 }
 
 

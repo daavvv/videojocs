@@ -127,7 +127,11 @@ void Game::mousePress(int button, int x, int y)
 	//Esto dejamelo así please
 
 	if (bMaterialInventoryOpened) {
-		ui.click(x, y);
+		int tile;
+		if (ui.clickOnInventoryItem(x, y, &tile)) {
+			cout << "Tile:" << tile << endl;
+			scene.setBuildTile(tile);
+		}
 	}
 }
 

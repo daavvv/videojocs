@@ -121,6 +121,11 @@ void Scene::render()
 
 }
 
+void Scene::setBuildTile(int tileID)
+{
+	player->setBuildTile(tileID);
+}
+
 void Scene::initShaders()
 {
 	Shader vShader, fShader;
