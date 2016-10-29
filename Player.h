@@ -42,7 +42,7 @@ public:
 	
 private:
 	bool bJumping,bdownLadder,bdigging, bbuilding;
-	int dig;
+	int dig, build;
 	glm::ivec2 tileMapDispl, posPlayer;
 	int jumpAngle, startY;
 	Texture spritesheet;

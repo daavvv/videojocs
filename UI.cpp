@@ -130,20 +130,12 @@ void UI::init(){
 	texCoords[0] = glm::vec2(0.f, 0.f); texCoords[1] = glm::vec2(1.f, 1.f);
 	addUIElement(geom, texCoords, UIProgram, "images/UI/UI_HEART_EMPTY.png");//2
 
-	//LOAD MATERIALS
-
-	//STONE
-	texCoords[0] = glm::vec2(0.f, 0.f); texCoords[1] = glm::vec2(1.f, 1.f);
-	addUIElement(geom, texCoords, UIProgram, "images/UI/stone.png");//3
-	//STONE COUNTER
-	texCoords[0] = glm::vec2(0.f, 0.f); texCoords[1] = glm::vec2(1.f, 1.f);
-	addUIElement(geom, texCoords, UIProgram, "images/UI/numbers/hud_0.png");//4
 
 	//LOAD MATERIAL INVENTORY HUD
 	geom[0] = glm::vec2(0.f, 0.f);
 	geom[1] = glm::vec2(165.f, 256.f);
 	texCoords[0] = glm::vec2(0.f, 0.f); texCoords[1] = glm::vec2(1.f, 1.f);
-	addUIElement(geom, texCoords, UIProgram, "images/UI/materials.png");//5
+	addUIElement(geom, texCoords, UIProgram, "images/UI/materials.png");//3
 
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
 	currentTime = 0.0f;
@@ -291,7 +283,7 @@ void UI::renderMaterialInventory() {
 	modelview = glm::scale(modelview, glm::vec3(MATERIALSINVENTORYSCALE, MATERIALSINVENTORYSCALE, MATERIALSINVENTORYSCALE));
 	modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
 	UIProgram.setUniformMatrix4f("modelview", modelview);
-	UIElements[5]->render(textures[5]);
+	UIElements[3]->render(textures[3]);
 
 	renderObjectsInInventory();
 	renderCounters();
@@ -409,42 +401,10 @@ void UI::renderHearts(float life) {
 		}
 }
 
-void UI::renderMaterials() {
-
-	//STONES ICON
-	glm::mat4 modelview;
-	UIProgram.use();
-	UIProgram.setUniformMatrix4f("projection", projection);
-	UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
-
-	modelview = glm::translate(glm::mat4(1.0f), glm::vec3(MATERIALSUIOFFSETX + 0.f, MATERIALSUIOFFSETY + 0.f, 0.f));
-	modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
-	//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
-	modelview = glm::scale(modelview, glm::vec3(MATERIALSCALEFACTOR, MATERIALSCALEFACTOR, MATERIALSCALEFACTOR));
-	modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
-	UIProgram.setUniformMatrix4f("modelview", modelview);
-	UIElements[3]->render(textures[3]);
-
-	//STONES VALUE
-	UIProgram.use();
-	UIProgram.setUniformMatrix4f("projection", projection);
-	UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
-
-	modelview = glm::translate(glm::mat4(1.0f), glm::vec3(MATERIALSUIOFFSETX + NUMBERSSEPARATION, MATERIALSUIOFFSETY + 0.f, 0.f));
-	modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
-	//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
-	modelview = glm::scale(modelview, glm::vec3(0.1f, 0.1f, 0.1f));
-	modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
-	UIProgram.setUniformMatrix4f("modelview", modelview);
-	UIElements[4]->render(textures[4]);
-	
-
-
-}
 
 void UI::render(float playerlife){
 	renderHearts(playerlife);
-	renderMaterials();
+	
 	//renderMaterialInventory();
 }
 

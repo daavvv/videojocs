@@ -32,10 +32,10 @@ public:
 	void render(float playerlife);
 	void initShaders();
 	void renderHearts(float life);
-	void renderMaterials();
 	void renderMaterialInventory();
 	void renderObjectsInInventory();
 	void renderCounters();
+	void setupLeftMaterialBar(ShaderProgram &program);
 	void addUIElement(glm::vec2 geom[2], glm::vec2 texCoords[2], ShaderProgram &program, string path);
 	void addInventoryItem(glm::vec2 geom[2], glm::vec2 texCoords[2], ShaderProgram &program, string type, int amount);
 
@@ -46,7 +46,7 @@ private:
 	GLuint vertexbuffer;
 	ShaderProgram UIProgram;
 	Texture stone,grass,zero,one,two,three,four,five,six,seven,eight,nine,ten;
-	vector<TexturedQuad*> UIElements;
+	vector<TexturedQuad*> UIElements, MaterialsLeftBar,CountersLeftBar;
 	vector<TexturedQuad*> Inventory;
 	vector<TexturedQuad*> CountersBox;
 	vector<Texture> textures, inventoryTextures, Counters;

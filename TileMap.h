@@ -60,10 +60,12 @@ public:
 	bool collisionMoveLeft(const glm::ivec2 &pos, const glm::ivec2 &size) const;
 	bool collisionMoveRight(const glm::ivec2 &pos, const glm::ivec2 &size) const;
 	bool collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, int *posY) const;
+
 	bool bottomTileIsDiggable(const glm::ivec2 &playerPos, const glm::ivec2 &size);
 	bool topTileIsDiggable(const glm::ivec2 &playerPos, const glm::ivec2 &size);
 	bool leftTileIsDiggable(const glm::ivec2 &playerPos, const glm::ivec2 &size);
 	bool rightTileIsDiggable(const glm::ivec2 &playerPos, const glm::ivec2 &size);
+
 	bool canJump(const glm::ivec2 &playerPos, const glm::ivec2 &size) const;
 
 	bool bottomTileIsBuildable(const glm::ivec2 &playerPos, const glm::ivec2 &size, int *posY);
