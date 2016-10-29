@@ -5,6 +5,9 @@
 #include <glm/glm.hpp>
 #include "Texture.h"
 #include "ShaderProgram.h"
+#include <iostream>
+
+using namespace std;
 
 
 class TexturedQuad
@@ -15,6 +18,9 @@ public:
 	static TexturedQuad *createTexturedQuad(glm::vec2 geom[2], glm::vec2 texCoords[2], ShaderProgram &program);
 
 	TexturedQuad(glm::vec2 geom[2], glm::vec2 texCoords[2], ShaderProgram &program);
+	~TexturedQuad() {
+		cout << "deleted" << endl;
+	}
 
 	void render(const Texture &tex) const;
 	void free();

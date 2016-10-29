@@ -21,8 +21,6 @@ bool Game::update(int deltaTime)
 {
 	scene.update(deltaTime);
 	ui.update(deltaTime);
-	//vector<Item> bag = scene.getPlayerBag();
-	//ui.updateBag(bag);
 	return bPlay;
 }
 
@@ -50,6 +48,8 @@ void Game::render()
 	}
 	else {
 		if (MaterialsInventory == 3) {
+			vector<Item> bag = scene.getPlayerBag();
+			ui.updateBag(bag);
 			ui.renderMaterialInventory();
 			MaterialsInventory--;
 			bMaterialInventoryOpened = true;

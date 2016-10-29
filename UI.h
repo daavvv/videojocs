@@ -36,7 +36,7 @@ public:
 	void renderMaterialInventory();
 	void renderObjectsInInventory();
 	void addUIElement(glm::vec2 geom[2], glm::vec2 texCoords[2], ShaderProgram &program, string path);
-	void addInventoryItem(glm::vec2 geom[2], glm::vec2 texCoords[2], ShaderProgram &program, string path);
+	void addInventoryItem(glm::vec2 geom[2], glm::vec2 texCoords[2], ShaderProgram &program, string type);
 
 private:
 	float currentTime;
@@ -44,6 +44,7 @@ private:
 	GLuint VertexArrayID;
 	GLuint vertexbuffer;
 	ShaderProgram UIProgram;
+	Texture stone;
 	vector<TexturedQuad*> UIElements;
 	vector<TexturedQuad*> Inventory;
 	vector<Texture> textures, inventoryTextures;

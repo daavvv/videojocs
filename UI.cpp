@@ -15,6 +15,7 @@
 #define MATERIALSCALEFACTOR 0.35
 #define NUMBERSSEPARATION 40
 
+#define STONEIMGPATH "images/UI/stone.png"
 
 #define INVENTORYITEMSCALE 1
 #define INVENTORYITEMSOFFSETX 430
@@ -28,6 +29,13 @@ void UI::init(){
 
 
 	initShaders();
+
+	if (stone.loadFromFile(STONEIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	else {
+		cout << "not loaded" << endl;
+	}
 
 	//LOAD HEARTS
 	texCoords[0] = glm::vec2(0.f, 0.f); texCoords[1] = glm::vec2(1.f,1.f); 
@@ -73,17 +81,13 @@ void UI::addUIElement(glm::vec2 geom[2], glm::vec2 texCoords[2], ShaderProgram &
 	textures.push_back(tex);
 }
 
-void UI::addInventoryItem(glm::vec2 geom[2], glm::vec2 texCoords[2], ShaderProgram &program, string path) {
+void UI::addInventoryItem(glm::vec2 geom[2], glm::vec2 texCoords[2], ShaderProgram &program, string type) {
 	TexturedQuad *texQuad = TexturedQuad::createTexturedQuad(geom, texCoords, program);
 	Inventory.push_back(texQuad);
-	Texture tex;
-	if (tex.loadFromFile(path, TEXTURE_PIXEL_FORMAT_RGBA)) {
-		cout << "loaded" << endl;
+	
+	if (type == "stone") {
+		inventoryTextures.push_back(stone);
 	}
-	else {
-		cout << "not loaded" << endl;
-	}
-	inventoryTextures.push_back(tex);
 }
 
 
@@ -126,22 +130,25 @@ void UI::update(int deltaTime){
 void UI::updateBag(const vector<Item>& bag)
 {
 
-	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(128.f, 128.f) };
-	glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
+	for (int i = 0; i < Inventory.size(); ++i) {
+		Inventory[i]->free();
+		delete Inventory[i];
+	}
+	Inventory.clear();
+	inventoryTextures.clear();
 
+	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(64.f, 64.f) };
+	glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
 
 	int bagSize = bag.size();
 
 	cout << "Print bag size:" << bagSize << endl;
 
 	for (int i = 0; i < bagSize; ++i) {
-		texCoords[0] = glm::vec2(0.f, 0.f); texCoords[1] = glm::vec2(1.f, 1.f);
-		addInventoryItem(geom, texCoords, UIProgram, "images/UI/stone.png");//0
+		if (bag[i].ID == DIRT) {
+			addInventoryItem(geom, texCoords, UIProgram, "stone");//0
+		}
 	}
-
-
-
-
 }
 
 
@@ -171,10 +178,7 @@ void UI::renderObjectsInInventory() {
 
 	int index = 0;
 
-
 	for (int i = 0; i < Inventory.size(); ++i) {
-
-
 		glm::mat4 modelview;
 		UIProgram.use();
 		UIProgram.setUniformMatrix4f("projection", projection);
@@ -186,23 +190,7 @@ void UI::renderObjectsInInventory() {
 		modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
 		UIProgram.setUniformMatrix4f("modelview", modelview);
 		Inventory[i]->render(inventoryTextures[i]);
-
-
 	}
-	/*
-	glm::mat4 modelview;
-	UIProgram.use();
-	UIProgram.setUniformMatrix4f("projection", projection);
-	UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
-
-	modelview = glm::translate(glm::mat4(1.0f), glm::vec3(INVENTORYITEMSOFFSETX+index*INVENTORYITEMPADDINGX, INVENTORYITEMSOFFSETY+index*INVENTORYITEMPADDINGY, 0.f));
-	modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
-	//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
-	modelview = glm::scale(modelview, glm::vec3(INVENTORYITEMSCALE, INVENTORYITEMSCALE, INVENTORYITEMSCALE));
-	modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
-	UIProgram.setUniformMatrix4f("modelview", modelview);
-	Inventory[0]->render(inventoryTextures[0]);*/
-
 }
 
 

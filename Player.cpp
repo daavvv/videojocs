@@ -270,7 +270,8 @@ void Player::update(int deltaTime)
 	else {
 		if (dig == 1 && !bdigging) {
 			//bdigging = true;
-			map->digTile();
+			int tile = map->digTile();
+			addItemToBag(tile);
 			dig = 2;
 		}
 	}
