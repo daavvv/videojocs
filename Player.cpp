@@ -401,7 +401,13 @@ void Player::addItemToBag(int tileID) {
 		bag[size - 1].ID = tileID;
 		bag[size - 1].amount = bag[size - 1].amount + 1;
 	}
-
+	else {
+		for (int i = 0; i < bag.size(); ++i) {
+			if (tileID == bag[i].ID) {
+				bag[i].amount = bag[i].amount + 1;
+			}
+		}
+	}
 }
 
 

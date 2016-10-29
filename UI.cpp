@@ -16,12 +16,28 @@
 #define NUMBERSSEPARATION 40
 
 #define STONEIMGPATH "images/UI/stone.png"
+#define GRASSIMGPATH "images/UI/grass.png"
+
+#define ZEROIMGPATH "images/UI/numbers/hud_0.png"
+#define ONEIMGPATH "images/UI/numbers/hud_1.png"
+#define TWOIMGPATH "images/UI/numbers/hud_2.png"
+#define THREEIMGPATH "images/UI/numbers/hud_3.png"
+#define FOURIMGPATH "images/UI/numbers/hud_4.png"
+#define FIVEIMGPATH "images/UI/numbers/hud_5.png"
+#define SIXIMGPATH "images/UI/numbers/hud_6.png"
+#define SEVENIMGPATH "images/UI/numbers/hud_7.png"
+#define EIGHTIMGPATH "images/UI/numbers/hud_8.png"
+#define NINEIMGPATH "images/UI/numbers/hud_9.png"
+
+
 
 #define INVENTORYITEMSCALE 1
 #define INVENTORYITEMSOFFSETX 430
 #define INVENTORYITEMSOFFSETY 230
 #define INVENTORYITEMPADDINGX 68.7
 #define INVENTORYITEMPADDINGY 65
+
+#define INVENTORYCOUNTERSCALE 0.3
 
 void UI::init(){
 	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(128.f, 128.f) };
@@ -36,6 +52,75 @@ void UI::init(){
 	else {
 		cout << "not loaded" << endl;
 	}
+
+	if (grass.loadFromFile(GRASSIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	else {
+		cout << "not loaded" << endl;
+	}
+
+	if (zero.loadFromFile(ZEROIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	else {
+		cout << "not loaded" << endl;
+	}
+	if (one.loadFromFile(ONEIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	else {
+		cout << "not loaded" << endl;
+	}
+	if (two.loadFromFile(TWOIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	else {
+		cout << "not loaded" << endl;
+	}
+	if (three.loadFromFile(THREEIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	else {
+		cout << "not loaded" << endl;
+	}
+	if (four.loadFromFile(FOURIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	else {
+		cout << "not loaded" << endl;
+	}
+	if (five.loadFromFile(FIVEIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	else {
+		cout << "not loaded" << endl;
+	}
+	if (six.loadFromFile(SIXIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	else {
+		cout << "not loaded" << endl;
+	}
+	if (seven.loadFromFile(SEVENIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	else {
+		cout << "not loaded" << endl;
+	}
+	if (eight.loadFromFile(EIGHTIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	else {
+		cout << "not loaded" << endl;
+	}
+	if (nine.loadFromFile(NINEIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	else {
+		cout << "not loaded" << endl;
+	}
+
 
 	//LOAD HEARTS
 	texCoords[0] = glm::vec2(0.f, 0.f); texCoords[1] = glm::vec2(1.f,1.f); 
@@ -81,16 +166,47 @@ void UI::addUIElement(glm::vec2 geom[2], glm::vec2 texCoords[2], ShaderProgram &
 	textures.push_back(tex);
 }
 
-void UI::addInventoryItem(glm::vec2 geom[2], glm::vec2 texCoords[2], ShaderProgram &program, string type) {
+void UI::addInventoryItem(glm::vec2 geom[2], glm::vec2 texCoords[2], ShaderProgram &program, string type,int amount) {
 	TexturedQuad *texQuad = TexturedQuad::createTexturedQuad(geom, texCoords, program);
+	TexturedQuad *texQuadCount = TexturedQuad::createTexturedQuad(geom, texCoords, program);
 	Inventory.push_back(texQuad);
+	CountersBox.push_back(texQuadCount);
+	
+	if (amount == 1) {
+		Counters.push_back(one);
+	}
+	if (amount == 2) {
+		Counters.push_back(two);
+	}
+	if (amount == 3) {
+		Counters.push_back(three);
+	}
+	if (amount == 4) {
+		Counters.push_back(four);
+	}
+	if (amount == 5) {
+		Counters.push_back(five);
+	}
+	if (amount == 6) {
+		Counters.push_back(six);
+	}
+	if (amount == 7) {
+		Counters.push_back(seven);
+	}
+	if (amount == 8) {
+		Counters.push_back(eight);
+	}
+	if (amount == 9) {
+		Counters.push_back(nine);
+	}
 	
 	if (type == "stone") {
 		inventoryTextures.push_back(stone);
 	}
+	if (type == "grass") {
+		inventoryTextures.push_back(grass);
+	}
 }
-
-
 
 
 void UI::initShaders(){
@@ -132,10 +248,14 @@ void UI::updateBag(const vector<Item>& bag)
 
 	for (int i = 0; i < Inventory.size(); ++i) {
 		Inventory[i]->free();
+		CountersBox[i]->free();
 		delete Inventory[i];
+		delete CountersBox[i];
 	}
+	CountersBox.clear();
 	Inventory.clear();
 	inventoryTextures.clear();
+	Counters.clear();
 
 	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(64.f, 64.f) };
 	glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
@@ -146,7 +266,10 @@ void UI::updateBag(const vector<Item>& bag)
 
 	for (int i = 0; i < bagSize; ++i) {
 		if (bag[i].ID == DIRT) {
-			addInventoryItem(geom, texCoords, UIProgram, "stone");//0
+			addInventoryItem(geom, texCoords, UIProgram, "stone",bag[i].amount);//0
+		}
+		if (bag[i].ID == GRASS) {
+			addInventoryItem(geom, texCoords, UIProgram, "grass", bag[i].amount);//0
 		}
 	}
 }
@@ -171,6 +294,7 @@ void UI::renderMaterialInventory() {
 	UIElements[5]->render(textures[5]);
 
 	renderObjectsInInventory();
+	renderCounters();
 }
 
 
@@ -193,7 +317,21 @@ void UI::renderObjectsInInventory() {
 	}
 }
 
-
+void UI::renderCounters() {
+	for (int i = 0; i < CountersBox.size(); ++i) {
+		glm::mat4 modelview;
+		UIProgram.use();
+		UIProgram.setUniformMatrix4f("projection", projection);
+		UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+		modelview = glm::translate(glm::mat4(1.0f), glm::vec3(INVENTORYITEMSOFFSETX + (i % 6)*INVENTORYITEMPADDINGX, INVENTORYITEMSOFFSETY + (i / 6)*INVENTORYITEMPADDINGY, 0.f));
+		modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
+		//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
+		modelview = glm::scale(modelview, glm::vec3(INVENTORYCOUNTERSCALE, INVENTORYCOUNTERSCALE, INVENTORYCOUNTERSCALE));
+		modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
+		UIProgram.setUniformMatrix4f("modelview", modelview);
+		CountersBox[i]->render(Counters[i]);
+	}
+}
 
 
 void UI::renderHearts(float life) {
