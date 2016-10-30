@@ -9,19 +9,25 @@
 
 void Game::init()
 {
+	gameInitialized = true;
 	MaterialsInventory = 4;
 	bMaterialInventoryOpened = false;
 	bPlay = true;
 	glClearColor(0.87f, 0.98f, 1.0f, 1.0f);
-	scene.init();
-	ui.init();
+
+	if (gameInitialized) {
+		scene.init();
+		ui.init();
+	}
 }
 
 bool Game::update(int deltaTime)
 {
-	scene.update(deltaTime);
-	ui.update(deltaTime);
-	return bPlay;
+	if (gameInitialized) {
+		scene.update(deltaTime);
+		ui.update(deltaTime);
+		return bPlay;
+	}
 }
 
 
@@ -29,38 +35,43 @@ bool Game::update(int deltaTime)
 void Game::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	float playerlife = scene.getPlayerLife();
-	scene.render();
-	ui.render(playerlife);
-	
-	if (getKey('i')) {
 
 
-		if (MaterialsInventory == 4 && !bMaterialInventoryOpened) {
-			MaterialsInventory--;
-			return;
+	if (gameInitialized) {
+		float playerlife = scene.getPlayerLife();
+		scene.render();
+		ui.render(playerlife);
+
+		if (getKey('i')) {
+			if (MaterialsInventory == 4 && !bMaterialInventoryOpened) {
+				MaterialsInventory--;
+				return;
+			}
+			if (MaterialsInventory == 2 && bMaterialInventoryOpened) {
+				MaterialsInventory--;
+				return;
+			}
 		}
-		if (MaterialsInventory == 2 && bMaterialInventoryOpened) {
-			MaterialsInventory--;
-			return;
+		else {
+			if (MaterialsInventory == 3) {
+				vector<Item> bag = scene.getPlayerBag();
+				ui.updateBag(bag);
+				ui.renderMaterialInventory();
+				MaterialsInventory--;
+				bMaterialInventoryOpened = true;
+			}
+			if (MaterialsInventory == 1) {
+				MaterialsInventory = 4;
+				bMaterialInventoryOpened = false;
+			}
+
+			if (bMaterialInventoryOpened) {
+				ui.renderMaterialInventory();
+			}
 		}
 	}
 	else {
-		if (MaterialsInventory == 3) {
-			vector<Item> bag = scene.getPlayerBag();
-			ui.updateBag(bag);
-			ui.renderMaterialInventory();
-			MaterialsInventory--;
-			bMaterialInventoryOpened = true;
-		}
-		if (MaterialsInventory == 1) {
-			MaterialsInventory = 4;
-			bMaterialInventoryOpened = false;
-		}
-
-		if (bMaterialInventoryOpened) {
-			ui.renderMaterialInventory();
-		}
+		ui.renderMainMenu();
 	}
 }
 

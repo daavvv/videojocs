@@ -29,6 +29,7 @@
 #define EIGHTIMGPATH "images/UI/numbers/hud_8.png"
 #define NINEIMGPATH "images/UI/numbers/hud_9.png"
 #define HIGHLIGHTIMGPATH "images/UI/highlight.png"
+#define MENUBACKGROUNDIMGPATH "imageS/UI/menuBackground.png"
 
 
 #define INVENTORYITEMRAWSCALEX 64.f
@@ -49,6 +50,12 @@ void UI::init(){
 	
 
 	initShaders();
+
+	if (menuBackgroundTex.loadFromFile(MENUBACKGROUNDIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+
+
 
 	if (hightlight.loadFromFile(HIGHLIGHTIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
 		cout << "loaded" << endl;
@@ -144,14 +151,21 @@ void UI::init(){
 	texCoords[0] = glm::vec2(0.f, 0.f); texCoords[1] = glm::vec2(1.f, 1.f);
 	addUIElement(geom, texCoords, UIProgram, "images/UI/materials.png");//3
 
-	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
-	currentTime = 0.0f;
-
-
+	
 	//LOAD HIGHLIGHT
 	geom[0] = glm::vec2(0.f, 0.f);
 	geom[1] = glm::vec2(64.f, 64.f);
 	highlight = TexturedQuad::createTexturedQuad(geom, texCoords, UIProgram);
+
+
+	//LOAD MAIN MENU
+
+	geom[0] = glm::vec2(0.f, 0.f);
+	geom[1] = glm::vec2(64.f, 64.f);
+	menuBackground = TexturedQuad::createTexturedQuad(geom, texCoords, UIProgram);
+
+	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
+	currentTime = 0.0f;
 
 }
 
@@ -483,10 +497,27 @@ void UI::renderHearts(float life) {
 }
 
 
+
+
+
 void UI::render(float playerlife){
 	renderHearts(playerlife);
 	
 	//renderMaterialInventory();
+}
+
+void UI::renderMainMenu()
+{
+	glm::mat4 modelview;
+	UIProgram.use();
+	UIProgram.setUniformMatrix4f("projection", projection);
+	UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+	modelview = glm::translate(glm::mat4(1.0f), glm::vec3(float(SCREEN_WIDTH / 2), float(SCREEN_HEIGHT / 2), 0.f));
+	//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
+	modelview = glm::scale(modelview, glm::vec3(10, SCREEN_HEIGHT/54, 0));
+	modelview = glm::translate(modelview, glm::vec3(-32.f, -32.f, 0.f));
+	UIProgram.setUniformMatrix4f("modelview", modelview);
+	menuBackground->render(menuBackgroundTex);
 }
 
 

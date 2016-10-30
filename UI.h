@@ -30,6 +30,7 @@ public:
 	void update(int deltaTime);
 	void updateBag(const vector<Item>& bag);
 	void render(float playerlife);
+	void renderMainMenu();
 	void initShaders();
 	void renderHearts(float life);
 	void renderMaterialInventory();
@@ -47,7 +48,10 @@ private:
 	GLuint vertexbuffer;
 	ShaderProgram UIProgram;
 	TexturedQuad* highlight;
-	Texture stone,grass,zero,one,two,three,four,five,six,seven,eight,nine,ten,hightlight;
+	TexturedQuad* menuBackground;
+	TexturedQuad* playButton;
+	TexturedQuad* instructionsButton;
+	Texture stone,grass,zero,one,two,three,four,five,six,seven,eight,nine,ten,hightlight,menuBackgroundTex,playButtonTex,instructonsButtonTex;
 	vector<TexturedQuad*> UIElements, MaterialsLeftBar,CountersLeftBar;
 	vector<TexturedQuad*> Inventory;
 	vector<TexturedQuad*> CountersBox;

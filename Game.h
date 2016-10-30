@@ -45,6 +45,7 @@ public:
 	bool getSpecialKey(int key) const;
 
 private:
+	bool gameInitialized;
 	bool bPlay, bMaterialInventoryOpened;
 	int MaterialsInventory;                       // Continue to play game?
 	Scene scene;
