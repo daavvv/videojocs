@@ -303,7 +303,6 @@ void UI::renderObjectsInInventory() {
 		UIProgram.use();
 		UIProgram.setUniformMatrix4f("projection", projection);
 		UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
-		cout << "entro" << endl;
 		modelview = glm::translate(glm::mat4(1.0f), glm::vec3(INVENTORYITEMSOFFSETX + (i%6)*INVENTORYITEMPADDINGX, INVENTORYITEMSOFFSETY + (i/6)*INVENTORYITEMPADDINGY, 0.f));
 		//modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
 		//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
@@ -347,17 +346,17 @@ bool UI::clickOnInventoryItem(int x, int y, int* tile)
 	cout << endl;
 
 	for (int i = 0; i < size; ++i) {
-		left = offsetx + (scalex+paddingx)*(i%6);
+		left = (offsetx - (scalex/2)) + (scalex+paddingx)*(i%6);
 		right = left + scalex;
-		top = offsety + (scaley + paddingy)*(i/6);
+		top = (offsety - (scaley/2)) + (scaley + paddingy)*(i/6);
 		bottom = top + scaley;
 
-		/*
+		
 		cout << "Left: " << left << endl;
 		cout << "Right: " << right << endl;
 		cout << "Bottom: " << bottom << endl;
 		cout << "Top: " << top << endl;
-		*/
+		
 
 		if (x >= left && x <= right && y >= top && y <= bottom) {
 			cout << "Clicked on inventory: " << i << endl << endl;
