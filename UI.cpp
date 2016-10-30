@@ -267,7 +267,15 @@ void UI::updateBag(const vector<Item>& bag)
 
 	cout << "Print bag size:" << bagSize << endl;
 
+	bool exists = false;
+
 	for (int i = 0; i < bagSize; ++i) {
+
+
+		if (selectedItemID == bag[i].ID && bag[i].amount > 0 && selectedItem != -1) {
+			exists = true;
+		}
+
 		if (bag[i].ID == DIRT && bag[i].amount > 0) {
 			addInventoryItem(geom, texCoords, UIProgram, "stone",bag[i].amount);//0
 			ids.push_back(bag[i].ID);
@@ -276,6 +284,10 @@ void UI::updateBag(const vector<Item>& bag)
 			addInventoryItem(geom, texCoords, UIProgram, "grass", bag[i].amount);//0
 			ids.push_back(bag[i].ID);
 		}
+	}
+
+	if (!exists) {
+		selectedItem = -1;
 	}
 }
 
@@ -386,6 +398,7 @@ bool UI::clickOnInventoryItem(int x, int y, int* tile)
 			cout << "Clicked on inventory: " << i << endl << endl;
 			*tile = ids[i];
 			selectedItem = i;
+			selectedItemID = ids[i];
 			return true;
 		}
 	}

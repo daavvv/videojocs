@@ -53,7 +53,7 @@ private:
 	vector<TexturedQuad*> CountersBox;
 	vector<int> ids;
 	vector<Texture> textures, inventoryTextures, Counters;
-	int selectedItem;
+	int selectedItem,selectedItemID;
 };
 
 
