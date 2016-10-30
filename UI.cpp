@@ -32,13 +32,13 @@
 
 #define INVENTORYITEMRAWSCALEX 64.f
 #define INVENTORYITEMRAWSCALEY 64.f
-#define INVENTORYITEMSCALE 1
-#define INVENTORYITEMSOFFSETX 430
-#define INVENTORYITEMSOFFSETY 230
-#define INVENTORYITEMPADDINGX 68.7
-#define INVENTORYITEMPADDINGY 65
+#define INVENTORYITEMSCALE 0.5
+#define INVENTORYITEMSOFFSETX float(232 * SCREEN_WIDTH / 640)
+#define INVENTORYITEMSOFFSETY float(122*SCREEN_HEIGHT/480)
+#define INVENTORYITEMPADDINGX float(INVENTORYITEMRAWSCALEX*INVENTORYITEMSCALE + float(3.5f*SCREEN_WIDTH/640))
+#define INVENTORYITEMPADDINGY float(INVENTORYITEMRAWSCALEY*INVENTORYITEMSCALE + float(3.5f*SCREEN_HEIGHT/640))
 
-#define INVENTORYCOUNTERSCALE 0.3
+#define INVENTORYCOUNTERSCALE 0.2
 
 void UI::init(){
 	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(128.f, 128.f) };
@@ -303,11 +303,12 @@ void UI::renderObjectsInInventory() {
 		UIProgram.use();
 		UIProgram.setUniformMatrix4f("projection", projection);
 		UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+		cout << "entro" << endl;
 		modelview = glm::translate(glm::mat4(1.0f), glm::vec3(INVENTORYITEMSOFFSETX + (i%6)*INVENTORYITEMPADDINGX, INVENTORYITEMSOFFSETY + (i/6)*INVENTORYITEMPADDINGY, 0.f));
-		modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
+		//modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
 		//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
-		modelview = glm::scale(modelview, glm::vec3(INVENTORYITEMSCALE, INVENTORYITEMSCALE, INVENTORYITEMSCALE));
-		modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
+		modelview = glm::scale(modelview, glm::vec3(INVENTORYITEMSCALE, INVENTORYITEMSCALE, 0.f));
+		modelview = glm::translate(modelview, glm::vec3(-32.f, -32.f, 0.f));
 		UIProgram.setUniformMatrix4f("modelview", modelview);
 		Inventory[i]->render(inventoryTextures[i]);
 	}
@@ -319,11 +320,10 @@ void UI::renderCounters() {
 		UIProgram.use();
 		UIProgram.setUniformMatrix4f("projection", projection);
 		UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
-		modelview = glm::translate(glm::mat4(1.0f), glm::vec3(INVENTORYITEMSOFFSETX + (i % 6)*INVENTORYITEMPADDINGX, INVENTORYITEMSOFFSETY + (i / 6)*INVENTORYITEMPADDINGY, 0.f));
-		modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
+		modelview = glm::translate(glm::mat4(1.0f), glm::vec3(INVENTORYITEMSOFFSETX + float(i % 6)*INVENTORYITEMPADDINGX + float(INVENTORYITEMSCALE*INVENTORYITEMRAWSCALEX/2) - (INVENTORYITEMPADDINGX - INVENTORYITEMSCALE*INVENTORYITEMRAWSCALEX), INVENTORYITEMSOFFSETY + (i / 6)*INVENTORYITEMPADDINGY+ float(INVENTORYITEMSCALE*INVENTORYITEMRAWSCALEY/2) - (INVENTORYITEMPADDINGY - INVENTORYITEMSCALE*INVENTORYITEMRAWSCALEY), 0.f));
 		//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
 		modelview = glm::scale(modelview, glm::vec3(INVENTORYCOUNTERSCALE, INVENTORYCOUNTERSCALE, INVENTORYCOUNTERSCALE));
-		modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
+		modelview = glm::translate(modelview, glm::vec3(-32.f, -32.f, 0.f));
 		UIProgram.setUniformMatrix4f("modelview", modelview);
 		CountersBox[i]->render(Counters[i]);
 	}
