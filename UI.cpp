@@ -28,6 +28,7 @@
 #define SEVENIMGPATH "images/UI/numbers/hud_7.png"
 #define EIGHTIMGPATH "images/UI/numbers/hud_8.png"
 #define NINEIMGPATH "images/UI/numbers/hud_9.png"
+#define HIGHLIGHTIMGPATH "images/UI/highlight.png"
 
 
 #define INVENTORYITEMRAWSCALEX 64.f
@@ -44,9 +45,14 @@ void UI::init(){
 	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(128.f, 128.f) };
 	glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
 
+	selectedItem = -1;
+	
 
 	initShaders();
 
+	if (hightlight.loadFromFile(HIGHLIGHTIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
 	if (stone.loadFromFile(STONEIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
 		cout << "loaded" << endl;
 	}
@@ -142,7 +148,10 @@ void UI::init(){
 	currentTime = 0.0f;
 
 
-	//LOAD INVENTORY ITEMS
+	//LOAD HIGHLIGHT
+	geom[0] = glm::vec2(0.f, 0.f);
+	geom[1] = glm::vec2(64.f, 64.f);
+	highlight = TexturedQuad::createTexturedQuad(geom, texCoords, UIProgram);
 
 }
 
@@ -311,6 +320,21 @@ void UI::renderObjectsInInventory() {
 		UIProgram.setUniformMatrix4f("modelview", modelview);
 		Inventory[i]->render(inventoryTextures[i]);
 	}
+
+
+	if (selectedItem != -1) {
+		glm::mat4 modelview;
+		UIProgram.use();
+		UIProgram.setUniformMatrix4f("projection", projection);
+		UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+		modelview = glm::translate(glm::mat4(1.0f), glm::vec3(INVENTORYITEMSOFFSETX + (selectedItem % 6)*INVENTORYITEMPADDINGX, INVENTORYITEMSOFFSETY + (selectedItem / 6)*INVENTORYITEMPADDINGY, 0.f));
+		//modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
+		//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
+		modelview = glm::scale(modelview, glm::vec3(INVENTORYITEMSCALE, INVENTORYITEMSCALE, 0.f));
+		modelview = glm::translate(modelview, glm::vec3(-32.f, -32.f, 0.f));
+		UIProgram.setUniformMatrix4f("modelview", modelview);
+		highlight->render(hightlight);
+	}
 }
 
 void UI::renderCounters() {
@@ -361,6 +385,7 @@ bool UI::clickOnInventoryItem(int x, int y, int* tile)
 		if (x >= left && x <= right && y >= top && y <= bottom) {
 			cout << "Clicked on inventory: " << i << endl << endl;
 			*tile = ids[i];
+			selectedItem = i;
 			return true;
 		}
 	}

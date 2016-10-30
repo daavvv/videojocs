@@ -46,12 +46,14 @@ private:
 	GLuint VertexArrayID;
 	GLuint vertexbuffer;
 	ShaderProgram UIProgram;
-	Texture stone,grass,zero,one,two,three,four,five,six,seven,eight,nine,ten;
+	TexturedQuad* highlight;
+	Texture stone,grass,zero,one,two,three,four,five,six,seven,eight,nine,ten,hightlight;
 	vector<TexturedQuad*> UIElements, MaterialsLeftBar,CountersLeftBar;
 	vector<TexturedQuad*> Inventory;
 	vector<TexturedQuad*> CountersBox;
 	vector<int> ids;
 	vector<Texture> textures, inventoryTextures, Counters;
+	int selectedItem;
 };
 
 
