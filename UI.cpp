@@ -9,6 +9,10 @@
 #define LIFESCALEFACTOR  0.2
 #define MATERIALSINVENTORYSCALE 4//(SCREEN_WIDTH/2)/165.f
 
+#define PLAYBUTTONSCALEX 2
+#define PLAYBUTTONSCALEY 1
+#define PLAYBUTTONRAWSCALE 64.f
+
 #define MATERIALSUIOFFSETX -35
 #define MATERIALSUIOFFSETY 10
 
@@ -29,7 +33,8 @@
 #define EIGHTIMGPATH "images/UI/numbers/hud_8.png"
 #define NINEIMGPATH "images/UI/numbers/hud_9.png"
 #define HIGHLIGHTIMGPATH "images/UI/highlight.png"
-#define MENUBACKGROUNDIMGPATH "imageS/UI/menuBackground.png"
+#define MENUBACKGROUNDIMGPATH "images/UI/menuBackground.png"
+#define PLAYBUTTONIMGPATH "images/UI/playButton.png"
 
 
 #define INVENTORYITEMRAWSCALEX 64.f
@@ -52,6 +57,10 @@ void UI::init(){
 	initShaders();
 
 	if (menuBackgroundTex.loadFromFile(MENUBACKGROUNDIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	
+	if (playButtonTex.loadFromFile(PLAYBUTTONIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
 		cout << "loaded" << endl;
 	}
 
@@ -160,12 +169,27 @@ void UI::init(){
 
 	//LOAD MAIN MENU
 
+
+	//LOAD BACKGROUND
 	geom[0] = glm::vec2(0.f, 0.f);
 	geom[1] = glm::vec2(64.f, 64.f);
 	menuBackground = TexturedQuad::createTexturedQuad(geom, texCoords, UIProgram);
 
+
+	//LOAD PLAY BUTTON
+
+	
+	geom[0] = glm::vec2(0.f, 0.f);
+	geom[1] = glm::vec2(PLAYBUTTONRAWSCALE, PLAYBUTTONRAWSCALE);
+	playButton = TexturedQuad::createTexturedQuad(geom, texCoords, UIProgram);
+	
+
+
+
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
 	currentTime = 0.0f;
+
+	
 
 }
 
@@ -378,6 +402,21 @@ void UI::renderCounters() {
 	}
 }
 
+
+bool UI::clickOnMenu(int x, int y, string* menu) {
+
+	/*
+	double left, right, top, bottom;
+
+	left = SCREEN_WIDTH/2 - 
+
+	*/
+
+	return true;
+}
+
+
+
 bool UI::clickOnInventoryItem(int x, int y, int* tile)
 {
 
@@ -508,6 +547,9 @@ void UI::render(float playerlife){
 
 void UI::renderMainMenu()
 {
+
+	//BACKGROUND
+
 	glm::mat4 modelview;
 	UIProgram.use();
 	UIProgram.setUniformMatrix4f("projection", projection);
@@ -518,6 +560,24 @@ void UI::renderMainMenu()
 	modelview = glm::translate(modelview, glm::vec3(-32.f, -32.f, 0.f));
 	UIProgram.setUniformMatrix4f("modelview", modelview);
 	menuBackground->render(menuBackgroundTex);
+
+
+	//PLAY BUTTON
+
+	
+	UIProgram.use();
+	UIProgram.setUniformMatrix4f("projection", projection);
+	UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+	modelview = glm::translate(glm::mat4(1.0f), glm::vec3(float(SCREEN_WIDTH / 2), float(SCREEN_HEIGHT / 2)+100, 0.f));
+	//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
+	modelview = glm::scale(modelview, glm::vec3(2, 1, 0));
+	modelview = glm::translate(modelview, glm::vec3(-(PLAYBUTTONRAWSCALE/2), -(PLAYBUTTONRAWSCALE/2), 0.f));
+	UIProgram.setUniformMatrix4f("modelview", modelview);
+	playButton->render(playButtonTex);
+	
+
+
+
 }
 
 

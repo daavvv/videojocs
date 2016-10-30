@@ -9,15 +9,15 @@
 
 void Game::init()
 {
-	gameInitialized = true;
+	gameInitialized = false;
 	MaterialsInventory = 4;
 	bMaterialInventoryOpened = false;
 	bPlay = true;
 	glClearColor(0.87f, 0.98f, 1.0f, 1.0f);
 
+	ui.init();
 	if (gameInitialized) {
 		scene.init();
-		ui.init();
 	}
 }
 
@@ -25,9 +25,9 @@ bool Game::update(int deltaTime)
 {
 	if (gameInitialized) {
 		scene.update(deltaTime);
-		ui.update(deltaTime);
 		return bPlay;
 	}
+	ui.update(deltaTime);
 }
 
 
@@ -35,6 +35,9 @@ bool Game::update(int deltaTime)
 void Game::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	
+
 
 
 	if (gameInitialized) {
@@ -109,14 +112,21 @@ void Game::mousePress(int button, int x, int y)
 
 	//Esto dejamelo así please
 
-	if (bMaterialInventoryOpened) {
-		int tile;
-		if (ui.clickOnInventoryItem(x, y, &tile)) {
-			cout << "Tile:" << tile << endl;
-			scene.setBuildTile(tile);
-		}
+	if (!gameInitialized) {
+		string menu;
+		ui.clickOnMenu(x, y, &menu);
 	}
-	scene.mouse_clicked(button, x, y);
+
+	if (gameInitialized) {
+		if (bMaterialInventoryOpened) {
+			int tile;
+			if (ui.clickOnInventoryItem(x, y, &tile)) {
+				cout << "Tile:" << tile << endl;
+				scene.setBuildTile(tile);
+			}
+		}
+		scene.mouse_clicked(button, x, y);
+	}
 }
 
 void Game::mouseRelease(int button)

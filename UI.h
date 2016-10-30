@@ -37,6 +37,7 @@ public:
 	void renderObjectsInInventory();
 	void renderCounters();
 	bool clickOnInventoryItem(int x, int y, int *tile);
+	bool clickOnMenu(int x, int y, string *menu);
 	void setupLeftMaterialBar(ShaderProgram &program);
 	void addUIElement(glm::vec2 geom[2], glm::vec2 texCoords[2], ShaderProgram &program, string path);
 	void addInventoryItem(glm::vec2 geom[2], glm::vec2 texCoords[2], ShaderProgram &program, string type, int amount);
