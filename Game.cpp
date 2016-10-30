@@ -116,7 +116,7 @@ void Game::mousePress(int button, int x, int y)
 			scene.setBuildTile(tile);
 		}
 	}
-	//scene.mouse_clicked(button, x, y);
+	scene.mouse_clicked(button, x, y);
 }
 
 void Game::mouseRelease(int button)

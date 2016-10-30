@@ -96,10 +96,8 @@ void Enemy::update(int deltaTime, int Posplayerx, int Posplayery)
 		posEnemy.y += FALL_STEP;
 		if (map->collisionMoveDown(posEnemy, glm::ivec2(32, 32), &posEnemy.y))
 		{
-			//cout << Posplayery << " " << posEnemy.y << " " << diferenciay << " " << diferenciax << endl;
-			if (Posplayery < posEnemy.y && diferenciay > diferenciax &&  map->Exists_platform(posEnemy, glm::ivec2(32, 32)))
+			if (Posplayery < posEnemy.y && diferenciay > diferenciax &&  (map->Exists_platform(posEnemy, glm::ivec2(32, 32)) or (Posplayerx >= posEnemy.x and map->Exists_platform(glm::ivec2(posEnemy.x + map->getTileSize(), posEnemy.y), glm::ivec2(32, 32))) or   (Posplayerx < posEnemy.x and map->Exists_platform(glm::ivec2(posEnemy.x - map->getTileSize(), posEnemy.y), glm::ivec2(32, 32)))   ))
 			{
-				//cout << "entro" << endl;
 				bJumping = true;
 				jumpAngle = 0;
 				startY = posEnemy.y;
