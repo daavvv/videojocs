@@ -37,6 +37,7 @@ public:
 	void setBuildTile(int tileID);
 	void addItemToBag(int tileID);
 	bool isItemInBag(int tileID);
+	bool isEnoughAmount(int tileID);
 	void substractOne(int tileID);
 	float getLife();
 	vector<Item> getBag();

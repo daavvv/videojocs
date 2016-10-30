@@ -136,17 +136,7 @@ void Player::update(int deltaTime)
 
 	sprite->update(deltaTime);
 
-	
-
-
-	if ((buildCounter - (deltaTime * 40)) < 0) {
-		buildCounter = DIGCOOLDOWN;
-	}
-	else {
-		buildCounter -= deltaTime * 40;
-	}
-
-	
+		
 	if(Game::instance().getSpecialKey(GLUT_KEY_LEFT))
 	{
 		if(sprite->animation() != MOVE_LEFT)
@@ -181,7 +171,7 @@ void Player::update(int deltaTime)
 	}
 
 	
-	if (this->buildTile != 0) {
+	if (this->buildTile != 0 && isEnoughAmount(this->buildTile)) {
 		if (Game::instance().getKey('2')) {
 			if (map->bottomTileIsBuildable(posPlayer, glm::ivec2(32, 32), &posPlayer.y)) {
 				if (build == 2 && !bbuilding) {
@@ -313,6 +303,18 @@ void Player::update(int deltaTime)
 	
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 }
+
+bool Player::isEnoughAmount(int tileID) {
+	for (int i = 0; i < bag.size(); ++i) {
+		if (tileID == bag[i].ID) {
+			if (bag[i].amount > 0) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 
 
 bool Player::isItemInBag(int tileID) {
