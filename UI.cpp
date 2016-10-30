@@ -284,7 +284,7 @@ void UI::renderMaterialInventory() {
 	modelview = glm::translate(glm::mat4(1.0f), glm::vec3(float(SCREEN_WIDTH/2),float(SCREEN_HEIGHT/2), 0.f));
 	//modelview = glm::translate(modelview, glm::vec3(32.f, 32.f, 0.f));
 	//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
-	modelview = glm::scale(modelview, glm::vec3(MATERIALSINVENTORYSCALE, MATERIALSINVENTORYSCALE, 0));
+	modelview = glm::scale(modelview, glm::vec3(MATERIALSINVENTORYSCALE, MATERIALSINVENTORYSCALE*424/274, 0));
 	modelview = glm::translate(modelview, glm::vec3(-32.f, -32.f, 0.f));
 	UIProgram.setUniformMatrix4f("modelview", modelview);
 	UIElements[3]->render(textures[3]);
