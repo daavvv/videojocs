@@ -92,34 +92,6 @@ void Game::mouseMove(int x, int y)
 
 void Game::mousePress(int button, int x, int y)
 {
-	/*
-	cout << glutGet(GLUT_WINDOW_WIDTH) << ' ' << x << endl;
-	cout << glutGet(GLUT_WINDOW_HEIGHT) << ' ' << y << endl;
-	int centrex = glutGet(GLUT_WINDOW_WIDTH) / 2;
-	int centrey = glutGet(GLUT_WINDOW_HEIGHT) / 2;
-	int puntx = x - centrex;
-	int punty = y - centrey;
-	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
-	{
-		//store the x,y value where the click happened
-		cout << "he clicat" << endl;
-		if (abs(puntx) > abs(punty)) {
-			if (puntx > 0) {
-				cout << "dreta" << endl;
-			}
-			else {
-				cout << "esquerra" << endl;
-			}
-		}
-		else {
-			if (punty < 0) {
-				cout << "adalt" << endl;
-			}
-			else {
-				cout << "abaix" << endl;
-			}
-		}
-	}*/
 
 
 	cout << "clicked on " << x << "," << y << endl;
@@ -133,6 +105,7 @@ void Game::mousePress(int button, int x, int y)
 			scene.setBuildTile(tile);
 		}
 	}
+	//scene.mouse_clicked(button, x, y);
 }
 
 void Game::mouseRelease(int button)

@@ -20,6 +20,7 @@ public:
 	Scene();
 	~Scene();
 
+	void mouse_clicked(int button, int x, int y);
 	void init();
 	void update(int deltaTime);
 	void render();

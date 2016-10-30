@@ -7,7 +7,7 @@
 #define LIFEUIOFFSETY -35
 #define LIFEUIOFFSETX_PADDING 35
 #define LIFESCALEFACTOR  0.2
-#define MATERIALSINVENTORYSCALE 3
+#define MATERIALSINVENTORYSCALE 4//(SCREEN_WIDTH/2)/165.f
 
 #define MATERIALSUIOFFSETX -35
 #define MATERIALSUIOFFSETY 10
@@ -134,7 +134,7 @@ void UI::init(){
 
 	//LOAD MATERIAL INVENTORY HUD
 	geom[0] = glm::vec2(0.f, 0.f);
-	geom[1] = glm::vec2(165.f, 256.f);
+	geom[1] = glm::vec2(64.f, 64.f);
 	texCoords[0] = glm::vec2(0.f, 0.f); texCoords[1] = glm::vec2(1.f, 1.f);
 	addUIElement(geom, texCoords, UIProgram, "images/UI/materials.png");//3
 
@@ -281,11 +281,11 @@ void UI::renderMaterialInventory() {
 	UIProgram.setUniformMatrix4f("projection", projection);
 	UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
 
-	modelview = glm::translate(glm::mat4(1.0f), glm::vec3(512.f,240.f, 0.f));
-	modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
+	modelview = glm::translate(glm::mat4(1.0f), glm::vec3(float(SCREEN_WIDTH/2),float(SCREEN_HEIGHT/2), 0.f));
+	//modelview = glm::translate(modelview, glm::vec3(32.f, 32.f, 0.f));
 	//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
-	modelview = glm::scale(modelview, glm::vec3(MATERIALSINVENTORYSCALE, MATERIALSINVENTORYSCALE, MATERIALSINVENTORYSCALE));
-	modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
+	modelview = glm::scale(modelview, glm::vec3(MATERIALSINVENTORYSCALE, MATERIALSINVENTORYSCALE, 0));
+	modelview = glm::translate(modelview, glm::vec3(-32.f, -32.f, 0.f));
 	UIProgram.setUniformMatrix4f("modelview", modelview);
 	UIElements[3]->render(textures[3]);
 

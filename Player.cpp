@@ -370,4 +370,50 @@ void Player::setPosition(const glm::vec2 &pos)
 
 
 
+void Player::crear(int button, int x, int y) {
+	cout << glutGet(GLUT_WINDOW_WIDTH) << ' ' << x << endl;
+	cout << glutGet(GLUT_WINDOW_HEIGHT) << ' ' << y << endl;
+	int centrex = glutGet(GLUT_WINDOW_WIDTH) / 2;
+	int centrey = glutGet(GLUT_WINDOW_HEIGHT) / 2;
+	int puntx = x - centrex;
+	int punty = y - centrey;
+
+
+	if (button == GLUT_LEFT_BUTTON)
+	{
+		//store the x,y value where the click happened
+		cout << "he clicat" << endl;
+		if (abs(puntx) > abs(punty)) {
+			if (puntx > 0) {
+				if (map->rightTileIsBuildable(posPlayer, glm::ivec2(32, 32))) {
+					bbuilding = true;
+				}
+			}
+			else {
+				cout << "esquerra" << endl;
+				if (map->leftTileIsBuildable(posPlayer, glm::ivec2(32, 32))) {
+					bbuilding = true;
+				}
+			}
+		}
+		else {
+			if (punty < 0) {
+				cout << "adalt" << endl;
+			}
+			else {
+				cout << "abaix" << endl;
+				if (map->bottomTileIsBuildable(posPlayer, glm::ivec2(32, 32), &posPlayer.y)) {
+					if (buildCounter == DIGCOOLDOWN) {
+						posPlayer.y = posPlayer.y - 10;
+						bbuilding = true;
+					}
+				}
+				else {
+					buildCounter = DIGCOOLDOWN;
+				}
+			}
+		}
+	}
+}
+
 

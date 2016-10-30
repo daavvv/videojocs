@@ -156,5 +156,7 @@ void Scene::initShaders()
 	fShader.free();
 }
 
-
+void Scene::mouse_clicked(int button, int x, int y) {
+	player->crear(button, x, y);
+}
 
