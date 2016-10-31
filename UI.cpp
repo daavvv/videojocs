@@ -583,7 +583,7 @@ void UI::renderHearts(float life) {
 		else if (life == 2.0f) {
 			UIElements[2]->render(textures[2]);
 		}
-		else if (life < 1.5f) {
+		else if (life <= 1.5f) {
 			UIElements[2]->render(textures[2]);
 		}
 }
