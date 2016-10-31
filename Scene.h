@@ -7,6 +7,7 @@
 #include "TileMap.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "Boss.h"
 
 
 // Scene contains all the entities of our game.
@@ -36,6 +37,7 @@ private:
 	void initShaders();
 
 private:
+	Boss *boss;
 	TileMap *map;
 	Player *player;
 	Enemy *enemy;

@@ -45,6 +45,11 @@ void Scene::init()
 	enemy->setPosition(glm::vec2((INIT_PLAYER_X_TILES+4) * map->getTileSize(), INIT_PLAYER_X_TILES* map->getTileSize()));
 	enemy->setTileMap(map);
 	
+	boss = new Boss();
+	boss->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	boss->setPosition(glm::vec2((INIT_PLAYER_X_TILES + 4) * map->getTileSize(), INIT_PLAYER_X_TILES* map->getTileSize()));
+	boss->setTileMap(map);
+
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
 	currentTime = 0.0f;
 
@@ -58,10 +63,12 @@ void Scene::update(int deltaTime)
 	map->update(deltaTime);
 
 	if(!ataca_enemic())	enemy->update(deltaTime, posicio_player.x, posicio_player.y);	
+	boss->update(deltaTime, posicio_player.x, posicio_player.y);
 }
 
 bool Scene::ataca_enemic() {
 	//si esta al costat que ataqui
+	int posy = (enemy->get_position().y);
 	//cout << (player->getPosition().x > enemy->get_position().x) << ' ' << ((player->getPosition().x - map->getTileSize()) <= enemy->get_position().x) << endl;
 	if (((player->getPosition().y >= enemy->get_position().y) and (player->getPosition().y - map->getTileSize()) <= enemy->get_position().y) or ((player->getPosition().y <= enemy->get_position().y) and (player->getPosition().y + map->getTileSize()) >= enemy->get_position().y)) {
 		if ((player->getPosition().x > enemy->get_position().x) and (player->getPosition().x - map->getTileSize()) <= enemy->get_position().x) {
@@ -69,12 +76,15 @@ bool Scene::ataca_enemic() {
 			if(int(currentTime)%50 == 0){
 				player->setLife(player->getLife() - 0.5f);
 				}
-			return true;
+			cout <<"holo " << !map->collisionMoveDown(enemy->get_position(), glm::ivec2(32, 32), &posy) << endl;
+			if(map->collisionMoveDown(enemy->get_position(), glm::ivec2(32, 32), &posy))return true;
 		}
-		if ((player->getPosition().x < enemy->get_position().x) and (player->getPosition().x + map->getTileSize()) >= enemy->get_position().x) {
+		if ((player->getPosition().x <= enemy->get_position().x) and (player->getPosition().x + map->getTileSize()) >= enemy->get_position().x) {
 			//cout << "et matari babyy" << endl;
 			if (int(currentTime)% 50 == 0)player->setLife(player->getLife() - 0.5f);
-			return true;
+			cout << "holo " << map->collisionMoveDown(enemy->get_position(), glm::ivec2(32, 32), &posy) << endl;
+
+			if (map->collisionMoveDown(enemy->get_position(), glm::ivec2(32, 32), &posy))return true;
 		}
 	}
 	return false;
@@ -138,6 +148,7 @@ void Scene::render()
 	map->render();
 	player->render();
 	enemy->render();
+	boss->render();
 
 }
 
