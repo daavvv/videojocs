@@ -54,7 +54,7 @@ private:
 	TexturedQuad* playButton;
 	TexturedQuad* exitButton;
 	TexturedQuad* instructionsButton;
-	Texture stone,grass,zero,one,two,three,four,five,six,seven,eight,nine,ten,hightlight,menuBackgroundTex,playButtonTex,instructonsButtonTex,exitButtonTex;
+	Texture stone,grass,zero,one,two,three,four,five,six,seven,eight,nine,ten,hightlight,menuBackgroundTex,playButtonTex,instructionsButtonTex,exitButtonTex;
 	vector<TexturedQuad*> UIElements, MaterialsLeftBar,CountersLeftBar;
 	vector<TexturedQuad*> Inventory;
 	vector<TexturedQuad*> CountersBox;

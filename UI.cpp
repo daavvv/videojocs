@@ -9,15 +9,22 @@
 #define LIFESCALEFACTOR  0.2
 #define MATERIALSINVENTORYSCALE 4//(SCREEN_WIDTH/2)/165.f
 
-#define PLAYBUTTONSCALEX 2
+#define PLAYBUTTONSCALEX 2.5f
 #define PLAYBUTTONSCALEY 1
 #define PLAYBUTTONRAWSCALE 64.f
-#define PLAYBUTTONOFFSETY 100
+#define PLAYBUTTONOFFSETY 40
 
-#define EXITBUTTONSCALEX 2
+#define EXITBUTTONSCALEX 2.5f
 #define EXITBUTTONSCALEY 1
 #define EXITBUTTONRAWSCALE 64.f
-#define EXITBUTTONOFFSETY 175
+#define EXITBUTTONOFFSETY 115
+
+#define INSTRUCTIONSBUTTONSCALEX 2.5f
+#define INSTRUCTIONSBUTTONSCALEY 1
+#define INSTRUCTIONSBUTTONRAWSCALE 64.f
+#define INSTRUCTIONSBUTTONOFFSETY 190
+
+
 
 
 #define MATERIALSUIOFFSETX -35
@@ -45,6 +52,8 @@
 #define PLAYBUTTONIMGPRESSEDPATH "images/UI/playButtonPressed.png"
 #define EXITBUTTONIMGPATH "images/UI/exitButton.png"
 #define EXITBUTTONIMGPRESSEDPATH "images/UI/exitButtonPressed.png"
+#define INSTRUCTIONSBUTTONIMGPATH "images/UI/instruccionsButton.png"
+#define INSTRUCTIONSBUTTONIMGPRESSEDPATH "images/UI/instruccionsButtonPressed.png"
 
 
 #define INVENTORYITEMRAWSCALEX 64.f
@@ -75,6 +84,10 @@ void UI::init(){
 	}
 
 	if (exitButtonTex.loadFromFile(EXITBUTTONIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+
+	if (instructionsButtonTex.loadFromFile(INSTRUCTIONSBUTTONIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
 		cout << "loaded" << endl;
 	}
 
@@ -199,6 +212,11 @@ void UI::init(){
 	geom[0] = glm::vec2(0.f, 0.f);
 	geom[1] = glm::vec2(EXITBUTTONRAWSCALE, EXITBUTTONRAWSCALE);
 	exitButton = TexturedQuad::createTexturedQuad(geom, texCoords, UIProgram);
+
+	//LOAD INSTRUCTIONS BUTTON
+	geom[0] = glm::vec2(0.f, 0.f);
+	geom[1] = glm::vec2(INSTRUCTIONSBUTTONRAWSCALE, INSTRUCTIONSBUTTONRAWSCALE);
+	instructionsButton = TexturedQuad::createTexturedQuad(geom, texCoords, UIProgram);
 
 
 
@@ -460,7 +478,24 @@ bool UI::clickOnMenu(int x, int y, string* menu) {
 		return true;
 	}
 
-	
+
+	left = (SCREEN_WIDTH / 2) - (INSTRUCTIONSBUTTONSCALEX*INSTRUCTIONSBUTTONRAWSCALE) / 2;
+	right = left + (INSTRUCTIONSBUTTONSCALEX*INSTRUCTIONSBUTTONRAWSCALE);
+	top = ((SCREEN_HEIGHT / 2) + INSTRUCTIONSBUTTONOFFSETY) - ((INSTRUCTIONSBUTTONSCALEY*INSTRUCTIONSBUTTONRAWSCALE) / 2);
+	bottom = top + (INSTRUCTIONSBUTTONSCALEY*INSTRUCTIONSBUTTONRAWSCALE);
+
+
+	if (x >= left && x <= right && y >= top && y <= bottom) {
+		cout << "inside INSTRUCTIONS button" << endl;
+		*menu = "instructions";
+
+		if (instructionsButtonTex.loadFromFile(INSTRUCTIONSBUTTONIMGPRESSEDPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
+			//renderMainMenu();
+		}
+		return true;
+	}
+
+	instructionsButtonTex.loadFromFile(INSTRUCTIONSBUTTONIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA);
 	playButtonTex.loadFromFile(PLAYBUTTONIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA);
 	exitButtonTex.loadFromFile(EXITBUTTONIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA);
 	return false;
@@ -637,6 +672,17 @@ void UI::renderMainMenu()
 	UIProgram.setUniformMatrix4f("modelview", modelview);
 	exitButton->render(exitButtonTex);
 	
+	//INSTRUCTIONS BUTTON
+	UIProgram.use();
+	UIProgram.setUniformMatrix4f("projection", projection);
+	UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+	modelview = glm::translate(glm::mat4(1.0f), glm::vec3(float(SCREEN_WIDTH / 2), float(SCREEN_HEIGHT / 2) + INSTRUCTIONSBUTTONOFFSETY, 0.f));
+	//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
+	modelview = glm::scale(modelview, glm::vec3(INSTRUCTIONSBUTTONSCALEX, INSTRUCTIONSBUTTONSCALEY, 0));
+	modelview = glm::translate(modelview, glm::vec3(-(INSTRUCTIONSBUTTONRAWSCALE / 2), -(INSTRUCTIONSBUTTONRAWSCALE / 2), 0.f));
+	UIProgram.setUniformMatrix4f("modelview", modelview);
+	instructionsButton->render(instructionsButtonTex);
+
 
 }
 
