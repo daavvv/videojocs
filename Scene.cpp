@@ -57,12 +57,6 @@ void Scene::init()
 
 void Scene::update(int deltaTime)
 {
-	cout << enemy->get_life() << endl;
-	/*if (enemy->get_life() <= 0.f) {
-		cout << "he matat el fill de putaaaa" << endl;
-		enemy;
-	}
-	if (enemy == NULL) cout << "pues perfectt"<< endl;*/
 	currentTime += deltaTime;
 	player->update(deltaTime);
 	glm::ivec2 posicio_player = player->getPosition();
@@ -214,7 +208,6 @@ void Scene::mouse_clicked(int button, int x, int y) {
 		if (abs(puntx) > abs(punty) and puntx <= 0) {
 			if (((player->getPosition().y >= enemy->get_position().y) and (player->getPosition().y - map->getTileSize()) <= enemy->get_position().y) or ((player->getPosition().y <= enemy->get_position().y) and (player->getPosition().y + map->getTileSize()) >= enemy->get_position().y)) {
 				if ((player->getPosition().x > enemy->get_position().x) and (player->getPosition().x - map->getTileSize()) <= enemy->get_position().x) {
-					cout << "TE MATATTTTTTTTTTTTTTTTT" << endl;
 					enemy->set_life( 1.f);
 				}
 			}
@@ -222,7 +215,6 @@ void Scene::mouse_clicked(int button, int x, int y) {
 		else if (abs(puntx) > abs(punty) and puntx > 0) {
 			if (((player->getPosition().y >= enemy->get_position().y) and (player->getPosition().y - map->getTileSize()) <= enemy->get_position().y) or ((player->getPosition().y <= enemy->get_position().y) and (player->getPosition().y + map->getTileSize()) >= enemy->get_position().y)) {
 				if ((player->getPosition().x < enemy->get_position().x) and (player->getPosition().x + map->getTileSize()) >= enemy->get_position().x) {
-					cout << "TE MATATTTTTTTTTTTTTTTTTTTTTTTTTT" << endl;
 					enemy->set_life(1.f);
 				}
 			}

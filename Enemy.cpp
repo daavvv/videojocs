@@ -50,6 +50,9 @@ void Enemy::update(int deltaTime, int Posplayerx, int Posplayery)
 	int diferenciax = abs(posEnemy.x - Posplayerx);
 	int diferenciay = abs(posEnemy.y - Posplayery);
 	
+
+	sprite->update(deltaTime);
+
 	if (diferenciay < diferenciax && Posplayerx < posEnemy.x) {
 		if (sprite->animation() != MOVE_LEFT)
 			sprite->changeAnimation(MOVE_LEFT);
@@ -61,6 +64,31 @@ void Enemy::update(int deltaTime, int Posplayerx, int Posplayery)
 		}
 	}
 	else if (diferenciay < diferenciax && Posplayerx > posEnemy.x) {
+		if (sprite->animation() != MOVE_RIGHT)
+			sprite->changeAnimation(MOVE_RIGHT);
+		posEnemy.x += 1;
+		if (map->collisionMoveRight(posEnemy, glm::ivec2(32, 32)))
+		{
+			posEnemy.x -= 1;
+			sprite->changeAnimation(STAND_RIGHT);
+		}
+	}
+	else if (!(Posplayery < posEnemy.y && diferenciay > diferenciax && (map->Exists_platform(posEnemy, glm::ivec2(32, 32)) or (Posplayerx >= posEnemy.x and map->Exists_platform(glm::ivec2(posEnemy.x + map->getTileSize(), posEnemy.y), glm::ivec2(32, 32))) or (Posplayerx < posEnemy.x and map->Exists_platform(glm::ivec2(posEnemy.x - map->getTileSize(), posEnemy.y), glm::ivec2(32, 32))))) and (diferenciay >= diferenciax && Posplayerx < posEnemy.x)) {
+		cout << "entro----------------------" << endl;
+		if (sprite->animation() != MOVE_LEFT) {
+			sprite->changeAnimation(MOVE_LEFT);
+		}
+		posEnemy.x -= 1;
+		if (map->collisionMoveLeft(posEnemy, glm::ivec2(32, 32)))
+		{
+
+			cout << "aqui no hauria d'entrar" << endl;
+			posEnemy.x += 1;
+			sprite->changeAnimation(STAND_LEFT);
+		}
+	}
+	else if (!(Posplayery < posEnemy.y && diferenciay > diferenciax && (map->Exists_platform(posEnemy, glm::ivec2(32, 32)) or (Posplayerx >= posEnemy.x and map->Exists_platform(glm::ivec2(posEnemy.x + map->getTileSize(), posEnemy.y), glm::ivec2(32, 32))) or (Posplayerx < posEnemy.x and map->Exists_platform(glm::ivec2(posEnemy.x - map->getTileSize(), posEnemy.y), glm::ivec2(32, 32))))) and diferenciay >= diferenciax && Posplayerx > posEnemy.x) {
+		cout << "entro22222222222222222222222222222" << endl;
 		if (sprite->animation() != MOVE_RIGHT)
 			sprite->changeAnimation(MOVE_RIGHT);
 		posEnemy.x += 1;
@@ -103,18 +131,23 @@ void Enemy::update(int deltaTime, int Posplayerx, int Posplayery)
 				jumpAngle = 0;
 				startY = posEnemy.y;
 			}
-			else {
+			/*else {
 				if (diferenciay >= diferenciax && Posplayerx < posEnemy.x) {
-					if (sprite->animation() != MOVE_LEFT)
+					cout << "entro----------------------" << endl;
+					if (sprite->animation() != MOVE_LEFT) {
 						sprite->changeAnimation(MOVE_LEFT);
+					}
 					posEnemy.x -= 1;
 					if (map->collisionMoveLeft(posEnemy, glm::ivec2(32, 32)))
 					{
+
+						cout << "aqui no hauria d'entrar" << endl;
 						posEnemy.x += 1;
 						sprite->changeAnimation(STAND_LEFT);
 					}
 				}
 				else if (diferenciay >= diferenciax && Posplayerx > posEnemy.x) {
+					cout << "entro22222222222222222222222222222" << endl;
 					if (sprite->animation() != MOVE_RIGHT)
 						sprite->changeAnimation(MOVE_RIGHT);
 					posEnemy.x += 1;
@@ -124,16 +157,15 @@ void Enemy::update(int deltaTime, int Posplayerx, int Posplayery)
 						sprite->changeAnimation(STAND_RIGHT);
 					}
 				}
-				else {//animacions
+				/*else {//animacions
 					if (sprite->animation() == MOVE_LEFT)
 						sprite->changeAnimation(STAND_LEFT);
 					else if (sprite->animation() == MOVE_RIGHT)
 						sprite->changeAnimation(STAND_RIGHT);
-				}
-			}
+				}*/
+			//}	
 		}
 	}
-	sprite->update(deltaTime);
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posEnemy.x), float(tileMapDispl.y + posEnemy.y)));
 }
 

@@ -42,18 +42,19 @@ Sprite::Sprite(const glm::vec2 &quadSize, const glm::vec2 &sizeInSpritesheet, Te
 
 void Sprite::update(int deltaTime)
 {
-	//cout << "somhi" << endl;
+	cout << currentAnimation << endl;
 	if(currentAnimation >= 0)
 	{
 		timeAnimation += deltaTime;
+		cout << timeAnimation << " abans del buclee " << deltaTime << endl;
 		while(timeAnimation > animations[currentAnimation].millisecsPerKeyframe)
 		{
-			//cout << timeAnimation << " inici "<< currentKeyframe  << endl;
+			cout << timeAnimation << " inici "<< currentKeyframe  << endl;
 			timeAnimation -= animations[currentAnimation].millisecsPerKeyframe;
-			//cout << timeAnimation << " mig " << currentKeyframe << " (currentKeyframe + 1): " << (currentKeyframe + 1) << " animations[currentAnimation].keyframeDispl.size(): " << animations[currentAnimation].keyframeDispl.size() << " currentAnimation; "<< currentAnimation << endl;
+			cout << timeAnimation << " mig " << currentKeyframe << " (currentKeyframe + 1): " << (currentKeyframe + 1) << " animations[currentAnimation].keyframeDispl.size(): " << animations[currentAnimation].keyframeDispl.size() << " currentAnimation; "<< currentAnimation << endl;
 
 			currentKeyframe = (currentKeyframe + 1) % animations[currentAnimation].keyframeDispl.size();
-			//cout << timeAnimation << " fin " << currentKeyframe << endl;
+			cout << timeAnimation << " fin " << currentKeyframe << endl;
 		}
 		texCoordDispl = animations[currentAnimation].keyframeDispl[currentKeyframe];
 	}
@@ -106,7 +107,7 @@ void Sprite::changeAnimation(int animId)
 		currentAnimation = animId;
 		currentKeyframe = 0;
 		timeAnimation = 0.f;
-		//cout << "animations[animId].keyframeDispl.size():" << animations[animId].keyframeDispl.size() << endl;
+		//cout << "current animation " <<  currentAnimation << " animations[animId].keyframeDispl.size():" << animations[animId].keyframeDispl.size() << endl;
 		texCoordDispl = animations[animId].keyframeDispl[0];
 	}
 }
