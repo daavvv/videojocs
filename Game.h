@@ -50,6 +50,7 @@ private:
 	int winID;
 	bool gameInitialized;
 	bool startover;
+	bool instructionsWindowOpened;
 	bool bPlay, bMaterialInventoryOpened;
 	int MaterialsInventory;                       // Continue to play game?
 	Scene scene;

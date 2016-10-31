@@ -500,7 +500,6 @@ bool UI::clickOnMenu(int x, int y, string* menu) {
 	exitButtonTex.loadFromFile(EXITBUTTONIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA);
 	return false;
 	
-
 }
 
 

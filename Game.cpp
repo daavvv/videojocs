@@ -13,6 +13,7 @@ void Game::init()
 	startover = false;
 	MaterialsInventory = 4;
 	bMaterialInventoryOpened = false;
+	instructionsWindowOpened = false;
 	bPlay = true;
 	glClearColor(0.87f, 0.98f, 1.0f, 1.0f);
 	scene.init();
@@ -74,6 +75,9 @@ void Game::render()
 				ui.renderMaterialInventory();
 			}
 		}
+	}
+	else if (instructionsWindowOpened){
+		//ui.renderMainMenu();
 	}
 	else {
 		ui.renderMainMenu();
@@ -145,6 +149,10 @@ void Game::mousePress(int button, int x, int y)
 			if (menu == "exit") {
 				bPlay = false;
 				glutDestroyWindow(winID);
+				return;
+			}
+			if (menu == "instructions") {
+				instructionsWindowOpened = true;
 				return;
 			}
 		}
