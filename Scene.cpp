@@ -68,8 +68,11 @@ void Scene::update(int deltaTime)
 	glm::ivec2 posicio_player = player->getPosition();
 	//map->update(deltaTime);
 
-	if(!ataca_enemic())	enemy->update(deltaTime, posicio_player.x, posicio_player.y);	
-	//boss->update(deltaTime, posicio_player.x, posicio_player.y);
+
+	if (enemy->get_life() > 0) {
+		if (!ataca_enemic())	enemy->update(deltaTime, posicio_player.x, posicio_player.y);
+		//boss->update(deltaTime, posicio_player.x, posicio_player.y);
+	}
 }
 
 bool Scene::ataca_enemic() {
@@ -158,7 +161,11 @@ void Scene::render()
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
 	map->render();
 	player->render();
-	enemy->render();
+
+	if (enemy->get_life() > 0){
+		enemy->render();
+	}
+	
 	//boss->render();
 
 }
