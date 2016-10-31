@@ -28,6 +28,7 @@ public:
 	}
 	
 	void init();
+	void setWinId(int id);
 	bool update(int deltaTime);
 	void render();
 	
@@ -37,6 +38,7 @@ public:
 	void specialKeyPressed(int key);
 	void specialKeyReleased(int key);
 	void mouseMove(int x, int y);
+	void mouseMotionMove(int x, int y);
 	void mousePress(int button, int x, int y);
 	void mouseRelease(int button);
 
@@ -45,7 +47,9 @@ public:
 	bool getSpecialKey(int key) const;
 
 private:
+	int winID;
 	bool gameInitialized;
+	bool startover;
 	bool bPlay, bMaterialInventoryOpened;
 	int MaterialsInventory;                       // Continue to play game?
 	Scene scene;

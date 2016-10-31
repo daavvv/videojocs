@@ -12,6 +12,13 @@
 #define PLAYBUTTONSCALEX 2
 #define PLAYBUTTONSCALEY 1
 #define PLAYBUTTONRAWSCALE 64.f
+#define PLAYBUTTONOFFSETY 100
+
+#define EXITBUTTONSCALEX 2
+#define EXITBUTTONSCALEY 1
+#define EXITBUTTONRAWSCALE 64.f
+#define EXITBUTTONOFFSETY 175
+
 
 #define MATERIALSUIOFFSETX -35
 #define MATERIALSUIOFFSETY 10
@@ -35,6 +42,9 @@
 #define HIGHLIGHTIMGPATH "images/UI/highlight.png"
 #define MENUBACKGROUNDIMGPATH "images/UI/menuBackground.png"
 #define PLAYBUTTONIMGPATH "images/UI/playButton.png"
+#define PLAYBUTTONIMGPRESSEDPATH "images/UI/playButtonPressed.png"
+#define EXITBUTTONIMGPATH "images/UI/exitButton.png"
+#define EXITBUTTONIMGPRESSEDPATH "images/UI/exitButtonPressed.png"
 
 
 #define INVENTORYITEMRAWSCALEX 64.f
@@ -52,7 +62,7 @@ void UI::init(){
 	glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
 
 	selectedItem = -1;
-	
+	playButtonOver = false;
 
 	initShaders();
 
@@ -61,6 +71,10 @@ void UI::init(){
 	}
 	
 	if (playButtonTex.loadFromFile(PLAYBUTTONIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+
+	if (exitButtonTex.loadFromFile(EXITBUTTONIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
 		cout << "loaded" << endl;
 	}
 
@@ -177,12 +191,14 @@ void UI::init(){
 
 
 	//LOAD PLAY BUTTON
-
-	
 	geom[0] = glm::vec2(0.f, 0.f);
 	geom[1] = glm::vec2(PLAYBUTTONRAWSCALE, PLAYBUTTONRAWSCALE);
 	playButton = TexturedQuad::createTexturedQuad(geom, texCoords, UIProgram);
 	
+	//LOAD EXIT BUTTON
+	geom[0] = glm::vec2(0.f, 0.f);
+	geom[1] = glm::vec2(EXITBUTTONRAWSCALE, EXITBUTTONRAWSCALE);
+	exitButton = TexturedQuad::createTexturedQuad(geom, texCoords, UIProgram);
 
 
 
@@ -276,7 +292,6 @@ void UI::initShaders(){
 	UIProgram.bindFragmentOutput("outColor");
 	vShader.free();
 	fShader.free();
-	
 }
 
 void UI::update(int deltaTime){
@@ -405,14 +420,52 @@ void UI::renderCounters() {
 
 bool UI::clickOnMenu(int x, int y, string* menu) {
 
-	/*
+	
 	double left, right, top, bottom;
+	left = (SCREEN_WIDTH/2) - (PLAYBUTTONSCALEX*PLAYBUTTONRAWSCALE) / 2;
+	right = left + (PLAYBUTTONSCALEX*PLAYBUTTONRAWSCALE);
+	top = ((SCREEN_HEIGHT/2)+PLAYBUTTONOFFSETY) - ((PLAYBUTTONSCALEY*PLAYBUTTONRAWSCALE) / 2);
+	bottom = top + (PLAYBUTTONSCALEY*PLAYBUTTONRAWSCALE);
 
-	left = SCREEN_WIDTH/2 - 
-
+	/*
+	cout << "left: " << left << endl;
+	cout << "right: " << right << endl;
+	cout << "top: " << top << endl;
+	cout << "bottom: " << bottom << endl;
 	*/
 
-	return true;
+	if (x >= left && x <= right && y >= top && y <= bottom) {
+		cout << "inside play button" << endl;
+		*menu = "play";
+
+		if (playButtonTex.loadFromFile(PLAYBUTTONIMGPRESSEDPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
+			//renderMainMenu();
+		}
+		return true;
+	}
+
+	left = (SCREEN_WIDTH / 2) - (EXITBUTTONSCALEX*EXITBUTTONRAWSCALE) / 2;
+	right = left + (EXITBUTTONSCALEX*EXITBUTTONRAWSCALE);
+	top = ((SCREEN_HEIGHT / 2) + EXITBUTTONOFFSETY) - ((EXITBUTTONSCALEY*EXITBUTTONRAWSCALE) / 2);
+	bottom = top + (EXITBUTTONSCALEY*EXITBUTTONRAWSCALE);
+
+
+	if (x >= left && x <= right && y >= top && y <= bottom) {
+		cout << "inside exit button" << endl;
+		*menu = "exit";
+
+		if (exitButtonTex.loadFromFile(EXITBUTTONIMGPRESSEDPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
+			//renderMainMenu();
+		}
+		return true;
+	}
+
+	
+	playButtonTex.loadFromFile(PLAYBUTTONIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA);
+	exitButtonTex.loadFromFile(EXITBUTTONIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA);
+	return false;
+	
+
 }
 
 
@@ -563,20 +616,27 @@ void UI::renderMainMenu()
 
 
 	//PLAY BUTTON
-
-	
 	UIProgram.use();
 	UIProgram.setUniformMatrix4f("projection", projection);
 	UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
-	modelview = glm::translate(glm::mat4(1.0f), glm::vec3(float(SCREEN_WIDTH / 2), float(SCREEN_HEIGHT / 2)+100, 0.f));
+	modelview = glm::translate(glm::mat4(1.0f), glm::vec3(float(SCREEN_WIDTH / 2), float(SCREEN_HEIGHT / 2)+PLAYBUTTONOFFSETY, 0.f));
 	//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
-	modelview = glm::scale(modelview, glm::vec3(2, 1, 0));
+	modelview = glm::scale(modelview, glm::vec3(PLAYBUTTONSCALEX, PLAYBUTTONSCALEY, 0));
 	modelview = glm::translate(modelview, glm::vec3(-(PLAYBUTTONRAWSCALE/2), -(PLAYBUTTONRAWSCALE/2), 0.f));
 	UIProgram.setUniformMatrix4f("modelview", modelview);
 	playButton->render(playButtonTex);
+
+	//EXIT BUTTON
+	UIProgram.use();
+	UIProgram.setUniformMatrix4f("projection", projection);
+	UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+	modelview = glm::translate(glm::mat4(1.0f), glm::vec3(float(SCREEN_WIDTH / 2), float(SCREEN_HEIGHT / 2) + EXITBUTTONOFFSETY, 0.f));
+	//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
+	modelview = glm::scale(modelview, glm::vec3(EXITBUTTONSCALEX, EXITBUTTONSCALEY, 0));
+	modelview = glm::translate(modelview, glm::vec3(-(EXITBUTTONRAWSCALE / 2), -(EXITBUTTONRAWSCALE / 2), 0.f));
+	UIProgram.setUniformMatrix4f("modelview", modelview);
+	exitButton->render(exitButtonTex);
 	
-
-
 
 }
 

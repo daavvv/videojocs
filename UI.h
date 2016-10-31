@@ -44,6 +44,7 @@ public:
 
 private:
 	float currentTime;
+	bool playButtonOver;
 	glm::mat4 projection;
 	GLuint VertexArrayID;
 	GLuint vertexbuffer;
@@ -51,8 +52,9 @@ private:
 	TexturedQuad* highlight;
 	TexturedQuad* menuBackground;
 	TexturedQuad* playButton;
+	TexturedQuad* exitButton;
 	TexturedQuad* instructionsButton;
-	Texture stone,grass,zero,one,two,three,four,five,six,seven,eight,nine,ten,hightlight,menuBackgroundTex,playButtonTex,instructonsButtonTex;
+	Texture stone,grass,zero,one,two,three,four,five,six,seven,eight,nine,ten,hightlight,menuBackgroundTex,playButtonTex,instructonsButtonTex,exitButtonTex;
 	vector<TexturedQuad*> UIElements, MaterialsLeftBar,CountersLeftBar;
 	vector<TexturedQuad*> Inventory;
 	vector<TexturedQuad*> CountersBox;
