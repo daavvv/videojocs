@@ -10,15 +10,19 @@
 void Game::init()
 {
 	gameInitialized = false;
+	startover = false;
 	MaterialsInventory = 4;
 	bMaterialInventoryOpened = false;
 	bPlay = true;
 	glClearColor(0.87f, 0.98f, 1.0f, 1.0f);
-
+	scene.init();
 	ui.init();
-	if (gameInitialized) {
-		scene.init();
-	}
+	
+}
+
+void Game::setWinId(int id)
+{
+	this->winID = id;
 }
 
 bool Game::update(int deltaTime)
@@ -35,8 +39,6 @@ bool Game::update(int deltaTime)
 void Game::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	
 
 
 
@@ -80,8 +82,13 @@ void Game::render()
 
 void Game::keyPressed(int key)
 {
-	if(key == 27) // Escape code
-		bPlay = false;
+	if (key == 27) { // Escape code
+		if (gameInitialized) {
+			gameInitialized = false;
+			startover = true;
+			init();
+		}
+	}
 	keys[key] = true;
 }
 
@@ -102,6 +109,19 @@ void Game::specialKeyReleased(int key)
 
 void Game::mouseMove(int x, int y)
 {
+	
+
+}
+
+void Game::mouseMotionMove(int x, int y)
+{
+
+	if (!gameInitialized) {
+		string menu;
+		bool success = false;
+		cout << x << "," << y << endl;
+		success = ui.clickOnMenu(x, y, &menu);
+	}
 }
 
 void Game::mousePress(int button, int x, int y)
@@ -114,7 +134,20 @@ void Game::mousePress(int button, int x, int y)
 
 	if (!gameInitialized) {
 		string menu;
-		ui.clickOnMenu(x, y, &menu);
+		bool success = false;
+		success = ui.clickOnMenu(x, y, &menu);
+
+		if (success) {
+			if (menu == "play") {
+				gameInitialized = true;
+				return;
+			}
+			if (menu == "exit") {
+				bPlay = false;
+				glutDestroyWindow(winID);
+				return;
+			}
+		}
 	}
 
 	if (gameInitialized) {

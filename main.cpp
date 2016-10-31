@@ -63,6 +63,10 @@ static void mouseCallback(int button, int state, int x, int y)
 		Game::instance().mouseRelease(button);
 }
 
+static void mouseMotionCallback(int x, int y) {
+	Game::instance().mouseMotionMove(x,y);
+}
+
 static void drawCallback()
 {
 	Game::instance().render();
@@ -106,7 +110,7 @@ int main(int argc, char **argv)
 	glutInitWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 
-	glutCreateWindow(argv[0]);
+	int id = glutCreateWindow(argv[0]);
 
 	glutDisplayFunc(drawCallback);
 
@@ -119,6 +123,7 @@ int main(int argc, char **argv)
 	glutSpecialUpFunc(specialUpCallback);
 	glutMouseFunc(mouseCallback);
 	glutMotionFunc(motionCallback);
+	glutPassiveMotionFunc(mouseMotionCallback);
 
 	glutReshapeFunc(resize);
 
@@ -128,6 +133,7 @@ int main(int argc, char **argv)
 	
 	// Game instance initialization
 	Game::instance().init();
+	Game::instance().setWinId(id);
 	prevTime = glutGet(GLUT_ELAPSED_TIME);
 	// GLUT gains control of the application
 	glutMainLoop();
