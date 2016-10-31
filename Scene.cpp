@@ -3,6 +3,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "Scene.h"
 #include "Game.h"
+#include <GL/glut.h>
+
 
 
 #define SCREEN_X 64
@@ -53,11 +55,29 @@ void Scene::update(int deltaTime)
 	currentTime += deltaTime;
 	player->update(deltaTime);
 	glm::ivec2 posicio_player = player->getPosition();
-	enemy->update(deltaTime, posicio_player.x, posicio_player.y);
 	map->update(deltaTime);
 
+	if(!ataca_enemic())	enemy->update(deltaTime, posicio_player.x, posicio_player.y);	
+}
 
-
+bool Scene::ataca_enemic() {
+	//si esta al costat que ataqui
+	//cout << (player->getPosition().x > enemy->get_position().x) << ' ' << ((player->getPosition().x - map->getTileSize()) <= enemy->get_position().x) << endl;
+	if (((player->getPosition().y >= enemy->get_position().y) and (player->getPosition().y - map->getTileSize()) <= enemy->get_position().y) or ((player->getPosition().y <= enemy->get_position().y) and (player->getPosition().y + map->getTileSize()) >= enemy->get_position().y)) {
+		if ((player->getPosition().x > enemy->get_position().x) and (player->getPosition().x - map->getTileSize()) <= enemy->get_position().x) {
+			//cout << "et matari babyy" << endl;
+			if(int(currentTime)%50 == 0){
+				player->setLife(player->getLife() - 0.5f);
+				}
+			return true;
+		}
+		if ((player->getPosition().x < enemy->get_position().x) and (player->getPosition().x + map->getTileSize()) >= enemy->get_position().x) {
+			//cout << "et matari babyy" << endl;
+			if (int(currentTime)% 50 == 0)player->setLife(player->getLife() - 0.5f);
+			return true;
+		}
+	}
+	return false;
 }
 
 
@@ -157,6 +177,26 @@ void Scene::initShaders()
 }
 
 void Scene::mouse_clicked(int button, int x, int y) {
+	int centrex = SCREEN_WIDTH / 2;
+	int centrey = SCREEN_HEIGHT / 2;
+	int puntx = x - centrex;
+	int punty = y - centrey;
+	if (button == GLUT_RIGHT_BUTTON) {
+		if (abs(puntx) > abs(punty) and puntx <= 0) {
+			if (((player->getPosition().y >= enemy->get_position().y) and (player->getPosition().y - map->getTileSize()) <= enemy->get_position().y) or ((player->getPosition().y <= enemy->get_position().y) and (player->getPosition().y + map->getTileSize()) >= enemy->get_position().y)) {
+				if ((player->getPosition().x > enemy->get_position().x) and (player->getPosition().x - map->getTileSize()) <= enemy->get_position().x) {
+					cout << "TE MATATTTTTTTTTTTTTTTTT" << endl;
+				}
+			}
+		}
+		else if (abs(puntx) > abs(punty) and puntx > 0) {
+			if (((player->getPosition().y >= enemy->get_position().y) and (player->getPosition().y - map->getTileSize()) <= enemy->get_position().y) or ((player->getPosition().y <= enemy->get_position().y) and (player->getPosition().y + map->getTileSize()) >= enemy->get_position().y)) {
+				if ((player->getPosition().x < enemy->get_position().x) and (player->getPosition().x + map->getTileSize()) >= enemy->get_position().x) {
+					cout << "TE MATATTTTTTTTTTTTTTTTTTTTTTTTTT" << endl;
+				}
+			}
+		}
+	}
 	player->crear(button, x, y);
 }
 

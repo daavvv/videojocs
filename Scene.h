@@ -20,6 +20,7 @@ public:
 	Scene();
 	~Scene();
 
+	
 	void mouse_clicked(int button, int x, int y);
 	void init();
 	void update(int deltaTime);
@@ -31,6 +32,7 @@ public:
 	
 
 private:
+	bool ataca_enemic();
 	void initShaders();
 
 private:

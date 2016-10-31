@@ -9,7 +9,7 @@
 
 void Game::init()
 {
-	gameInitialized = false;
+	gameInitialized = true;
 	MaterialsInventory = 4;
 	bMaterialInventoryOpened = false;
 	bPlay = true;

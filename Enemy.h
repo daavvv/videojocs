@@ -2,6 +2,7 @@
 
 #include "Sprite.h"
 #include "TileMap.h"
+#include "Player.h"
 
 
 class Enemy
@@ -12,6 +13,11 @@ public:
 	void setTileMap(TileMap *tileMap);
 	void render();
 	void update(int deltaTime, int Posplayerx, int Posplayery);
+	glm::ivec2 get_position() {
+		return posEnemy;
+	}
+	void reducir_vida();
+
 private:
 	bool bJumping;
 	int jumpAngle, startY;

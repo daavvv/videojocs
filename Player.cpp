@@ -379,46 +379,47 @@ void Player::crear(int button, int x, int y) {
 	int centrey = glutGet(GLUT_WINDOW_HEIGHT) / 2;
 	int puntx = x - centrex;
 	int punty = y - centrey;
-
-	if (button == GLUT_LEFT_BUTTON)
-	{
-		//store the x,y value where the click happened
-		cout << "he clicat" << endl;
-		if (abs(puntx) > abs(punty) and puntx > 0) {
-			if (map->rightTileIsBuildable(posPlayer, glm::ivec2(32, 32))) {
-				if (build == 2 && !bbuilding) {
-					build--;
-					return;
+	if (this->buildTile != 0 && isEnoughAmount(this->buildTile)) {
+		if (button == GLUT_LEFT_BUTTON)
+		{
+			//store the x,y value where the click happened
+			cout << "he clicat" << endl;
+			if (abs(puntx) > abs(punty) and puntx > 0) {
+				if (map->rightTileIsBuildable(posPlayer, glm::ivec2(32, 32))) {
+					if (build == 2 && !bbuilding) {
+						build--;
+						return;
+					}
 				}
 			}
-		}
-		else if(abs(puntx) > abs(punty) and puntx <= 0) {
-			cout << "esquerra" << endl;
-			if (map->leftTileIsBuildable(posPlayer, glm::ivec2(32, 32))) {
-				if (build == 2 && !bbuilding) {
-					build--;
-					return;
+			else if (abs(puntx) > abs(punty) and puntx <= 0) {
+				cout << "esquerra" << endl;
+				if (map->leftTileIsBuildable(posPlayer, glm::ivec2(32, 32))) {
+					if (build == 2 && !bbuilding) {
+						build--;
+						return;
+					}
 				}
 			}
-		}
-		if (abs(puntx) <= abs(punty) and punty < 0) {
-			cout << "adalt" << endl;
-		}
-		else if (abs(puntx) <= abs(punty) and punty >= 0) {
-			cout << "abaix" << endl;
-			if (map->bottomTileIsBuildable(posPlayer, glm::ivec2(32, 32), &posPlayer.y)) {
-				if (build == 2 && !bbuilding) {
-					posPlayer.y = posPlayer.y - 60;
-					build--;
-					return;
+			if (abs(puntx) <= abs(punty) and punty < 0) {
+				cout << "adalt" << endl;
+			}
+			else if (abs(puntx) <= abs(punty) and punty >= 0) {
+				cout << "abaix" << endl;
+				if (map->bottomTileIsBuildable(posPlayer, glm::ivec2(32, 32), &posPlayer.y)) {
+					if (build == 2 && !bbuilding) {
+						posPlayer.y = posPlayer.y - 60;
+						build--;
+						return;
+					}
 				}
 			}
-		}
-		else {
-			if (build == 1 && !bbuilding) {
-				map->buildTile(this->buildTile);
-				substractOne(this->buildTile);
-				build = 2;
+			else {
+				if (build == 1 && !bbuilding) {
+					map->buildTile(this->buildTile);
+					substractOne(this->buildTile);
+					build = 2;
+				}
 			}
 		}
 	}
