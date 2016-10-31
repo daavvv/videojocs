@@ -17,6 +17,7 @@ enum EnemyAnims
 
 void Enemy::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 {
+	life = 3.f;
 	//cout << "aqui entro" << endl;
 	spritesheet.loadFromFile("images/bub.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(32, 32), glm::vec2(0.25, 0.25), &spritesheet, &shaderProgram);
@@ -48,7 +49,7 @@ void Enemy::update(int deltaTime, int Posplayerx, int Posplayery)
 {
 	int diferenciax = abs(posEnemy.x - Posplayerx);
 	int diferenciay = abs(posEnemy.y - Posplayery);
-	sprite->update(deltaTime);
+	
 	if (diferenciay < diferenciax && Posplayerx < posEnemy.x) {
 		if (sprite->animation() != MOVE_LEFT)
 			sprite->changeAnimation(MOVE_LEFT);
@@ -132,6 +133,7 @@ void Enemy::update(int deltaTime, int Posplayerx, int Posplayery)
 			}
 		}
 	}
+	sprite->update(deltaTime);
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posEnemy.x), float(tileMapDispl.y + posEnemy.y)));
 }
 
@@ -150,4 +152,8 @@ void Enemy::setPosition(const glm::vec2 &pos)
 void Enemy::setTileMap(TileMap *tileMap)
 {
 	map = tileMap;
+}
+
+void Enemy::set_life(float resta) {
+	life = life - resta;
 }

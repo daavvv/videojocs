@@ -19,7 +19,10 @@ public:
 	glm::ivec2 get_position() {
 		return posEnemy;
 	}
-	void reducir_vida();
+	void set_life(float resta);
+	float get_life() {
+		return life;
+	}
 
 private:
 	bool bJumping;
@@ -28,5 +31,6 @@ private:
 	Texture spritesheet;
 	Sprite *sprite;
 	TileMap *map;
+	float life;
 };
 

@@ -1,4 +1,6 @@
 #include <GL/glew.h>
+#include <iostream>
+
 #ifdef __APPLE__
 #include <OpenGL/gl.h>
 #else
@@ -40,13 +42,18 @@ Sprite::Sprite(const glm::vec2 &quadSize, const glm::vec2 &sizeInSpritesheet, Te
 
 void Sprite::update(int deltaTime)
 {
+	//cout << "somhi" << endl;
 	if(currentAnimation >= 0)
 	{
 		timeAnimation += deltaTime;
 		while(timeAnimation > animations[currentAnimation].millisecsPerKeyframe)
 		{
+			//cout << timeAnimation << " inici "<< currentKeyframe  << endl;
 			timeAnimation -= animations[currentAnimation].millisecsPerKeyframe;
+			//cout << timeAnimation << " mig " << currentKeyframe << " (currentKeyframe + 1): " << (currentKeyframe + 1) << " animations[currentAnimation].keyframeDispl.size(): " << animations[currentAnimation].keyframeDispl.size() << " currentAnimation; "<< currentAnimation << endl;
+
 			currentKeyframe = (currentKeyframe + 1) % animations[currentAnimation].keyframeDispl.size();
+			//cout << timeAnimation << " fin " << currentKeyframe << endl;
 		}
 		texCoordDispl = animations[currentAnimation].keyframeDispl[currentKeyframe];
 	}
@@ -85,17 +92,21 @@ void Sprite::setAnimationSpeed(int animId, int keyframesPerSec)
 
 void Sprite::addKeyframe(int animId, const glm::vec2 &displacement)
 {
-	if(animId < int(animations.size()))
+	//cout << animId << "animID  int(animations.size())"<< int(animations.size()) << endl;
+	if (animId < int(animations.size())) {
 		animations[animId].keyframeDispl.push_back(displacement);
+	}
 }
 
 void Sprite::changeAnimation(int animId)
 {
+	//cout << "animId" << animId<< endl;
 	if(animId < int(animations.size()))
 	{
 		currentAnimation = animId;
 		currentKeyframe = 0;
 		timeAnimation = 0.f;
+		//cout << "animations[animId].keyframeDispl.size():" << animations[animId].keyframeDispl.size() << endl;
 		texCoordDispl = animations[animId].keyframeDispl[0];
 	}
 }

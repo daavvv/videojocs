@@ -34,7 +34,7 @@ void Scene::init()
 {
 	initShaders();
 	map = TileMap::createTileMap("levels/level01.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
-	
+	contador = 0;
 	player = new Player();
 	player->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));
@@ -45,11 +45,11 @@ void Scene::init()
 	enemy->setPosition(glm::vec2((INIT_PLAYER_X_TILES+4) * map->getTileSize(), INIT_PLAYER_X_TILES* map->getTileSize()));
 	enemy->setTileMap(map);
 	
-	boss = new Boss();
+	/*boss = new Boss();
 	boss->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 	boss->setPosition(glm::vec2((INIT_PLAYER_X_TILES + 4) * map->getTileSize(), INIT_PLAYER_X_TILES* map->getTileSize()));
 	boss->setTileMap(map);
-
+	*/
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
 	currentTime = 0.0f;
 
@@ -57,13 +57,19 @@ void Scene::init()
 
 void Scene::update(int deltaTime)
 {
+	cout << enemy->get_life() << endl;
+	/*if (enemy->get_life() <= 0.f) {
+		cout << "he matat el fill de putaaaa" << endl;
+		enemy;
+	}
+	if (enemy == NULL) cout << "pues perfectt"<< endl;*/
 	currentTime += deltaTime;
 	player->update(deltaTime);
 	glm::ivec2 posicio_player = player->getPosition();
-	map->update(deltaTime);
+	//map->update(deltaTime);
 
 	if(!ataca_enemic())	enemy->update(deltaTime, posicio_player.x, posicio_player.y);	
-	boss->update(deltaTime, posicio_player.x, posicio_player.y);
+	//boss->update(deltaTime, posicio_player.x, posicio_player.y);
 }
 
 bool Scene::ataca_enemic() {
@@ -73,19 +79,24 @@ bool Scene::ataca_enemic() {
 	if (((player->getPosition().y >= enemy->get_position().y) and (player->getPosition().y - map->getTileSize()) <= enemy->get_position().y) or ((player->getPosition().y <= enemy->get_position().y) and (player->getPosition().y + map->getTileSize()) >= enemy->get_position().y)) {
 		if ((player->getPosition().x > enemy->get_position().x) and (player->getPosition().x - map->getTileSize()) <= enemy->get_position().x) {
 			//cout << "et matari babyy" << endl;
-			if(int(currentTime)%50 == 0){
+			++contador;
+			if(int(contador)%50 == 0){
 				player->setLife(player->getLife() - 0.5f);
 				}
-			cout <<"holo " << !map->collisionMoveDown(enemy->get_position(), glm::ivec2(32, 32), &posy) << endl;
-			if(map->collisionMoveDown(enemy->get_position(), glm::ivec2(32, 32), &posy))return true;
+			/*if(map->collisionMoveDown(enemy->get_position(), glm::ivec2(32, 32), &posy))*/return true;
 		}
-		if ((player->getPosition().x <= enemy->get_position().x) and (player->getPosition().x + map->getTileSize()) >= enemy->get_position().x) {
+		else if ((player->getPosition().x <= enemy->get_position().x) and (player->getPosition().x + map->getTileSize()) >= enemy->get_position().x) {
 			//cout << "et matari babyy" << endl;
-			if (int(currentTime)% 50 == 0)player->setLife(player->getLife() - 0.5f);
-			cout << "holo " << map->collisionMoveDown(enemy->get_position(), glm::ivec2(32, 32), &posy) << endl;
-
-			if (map->collisionMoveDown(enemy->get_position(), glm::ivec2(32, 32), &posy))return true;
+			++contador;
+			if (int(contador)% 50 == 0)player->setLife(player->getLife() - 0.5f);
+			/*if (map->collisionMoveDown(enemy->get_position(), glm::ivec2(32, 32), &posy))*/return true;
 		}
+		else {
+			contador = 0;
+		}
+	}
+	else {
+		contador = 0;
 	}
 	return false;
 }
@@ -148,7 +159,7 @@ void Scene::render()
 	map->render();
 	player->render();
 	enemy->render();
-	boss->render();
+	//boss->render();
 
 }
 
@@ -197,6 +208,7 @@ void Scene::mouse_clicked(int button, int x, int y) {
 			if (((player->getPosition().y >= enemy->get_position().y) and (player->getPosition().y - map->getTileSize()) <= enemy->get_position().y) or ((player->getPosition().y <= enemy->get_position().y) and (player->getPosition().y + map->getTileSize()) >= enemy->get_position().y)) {
 				if ((player->getPosition().x > enemy->get_position().x) and (player->getPosition().x - map->getTileSize()) <= enemy->get_position().x) {
 					cout << "TE MATATTTTTTTTTTTTTTTTT" << endl;
+					enemy->set_life( 1.f);
 				}
 			}
 		}
@@ -204,6 +216,7 @@ void Scene::mouse_clicked(int button, int x, int y) {
 			if (((player->getPosition().y >= enemy->get_position().y) and (player->getPosition().y - map->getTileSize()) <= enemy->get_position().y) or ((player->getPosition().y <= enemy->get_position().y) and (player->getPosition().y + map->getTileSize()) >= enemy->get_position().y)) {
 				if ((player->getPosition().x < enemy->get_position().x) and (player->getPosition().x + map->getTileSize()) >= enemy->get_position().x) {
 					cout << "TE MATATTTTTTTTTTTTTTTTTTTTTTTTTT" << endl;
+					enemy->set_life(1.f);
 				}
 			}
 		}

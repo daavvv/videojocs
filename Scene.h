@@ -37,6 +37,7 @@ private:
 	void initShaders();
 
 private:
+	int contador;
 	Boss *boss;
 	TileMap *map;
 	Player *player;
