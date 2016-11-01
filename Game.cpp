@@ -221,7 +221,7 @@ void Game::mousePress(int button, int x, int y)
 		string type = "none";
 		if (ui.clickOnWeaponsBar(x, y, &type)) {
 			//do something
-			cout << "click on weapons's bar" << endl;
+			cout << "click on weapons's bar: " << type << endl;
 		}
 
 

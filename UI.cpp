@@ -605,6 +605,7 @@ void UI::updatePersonalItems(const vector<PersonalItem>& personalItemsFromPlayer
 		delete personalItems[i];
 	}
 
+	weaponTypes.clear();
 	personalItems.clear();
 	personalItemsTextures.clear();
 
@@ -623,7 +624,7 @@ void UI::updatePersonalItems(const vector<PersonalItem>& personalItemsFromPlayer
 		}
 		if (personalItemsFromPlayer[i].type == "axe") {
 			personalItemsTextures.push_back(axeTex);
-			weaponTypes.push_back("axe")
+			weaponTypes.push_back("axe");
 		}
 	}
 }
@@ -932,10 +933,20 @@ bool UI::clickOnWeaponsBar(int x, int y, string *type)
 	bottom = top + (WEAPONSINVENTORYRAWSCALEY*WEAPONSINVENTORYSCALE);
 
 
-	if (x >= left && x <= right && y >= top && y <= bottom) {
-		return true;
+	if (x >= left && x <= (right - ((WEAPONSINVENTORYRAWSCALEX*WEAPONSINVENTORYSCALE) / 2)) && y >= top && y <= bottom) {
+		if (weaponTypes.size() >= 1) {
+			*type = weaponTypes[0];
+			return true;
+		}
+		return false;
 	}
-	
+	if (x >= left + ((WEAPONSINVENTORYRAWSCALEX*WEAPONSINVENTORYSCALE) / 2) && x <= right && y >= top && y <= bottom) {
+		if (weaponTypes.size() == 2) {
+			*type = weaponTypes[1];
+			return true;
+		}
+		return false;
+	}
 	return false;
 
 }
