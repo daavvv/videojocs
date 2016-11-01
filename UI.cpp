@@ -49,6 +49,10 @@
 #define WEAPONSINVENTORYOFFSETX float(SCREEN_WIDTH/2)
 #define WEAPONSINVENTORYOFFSETY 50
 
+
+#define WEAPONSITEMRAWSCALEX 64.f
+#define WEAPONSITEMRAWSCALEY 64.f
+#define WEAPONSITEMSCALE 1
 #define WEAPONSITEMINVENTORYOFFSETX WEAPONSINVENTORYOFFSETX-((WEAPONSINVENTORYRAWSCALEX*WEAPONSINVENTORYSCALE)/4)
 #define WEAPONSITEMINVENTORYOFFSETY WEAPONSINVENTORYOFFSETY-((WEAPONSINVENTORYRAWSCALEY*WEAPONSINVENTORYSCALE)/2)
 #define WEAPONSINVENTORYITEMPADDINGX 5
@@ -607,7 +611,7 @@ void UI::updatePersonalItems(const vector<PersonalItem>& personalItemsFromPlayer
 	personalItems.clear();
 	personalItemsTextures.clear();
 
-	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(INVENTORYITEMRAWSCALEX, INVENTORYITEMRAWSCALEY) };
+	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(WEAPONSINVENTORYRAWSCALEX, WEAPONSINVENTORYRAWSCALEY) };
 	glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
 
 	for (int i = 0; i < personalItemsFromPlayer.size(); ++i) {
@@ -705,10 +709,10 @@ void UI::renderWeaponsInventory() {
 		UIProgram.use();
 		UIProgram.setUniformMatrix4f("projection", projection);
 		UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
-		modelview = glm::translate(glm::mat4(1.0f), glm::vec3(WEAPONSITEMINVENTORYOFFSETX + (i)*WEAPONSINVENTORYITEMPADDINGX, WEAPONSITEMINVENTORYOFFSETY + (i)*WEAPONSINVENTORYITEMPADDINGY, 0.f));
+		modelview = glm::translate(glm::mat4(1.0f), glm::vec3(WEAPONSITEMINVENTORYOFFSETX + i*(WEAPONSITEMRAWSCALEX*WEAPONSITEMSCALE), WEAPONSITEMINVENTORYOFFSETY, 0.f));
 		//modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
 		//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
-		modelview = glm::scale(modelview, glm::vec3(INVENTORYITEMSCALE, INVENTORYITEMSCALE, 0.f));
+		modelview = glm::scale(modelview, glm::vec3(WEAPONSITEMSCALE, WEAPONSITEMSCALE, 0.f));
 		modelview = glm::translate(modelview, glm::vec3(-32.f, -32.f, 0.f));
 		UIProgram.setUniformMatrix4f("modelview", modelview);
 		personalItems[i]->render(personalItemsTextures[i]);

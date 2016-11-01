@@ -941,6 +941,7 @@ int TileMap::digTile() {
 	tile = structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].ID;
 
 
+	/*
 	if (!structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].handbuilded) {
 
 		if (tile == DIRT) {
@@ -959,8 +960,9 @@ int TileMap::digTile() {
 	else {
 		structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].ID = 0;
 	}
+	*/
 
-
+	structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].ID = 0;
 	structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].isDiggable = false;
 	structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].isSolid = false;
 	prepareArrays();
