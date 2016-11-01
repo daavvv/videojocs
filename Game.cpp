@@ -90,9 +90,13 @@ void Game::render()
 	else if (instructionsWindowOpened){
 		//ui.renderMainMenu();
 	}
+	else if (scene.getPlayerLife() <= 0) {
+		ui.renderMainMenu(true);
+	}
 	else {
 		ui.renderMainMenu(false);
 	}
+
 }
 
 void Game::keyPressed(int key)
@@ -171,6 +175,7 @@ void Game::mousePress(int button, int x, int y)
 		if (success) {
 			if (menu == "play") {
 				gameInitialized = true;
+				scene.init();
 				return;
 			}
 			if (menu == "exit") {
