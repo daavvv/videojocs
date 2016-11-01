@@ -619,9 +619,11 @@ void UI::updatePersonalItems(const vector<PersonalItem>& personalItemsFromPlayer
 		personalItems.push_back(quad);
 		if (personalItemsFromPlayer[i].type == "sword") {
 			personalItemsTextures.push_back(swordTex);
+			weaponTypes.push_back("sword");
 		}
 		if (personalItemsFromPlayer[i].type == "axe") {
 			personalItemsTextures.push_back(axeTex);
+			weaponTypes.push_back("axe")
 		}
 	}
 }
@@ -926,13 +928,14 @@ bool UI::clickOnWeaponsBar(int x, int y, string *type)
 	double left, right, top, bottom;
 	left = WEAPONSINVENTORYOFFSETX - ((WEAPONSINVENTORYRAWSCALEX*WEAPONSINVENTORYSCALE)/2);
 	right = left + WEAPONSINVENTORYRAWSCALEX*WEAPONSINVENTORYSCALE;
-	top = WEAPONSINVENTORYOFFSETY - ((WEAPONSINVENTORYRAWSCALEY*WEAPONSINVENTORYSCALE) / 2);
+	top = WEAPONSINVENTORYOFFSETY - ((WEAPONSINVENTORYRAWSCALEY*WEAPONSINVENTORYSCALE));
 	bottom = top + (WEAPONSINVENTORYRAWSCALEY*WEAPONSINVENTORYSCALE);
 
 
 	if (x >= left && x <= right && y >= top && y <= bottom) {
 		return true;
 	}
+	
 	return false;
 
 }
