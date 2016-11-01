@@ -24,6 +24,11 @@
 #define INSTRUCTIONSBUTTONRAWSCALE 64.f
 #define INSTRUCTIONSBUTTONOFFSETY 190
 
+#define GOLDCOINSRAWSCALEX 64.f
+#define GOLDCOINSRAWSCALEY 64.f
+#define GOLDCOINSSCALE 0.3f
+#define GOLDCOINSOFFSETX 27
+#define GOLDCOINSOFFSETY 75
 
 
 
@@ -56,6 +61,7 @@
 #define EXITBUTTONIMGPRESSEDPATH "images/UI/exitButtonPressed.png"
 #define INSTRUCTIONSBUTTONIMGPATH "images/UI/instruccionsButton.png"
 #define INSTRUCTIONSBUTTONIMGPRESSEDPATH "images/UI/instruccionsButtonPressed.png"
+#define GOLDCOINSIMGPATH "images/UI/coins.png"
 
 
 #define INVENTORYITEMRAWSCALEX 64.f
@@ -94,6 +100,9 @@ void UI::init(){
 	}
 
 	if (instructionsButtonTex.loadFromFile(INSTRUCTIONSBUTTONIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	if (goldCoinsTex.loadFromFile(GOLDCOINSIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
 		cout << "loaded" << endl;
 	}
 
@@ -186,6 +195,11 @@ void UI::init(){
 	texCoords[0] = glm::vec2(0.f, 0.f); texCoords[1] = glm::vec2(1.f, 1.f);
 	addUIElement(geom, texCoords, UIProgram, "images/UI/UI_HEART_EMPTY.png");//2
 
+	//LOAD GOLD COINS
+	geom[0] = glm::vec2(0.f, 0.f);
+	geom[1] = glm::vec2(64.f, 64.f);
+	texCoords[0] = glm::vec2(0.f, 0.f); texCoords[1] = glm::vec2(1.f, 1.f);
+	goldCoins = TexturedQuad::createTexturedQuad(geom, texCoords, UIProgram);
 
 	//LOAD MATERIAL INVENTORY HUD
 	geom[0] = glm::vec2(0.f, 0.f);
@@ -223,6 +237,7 @@ void UI::init(){
 	geom[0] = glm::vec2(0.f, 0.f);
 	geom[1] = glm::vec2(INSTRUCTIONSBUTTONRAWSCALE, INSTRUCTIONSBUTTONRAWSCALE);
 	instructionsButton = TexturedQuad::createTexturedQuad(geom, texCoords, UIProgram);
+
 
 
 
@@ -441,6 +456,22 @@ void UI::renderCounters() {
 	}
 }
 
+void UI::renderGoldCoins(int goldCoinsAmount)
+{
+
+	glm::mat4 modelview;
+	UIProgram.use();
+	UIProgram.setUniformMatrix4f("projection", projection);
+	UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+	modelview = glm::translate(glm::mat4(1.0f), glm::vec3(GOLDCOINSOFFSETX,GOLDCOINSOFFSETY,0));
+	//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
+	modelview = glm::scale(modelview, glm::vec3(GOLDCOINSSCALE, GOLDCOINSSCALE, GOLDCOINSSCALE));
+	modelview = glm::translate(modelview, glm::vec3(-32.f, -32.f, 0.f));
+	UIProgram.setUniformMatrix4f("modelview", modelview);
+	goldCoins->render(goldCoinsTex);
+
+}
+
 
 
 
@@ -652,8 +683,9 @@ void UI::renderHearts(float life) {
 
 
 
-void UI::render(float playerlife){
+void UI::render(float playerlife,int goldCoins){
 	renderHearts(playerlife);
+	renderGoldCoins(goldCoins);
 	
 	//renderMaterialInventory();
 }

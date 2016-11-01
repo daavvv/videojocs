@@ -987,9 +987,55 @@ bool TileMap::Exists_platform(const glm::ivec2 &pos, const glm::ivec2 &size)
 
 }
 
+bool TileMap::isOverGoldCoin(const glm::ivec2 & playerPos, const glm::ivec2 & size)
+{
+
+	int tilex, tiley;
+	tilex = float(playerPos.x)/float(tileSize);
+	tiley = float(playerPos.y + size.y - 1) / float(tileSize);
+
+	if (background_objects[(tiley)*mapSize.x + tilex].ID == GOLD_COIN) {
+
+
+		background_objects[(tiley)*mapSize.x + tilex].ID = 0;
+
+		prepareBackgroundObjects(coordenadas, programa);
+
+		return true;
+	}
+	return false;
+}
 
 
 
+
+/*
+bool TileMap::bottomTileIsDiggable(const glm::ivec2 &playerPos, const glm::ivec2 &size)
+{
+
+int tilex, tiley;
+
+tilex = playerPos.x / tileSize;
+tiley = (playerPos.y + size.y - 1) / tileSize;
+
+
+if (structMap[(tiley+1)*mapSize.x+tilex].isDiggable && structMap[(tiley + 1)*mapSize.x + tilex].isSolid){
+//cout << "Is diggable" << endl;
+tileToBeDigged.x = tilex;
+tileToBeDigged.y = tiley+1;
+
+structMap[(tiley + 1)*mapSize.x + tilex].isDiggable = false;
+structMap[(tiley + 1)*mapSize.x + tilex].ID = 0;
+structMap[(tiley + 1)*mapSize.x + tilex].isSolid = false;
+
+return true;
+	}
+	else {
+		//cout << "Is not diggable" << endl;
+	}
+	return false;
+}
+*/
 
 
 

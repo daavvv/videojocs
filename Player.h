@@ -41,13 +41,14 @@ public:
 	bool isEnoughAmount(int tileID);
 	void substractOne(int tileID);
 	float getLife();
+	int getGoldCoins();
 	vector<Item> getBag();
 	void setLife(float life);
 	glm::ivec2 getPosition();
 	
 private:
 	bool bJumping,bdownLadder,bdigging, bbuilding;
-	int dig, build, buildTile;
+	int dig, build, buildTile, goldcoins;
 	glm::ivec2 tileMapDispl, posPlayer;
 	int jumpAngle, startY;
 	Texture spritesheet;

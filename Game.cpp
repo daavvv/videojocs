@@ -46,14 +46,13 @@ void Game::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
-
 	if (gameInitialized) {
 
 		float playerlife = scene.getPlayerLife();
+		int goldCoins = scene.getGoldCoins();
 		if (playerlife > 0) {
 			scene.render();
-			ui.render(playerlife);
+			ui.render(playerlife,goldCoins);
 
 			if (getKey('i')) {
 				if (MaterialsInventory == 4 && !bMaterialInventoryOpened) {

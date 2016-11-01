@@ -103,6 +103,11 @@ float Scene::getPlayerLife() {
 	return player->getLife();
 }
 
+int Scene::getGoldCoins()
+{
+	return player->getGoldCoins();
+}
+
 vector<Item> Scene::getPlayerBag()
 {
 	return player->getBag();

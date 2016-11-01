@@ -28,6 +28,7 @@ public:
 	void render();
 	void setBuildTile(int tileID);
 	float getPlayerLife();
+	int getGoldCoins();
 	vector<Item> getPlayerBag();
 	
 	

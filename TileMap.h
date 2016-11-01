@@ -19,6 +19,7 @@
 #define GRASS_CAVED 134
 #define DIRT 220
 #define DIRT_CAVED 113
+#define GOLD_COIN 144
 
 struct Tile {
 	Tile():isSolid(false), ID(0), isDiggable(false), handbuilded(false) {}
@@ -58,6 +59,7 @@ public:
 		return mapSize;
 	}
 	bool Exists_platform(const glm::ivec2 &pos, const glm::ivec2 &size);
+	bool isOverGoldCoin(const glm::ivec2 &playerPos, const glm::ivec2 &size);
 
 	glm::vec2 get_animation(int ID, int estat, int instant_estat);
 	bool collisionMoveLeft(const glm::ivec2 &pos, const glm::ivec2 &size) const;

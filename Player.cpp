@@ -72,6 +72,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 {
 	
 	//glutMouseFunc(OnMouseClick);
+	goldcoins = 0;
 	buildTile = 0;
 	dig = 2;
 	build = 2;
@@ -126,6 +127,11 @@ float Player::getLife() {
 	return this->life;
 }
 
+int Player::getGoldCoins()
+{
+	return this->goldcoins;
+}
+
 void Player::setLife(float life) {
 	this->life = life;
 }
@@ -152,6 +158,12 @@ void Player::update(int deltaTime)
 	/*Game::instance().mouseMove() {
 
 	}*/
+
+	if (map->isOverGoldCoin(posPlayer, glm::ivec2(32, 32))) {
+		goldcoins++;
+	}
+
+
 
 	sprite->update(deltaTime);
 
@@ -365,7 +377,9 @@ void Player::addItemToBag(int tileID) {
 	else {
 		for (int i = 0; i < bag.size(); ++i) {
 			if (tileID == bag[i].ID) {
-				bag[i].amount = bag[i].amount + 1;
+				if (bag[i].amount < 9) {
+					bag[i].amount = bag[i].amount + 1;
+				}
 			}
 		}
 	}
