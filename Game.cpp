@@ -201,6 +201,7 @@ void Game::mousePress(int button, int x, int y)
 			if (menu == "play") {
 				gameInitialized = true;
 				scene.init();
+				ui.init();
 				return;
 			}
 			if (menu == "exit") {

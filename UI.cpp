@@ -135,6 +135,11 @@ void UI::init(){
 	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(128.f, 128.f) };
 	glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
 
+
+	personalItems.clear();
+	weaponTypes.clear();
+
+
 	selectedItem = -1;
 	playButtonOver = false;
 	swordPopupOpened = false;

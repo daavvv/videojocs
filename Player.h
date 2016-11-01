@@ -57,6 +57,7 @@ public:
 	glm::ivec2 getPosition();
 	
 private:
+	int attackpower;
 	string weapon;
 	bool bJumping,bdownLadder,bdigging, bbuilding;
 	int dig, build, buildTile, goldcoins;

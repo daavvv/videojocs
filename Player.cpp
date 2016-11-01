@@ -80,6 +80,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 {
 	
 	//glutMouseFunc(OnMouseClick);
+	attackpower = 1;
 	weapon = "none";
 	goldcoins = 0;
 	buildTile = 0;
@@ -199,10 +200,12 @@ void Player::update(int deltaTime)
 	}
 
 
+	cout << weapon << endl;
 
 	sprite->update(deltaTime);
 
 	if (weapon == "sword") {
+		attackpower = 5;
 		sword->update(deltaTime);
 		int x = posPlayer.x+72;
 		int y = posPlayer.y-95;
@@ -215,6 +218,7 @@ void Player::update(int deltaTime)
 	}
 
 	if (weapon == "axe") {
+		attackpower = 10;
 		axe->update(deltaTime);
 		int x = posPlayer.x + 72;
 		int y = posPlayer.y - 95;
@@ -482,7 +486,7 @@ void Player::render()
 	if (weapon == "sword") {
 		sword->render();
 	}
-	if (weapon == "sword") {
+	if (weapon == "axe") {
 		axe->render();
 	}
 }
