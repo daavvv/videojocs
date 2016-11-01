@@ -15,6 +15,9 @@
 #define FALL_STEP 4
 #define DIGCOOLDOWN 6250
 
+#define SWORDONPLAYERIMGPATH "images/UI/swordOnPlayer.png"
+#define AXEONPLAYERIMGPATH "images/ui/axeOnPlayer.png"
+
 enum PlayerAnims
 {
 	STAND_LEFT, STAND_RIGHT, MOVE_LEFT, MOVE_RIGHT
@@ -77,6 +80,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 {
 	
 	//glutMouseFunc(OnMouseClick);
+	weapon = "none";
 	goldcoins = 0;
 	buildTile = 0;
 	dig = 2;
@@ -88,6 +92,9 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	bbuilding = false;
 	digCounter = DIGCOOLDOWN;
 	buildCounter = DIGCOOLDOWN;
+
+	swordTex.loadFromFile(SWORDONPLAYERIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA);
+	axeTex.loadFromFile(AXEONPLAYERIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA);
 
 
 	spritesheet.loadFromFile("images/player1.png", TEXTURE_PIXEL_FORMAT_RGBA);
@@ -135,6 +142,11 @@ float Player::getLife() {
 int Player::getGoldCoins()
 {
 	return this->goldcoins;
+}
+
+void Player::setWeapon(string type)
+{
+	this->weapon = type;
 }
 
 void Player::setLife(float life) {

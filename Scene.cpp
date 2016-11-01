@@ -108,6 +108,11 @@ int Scene::getGoldCoins()
 	return player->getGoldCoins();
 }
 
+void Scene::setPlayerWeapon(string type)
+{
+	player->setWeapon(type);
+}
+
 void Scene::substractMaterialToPlayer(int ID, int amount)
 {
 	player->substractMaterialToPlayer(ID,amount);

@@ -30,6 +30,7 @@ public:
 	void addPersonalItemToPlayer(bool weapon, string type);
 	float getPlayerLife();
 	int getGoldCoins();
+	void setPlayerWeapon(string type);
 	void substractMaterialToPlayer(int ID, int amount);
 	vector<Item> getPlayerBag();
 	vector<PersonalItem> getPlayerPersonalItems();

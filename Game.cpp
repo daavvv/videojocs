@@ -222,6 +222,9 @@ void Game::mousePress(int button, int x, int y)
 		if (ui.clickOnWeaponsBar(x, y, &type)) {
 			//do something
 			cout << "click on weapons's bar: " << type << endl;
+			if (type != "none") {
+				scene.setPlayerWeapon(type);
+			}
 		}
 
 

@@ -50,18 +50,24 @@ public:
 	void substractMaterialToPlayer(int ID, int amount);
 	float getLife();
 	int getGoldCoins();
+	void setWeapon(string type);
 	vector<Item> getBag();
 	vector<PersonalItem> getPersonalItems();
 	void setLife(float life);
 	glm::ivec2 getPosition();
 	
 private:
+	string weapon;
 	bool bJumping,bdownLadder,bdigging, bbuilding;
 	int dig, build, buildTile, goldcoins;
 	glm::ivec2 tileMapDispl, posPlayer;
 	int jumpAngle, startY;
 	Texture spritesheet;
+	Texture swordTex;
+	Texture axeTex;
 	Sprite *sprite;
+	Sprite *sword;
+	Sprite *axe;
 	TileMap *map;
 	float life;
 	int digCounter,buildCounter;
