@@ -20,6 +20,8 @@
 #define DIRT 220
 #define DIRT_CAVED 113
 #define GOLD_COIN 144
+#define STONE 88
+#define STONE_CAVED 286
 
 struct Tile {
 	Tile():isSolid(false), ID(0), isDiggable(false), handbuilded(false) {}

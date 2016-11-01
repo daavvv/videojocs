@@ -291,6 +291,13 @@ bool TileMap::loadLevelTest(const string &levelFile)
 						tile.instant_estat = 0;
 						tile.timeAnimation = 0;
 					}
+					if (tile.ID == STONE) {
+						tile.isSolid = true;
+						tile.isDiggable = true;
+						tile.estat = 1;
+						tile.instant_estat = 0;
+						tile.timeAnimation = 0;
+					}
 
 					if (tile.ID == 0 || tile.ID == WATER || tile.ID == WATER_1){
 						tile.isSolid = false;
@@ -727,7 +734,7 @@ bool TileMap::canJump(const glm::ivec2 &playerPos, const glm::ivec2 &size) const
 
 	tiley = tiley - 1;
 
-	if (structMap[(tiley)*mapSize.x + tilex].ID == GRASS || structMap[(tiley)*mapSize.x + tilex].ID == DIRT || structMap[(tiley)*mapSize.x + tilex].ID == SUPPORT_TERRAIN) {
+	if (structMap[(tiley)*mapSize.x + tilex].ID == GRASS || structMap[(tiley)*mapSize.x + tilex].ID == DIRT || structMap[(tiley)*mapSize.x + tilex].ID == SUPPORT_TERRAIN || structMap[(tiley)*mapSize.x + tilex].ID == STONE) {
 		return false;
 	}
 
@@ -933,6 +940,9 @@ int TileMap::digTile() {
 		if (tile == GRASS) {
 			structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].ID = GRASS_CAVED;
 		}
+		if (tile == STONE) {
+			structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].ID = DIRT_CAVED;
+		}
 	}
 	else {
 		structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].ID = 0;
@@ -940,10 +950,7 @@ int TileMap::digTile() {
 
 
 	structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].isDiggable = false;
-	//structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].ID = 0;
-	//structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].estat = 2;
 	structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].isSolid = false;
-	//sprite->setPosition(glm::vec2(float((tileToBeDigged.x+2)*tileSize), float((tileToBeDigged.y-3)*tileSize)));
 	prepareArrays();
 	cabar = false;
 

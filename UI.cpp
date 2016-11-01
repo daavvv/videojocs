@@ -46,6 +46,7 @@
 
 #define DIRTIMGPATH "images/UI/dirt.png"
 #define GRASSIMGPATH "images/UI/grass.png"
+#define STONEIMGPATH "images/UI/stone.png"
 
 #define ZEROIMGPATH "images/UI/numbers/hud_0.png"
 #define ONEIMGPATH "images/UI/numbers/hud_1.png"
@@ -149,6 +150,12 @@ void UI::init(){
 	}
 
 	if (grass.loadFromFile(GRASSIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	else {
+		cout << "not loaded" << endl;
+	}
+	if (stone.loadFromFile(STONEIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
 		cout << "loaded" << endl;
 	}
 	else {
@@ -452,6 +459,9 @@ void UI::addInventoryItem(glm::vec2 geom[2], glm::vec2 texCoords[2], ShaderProgr
 	if (type == "grass") {
 		inventoryTextures.push_back(grass);
 	}
+	if (type == "stone") {
+		inventoryTextures.push_back(stone);
+	}
 }
 
 
@@ -525,6 +535,10 @@ void UI::updateBag(const vector<Item>& bag)
 		}
 		if (bag[i].ID == GRASS && bag[i].amount > 0) {
 			addInventoryItem(geom, texCoords, UIProgram, "grass", bag[i].amount);//0
+			ids.push_back(bag[i].ID);
+		}
+		if (bag[i].ID == STONE && bag[i].amount > 0) {
+			addInventoryItem(geom, texCoords, UIProgram, "stone", bag[i].amount);//0
 			ids.push_back(bag[i].ID);
 		}
 	}
