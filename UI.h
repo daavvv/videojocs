@@ -29,6 +29,7 @@ public:
 	void init();
 	void update(int deltaTime);
 	void updateBag(const vector<Item>& bag);
+	void updatePersonalItems(const vector<PersonalItem>& personalItems);
 	void render(float playerlife,int goldCoins);
 	void renderMainMenu(bool dead);
 	void initShaders();
@@ -63,11 +64,13 @@ private:
 	TexturedQuad* playButton;
 	TexturedQuad* exitButton;
 	TexturedQuad* instructionsButton;
+	Texture swordTex, axeTex;
 	Texture onealt, twoalt, threealt, fouralt, fivealt, sixalt, sevenalt, eightalt, ninealt, tenalt, twentyalt, thirtyalt, fortyalt, fiftyalt, sixtyalt, seventyalt, eightyalt, ninetyalt, onehundredalt;
 	Texture weaponsInventoryTex,swordPopupTex,axePopupTex,dirt, grass, stone, iron, zero, one, two, three, four, five, six, seven, eight, nine, ten, hightlight, menuBackgroundTex, playButtonTex, playAgainButtonTex, instructionsButtonTex, exitButtonTex, goldCoinsTex, goldCoinsCounterTex;
 	vector<TexturedQuad*> UIElements, MaterialsLeftBar,CountersLeftBar;
 	vector<TexturedQuad*> Inventory;
 	vector<TexturedQuad*> CountersBox;
+	vector<TexturedQuad*> personalItems;
 	vector<int> ids;
 	vector<Texture> textures, inventoryTextures, Counters;
 	int selectedItem,selectedItemID;

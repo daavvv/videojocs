@@ -118,6 +118,11 @@ vector<Item> Scene::getPlayerBag()
 	return player->getBag();
 }
 
+vector<PersonalItem> Scene::getPlayerPersonalItems()
+{
+	return player->getPersonalItems();
+}
+
 
 void Scene::render()
 {

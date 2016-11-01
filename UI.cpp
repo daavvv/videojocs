@@ -43,8 +43,8 @@
 #define WEAPONOFFSETY 150
 
 
-#define WEAPONSINVENTORYRAWSCALEX 64*3
-#define WEAPONSINVENTORYRAWSCALEY 64.f
+#define WEAPONSINVENTORYRAWSCALEX 32*2
+#define WEAPONSINVENTORYRAWSCALEY 32.f
 #define WEAPONSINVENTORYSCALE 1
 #define WEAPONSINVENTORYOFFSETX float(SCREEN_WIDTH/2)
 #define WEAPONSINVENTORYOFFSETY 50
@@ -85,6 +85,8 @@
 #define SWORDPOPUPIMGPATH "images/UI/swordweaponPopup.png"
 #define AXEPOPUPIMGPATH "images/UI/axeweaponPopup.png"
 #define WEAPONSINVENTORY "images/UI/weaponsInventory.png"
+#define SWORDIMGPATH "images/UI/sword.png"
+#define AXEIMGPATH "images/UI/axe.png"
 
 
 
@@ -162,6 +164,14 @@ void UI::init(){
 	}
 
 	if (weaponsInventoryTex.loadFromFile(WEAPONSINVENTORY, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+
+	if (swordTex.loadFromFile(SWORDIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+
+	if (axeTex.loadFromFile(AXEIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
 		cout << "loaded" << endl;
 	}
 
@@ -578,6 +588,31 @@ void UI::update(int deltaTime){
 	currentTime += deltaTime;
 }
 
+
+void UI::updatePersonalItems(const vector<PersonalItem>& personalItems)
+{
+
+	for (int i = 0; i < personalItems.size(); ++i) {
+
+	}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 void UI::updateBag(const vector<Item>& bag)
 {
 
@@ -634,6 +669,7 @@ void UI::updateBag(const vector<Item>& bag)
 
 
 
+
 void UI::renderWeaponsInventory() {
 
 	glm::mat4 modelview;
@@ -670,6 +706,12 @@ void UI::renderMaterialInventory() {
 	renderObjectsInInventory();
 	renderCounters();
 }
+
+
+
+
+
+
 
 
 void UI::renderObjectsInInventory() {

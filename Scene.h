@@ -32,6 +32,7 @@ public:
 	int getGoldCoins();
 	void substractMaterialToPlayer(int ID, int amount);
 	vector<Item> getPlayerBag();
+	vector<PersonalItem> getPlayerPersonalItems();
 	
 	
 

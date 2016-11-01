@@ -61,6 +61,11 @@ vector<Item> Player::getBag() {
 	return this->bag;
 }
 
+vector<PersonalItem> Player::getPersonalItems()
+{
+	return personalItems;
+}
+
 
 void Player::loadSprite() {
 

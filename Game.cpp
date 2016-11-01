@@ -230,6 +230,8 @@ void Game::mousePress(int button, int x, int y)
 					scene.addPersonalItemToPlayer(true, "axe");
 					scene.substractMaterialToPlayer(IRON, 20);
 				}
+				vector<PersonalItem> p = scene.getPlayerPersonalItems();
+				ui.updatePersonalItems(p);
 			}
 		}
 

@@ -51,6 +51,7 @@ public:
 	float getLife();
 	int getGoldCoins();
 	vector<Item> getBag();
+	vector<PersonalItem> getPersonalItems();
 	void setLife(float life);
 	glm::ivec2 getPosition();
 	
