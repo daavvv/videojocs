@@ -43,6 +43,7 @@ public:
 	bool clickOnInventoryItem(int x, int y, int *tile);
 	bool clickOnMenu(int x, int y, string *menu, bool dead);
 	bool clickOnPopup(int x, int y, bool dead);
+	bool clickOnWeaponsBar(int x, int y, string *type);
 	void setupLeftMaterialBar(ShaderProgram &program);
 	void addUIElement(glm::vec2 geom[2], glm::vec2 texCoords[2], ShaderProgram &program, string path);
 	void addInventoryItem(glm::vec2 geom[2], glm::vec2 texCoords[2], ShaderProgram &program, string type, int amount);

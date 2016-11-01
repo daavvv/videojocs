@@ -920,6 +920,26 @@ bool UI::clickOnPopup(int x, int y, bool dead)
 	return false;
 }
 
+bool UI::clickOnWeaponsBar(int x, int y, string *type)
+{
+
+	double left, right, top, bottom;
+	left = WEAPONSINVENTORYOFFSETX - ((WEAPONSINVENTORYRAWSCALEX*WEAPONSINVENTORYSCALE)/2);
+	right = left + WEAPONSINVENTORYRAWSCALEX*WEAPONSINVENTORYSCALE;
+	top = WEAPONSINVENTORYOFFSETY - ((WEAPONSINVENTORYRAWSCALEY*WEAPONSINVENTORYSCALE) / 2);
+	bottom = top + (WEAPONSINVENTORYRAWSCALEY*WEAPONSINVENTORYSCALE);
+
+
+	if (x >= left && x <= right && y >= top && y <= bottom) {
+		return true;
+	}
+	return false;
+
+}
+
+
+
+
 
 
 
