@@ -52,14 +52,11 @@
 
 #define WEAPONSITEMRAWSCALEX 64.f
 #define WEAPONSITEMRAWSCALEY 64.f
-#define WEAPONSITEMSCALE 1
+#define WEAPONSITEMSCALE 0.5
 #define WEAPONSITEMINVENTORYOFFSETX WEAPONSINVENTORYOFFSETX-((WEAPONSINVENTORYRAWSCALEX*WEAPONSINVENTORYSCALE)/4)
 #define WEAPONSITEMINVENTORYOFFSETY WEAPONSINVENTORYOFFSETY-((WEAPONSINVENTORYRAWSCALEY*WEAPONSINVENTORYSCALE)/2)
 #define WEAPONSINVENTORYITEMPADDINGX 5
 #define WEAPONSINVENTORYITEMPADDINGY 0
-
-
-
 
 #define MATERIALSUIOFFSETX -35
 #define MATERIALSUIOFFSETY 10
@@ -611,7 +608,7 @@ void UI::updatePersonalItems(const vector<PersonalItem>& personalItemsFromPlayer
 	personalItems.clear();
 	personalItemsTextures.clear();
 
-	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(WEAPONSINVENTORYRAWSCALEX, WEAPONSINVENTORYRAWSCALEY) };
+	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(WEAPONSITEMRAWSCALEX, WEAPONSITEMRAWSCALEY) };
 	glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
 
 	for (int i = 0; i < personalItemsFromPlayer.size(); ++i) {
