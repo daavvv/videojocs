@@ -26,9 +26,15 @@
 
 #define GOLDCOINSRAWSCALEX 64.f
 #define GOLDCOINSRAWSCALEY 64.f
-#define GOLDCOINSSCALE 0.3f
-#define GOLDCOINSOFFSETX 27
+#define GOLDCOINSSCALE 0.5f
+#define GOLDCOINSOFFSETX 30
 #define GOLDCOINSOFFSETY 75
+
+#define GOLDCOINSCOUNTERRAWSCALEX 64.f
+#define GOLDCOINSCOUNTERRAWSCALEY 64.f
+#define GOLDCOINSCOUNTERSCALE 0.3f
+#define GOLDCOINSCOUNTEROFFSETX GOLDCOINSOFFSETX + 35
+#define GOLDCOINSCOUNTEROFFSETY GOLDCOINSOFFSETY
 
 
 
@@ -66,25 +72,25 @@
 
 
 
-#define ONEALT "images/numbers_alt/one.png"
-#define TWOALT "images/numbers_alt/two.png"
-#define THREEALT "images/numbers_alt/three.png"
-#define FOURALT "images/numbers_alt/four.png"
-#define FIVEALT "images/numbers_alt/five.png"
-#define SIXALT "images/numbers_alt/six.png"
-#define SEVENALT "images/numbers_alt/seven.png"
-#define EIGHTALT "images/numbers_alt/eight.png"
-#define NINEALT "images/numbers_alt/nine.png"
-#define TENALT "images/numbers_alt/ten.png"
-#define TWENTYALT "images/numbers_alt/twenty.png"
-#define THIRTYALT "images/numbers_alt/thirty.png"
-#define FORTYALT "images/numbers_alt/forty.png"
-#define FIFTYALT "images/numbers_alt/fifty.png"
-#define SIXTYALT "images/numbers_alt/sixty.png"
-#define SEVENTYALT "images/numbers_alt/seventy.png"
-#define EIGHTYALT "images/numbers_alt/eighty.png"
-#define NINETYALT "images/numbers_alt/ninety.png"
-#define ONEHUNDREDALT "images/numbers_alt/one-hundred.png"
+#define ONEALT "images/UI/numbers_alt/one.png"
+#define TWOALT "images/UI/numbers_alt/two.png"
+#define THREEALT "images/UI/numbers_alt/three.png"
+#define FOURALT "images/UI/numbers_alt/four.png"
+#define FIVEALT "images/UI/numbers_alt/five.png"
+#define SIXALT "images/UI/numbers_alt/six.png"
+#define SEVENALT "images/UI/numbers_alt/seven.png"
+#define EIGHTALT "images/UI/numbers_alt/eight.png"
+#define NINEALT "images/UI/numbers_alt/nine.png"
+#define TENALT "images/UI/numbers_alt/ten.png"
+#define TWENTYALT "images/UI/numbers_alt/twenty.png"
+#define THIRTYALT "images/UI/numbers_alt/thirty.png"
+#define FORTYALT "images/UI/numbers_alt/forty.png"
+#define FIFTYALT "images/UI/numbers_alt/fifty.png"
+#define SIXTYALT "images/UI/numbers_alt/sixty.png"
+#define SEVENTYALT "images/UI/numbers_alt/seventy.png"
+#define EIGHTYALT "images/UI/numbers_alt/eighty.png"
+#define NINETYALT "images/UI/numbers_alt/ninety.png"
+#define ONEHUNDREDALT "images/UI/numbers_alt/one-hundred.png"
 
 
 
@@ -326,33 +332,6 @@ void UI::init(){
 		cout << "not loaded" << endl;
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	//LOAD HEARTS
 	texCoords[0] = glm::vec2(0.f, 0.f); texCoords[1] = glm::vec2(1.f,1.f); 
 	addUIElement(geom, texCoords, UIProgram, "images/UI/UI_HEART_FULL.png");//0
@@ -366,6 +345,12 @@ void UI::init(){
 	geom[1] = glm::vec2(64.f, 64.f);
 	texCoords[0] = glm::vec2(0.f, 0.f); texCoords[1] = glm::vec2(1.f, 1.f);
 	goldCoins = TexturedQuad::createTexturedQuad(geom, texCoords, UIProgram);
+
+	//LOAD GOLD COINS COUNTER
+	geom[0] = glm::vec2(0.f, 0.f);
+	geom[1] = glm::vec2(64.f, 64.f);
+	texCoords[0] = glm::vec2(0.f, 0.f); texCoords[1] = glm::vec2(1.f, 1.f);
+	goldCoinsCounter = TexturedQuad::createTexturedQuad(geom, texCoords, UIProgram);
 
 	//LOAD MATERIAL INVENTORY HUD
 	geom[0] = glm::vec2(0.f, 0.f);
@@ -625,17 +610,87 @@ void UI::renderCounters() {
 void UI::renderGoldCoins(int goldCoinsAmount)
 {
 
-	glm::mat4 modelview;
-	UIProgram.use();
-	UIProgram.setUniformMatrix4f("projection", projection);
-	UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
-	modelview = glm::translate(glm::mat4(1.0f), glm::vec3(GOLDCOINSOFFSETX,GOLDCOINSOFFSETY,0));
-	//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
-	modelview = glm::scale(modelview, glm::vec3(GOLDCOINSSCALE, GOLDCOINSSCALE, GOLDCOINSSCALE));
-	modelview = glm::translate(modelview, glm::vec3(-32.f, -32.f, 0.f));
-	UIProgram.setUniformMatrix4f("modelview", modelview);
-	goldCoins->render(goldCoinsTex);
 
+	if (goldCoinsAmount > 0) {
+		glm::mat4 modelview;
+		UIProgram.use();
+		UIProgram.setUniformMatrix4f("projection", projection);
+		UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+		modelview = glm::translate(glm::mat4(1.0f), glm::vec3(GOLDCOINSOFFSETX, GOLDCOINSOFFSETY, 0));
+		//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
+		modelview = glm::scale(modelview, glm::vec3(GOLDCOINSSCALE, GOLDCOINSSCALE, GOLDCOINSSCALE));
+		modelview = glm::translate(modelview, glm::vec3(-32.f, -32.f, 0.f));
+		UIProgram.setUniformMatrix4f("modelview", modelview);
+		goldCoins->render(goldCoinsTex);
+
+		
+		UIProgram.use();
+		UIProgram.setUniformMatrix4f("projection", projection);
+		UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+		modelview = glm::translate(glm::mat4(1.0f), glm::vec3(GOLDCOINSCOUNTEROFFSETX, GOLDCOINSCOUNTEROFFSETY, 0));
+		//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
+		modelview = glm::scale(modelview, glm::vec3(GOLDCOINSCOUNTERSCALE, GOLDCOINSCOUNTERSCALE, 0));
+		modelview = glm::translate(modelview, glm::vec3(-32.f, -32.f, 0.f));
+		UIProgram.setUniformMatrix4f("modelview", modelview);
+
+		if (goldCoinsAmount == 1) {
+			goldCoinsCounter->render(onealt); // TODO 
+		}
+		if (goldCoinsAmount == 2) {
+			goldCoinsCounter->render(twoalt); // TODO 
+		}
+		if (goldCoinsAmount == 3) {
+			goldCoinsCounter->render(threealt); // TODO 
+		}
+		if (goldCoinsAmount == 4) {
+			goldCoinsCounter->render(fouralt); // TODO 
+		}
+		if (goldCoinsAmount == 5) {
+			goldCoinsCounter->render(fivealt); // TODO 
+		}
+		if (goldCoinsAmount == 6) {
+			goldCoinsCounter->render(sixalt); // TODO 
+		}
+		if (goldCoinsAmount == 7) {
+			goldCoinsCounter->render(sevenalt); // TODO 
+		}
+		if (goldCoinsAmount == 8) {
+			goldCoinsCounter->render(eightalt); // TODO 
+		}
+		if (goldCoinsAmount == 9) {
+			goldCoinsCounter->render(ninealt); // TODO 
+		}
+		if (goldCoinsAmount >= 10 && goldCoinsAmount < 20) {
+			goldCoinsCounter->render(tenalt); // TODO 
+		}
+		if (goldCoinsAmount >= 20 && goldCoinsAmount < 30) {
+			goldCoinsCounter->render(twentyalt); // TODO 
+		}
+		if (goldCoinsAmount >= 30 && goldCoinsAmount < 40) {
+			goldCoinsCounter->render(thirtyalt); // TODO 
+		}
+		if (goldCoinsAmount >= 40 && goldCoinsAmount < 50) {
+			goldCoinsCounter->render(fortyalt); // TODO 
+		}
+		if (goldCoinsAmount >= 50 && goldCoinsAmount < 60) {
+			goldCoinsCounter->render(fiftyalt); // TODO 
+		}
+		if (goldCoinsAmount >= 60 && goldCoinsAmount < 70) {
+			goldCoinsCounter->render(sixtyalt); // TODO 
+		}
+		if (goldCoinsAmount >= 70 && goldCoinsAmount < 80) {
+			goldCoinsCounter->render(seventyalt); // TODO 
+		}
+		if (goldCoinsAmount >= 80 && goldCoinsAmount < 90) {
+			goldCoinsCounter->render(eightyalt); // TODO 
+		}
+		if (goldCoinsAmount >= 90 && goldCoinsAmount < 100) {
+			goldCoinsCounter->render(ninetyalt); // TODO 
+		}
+		if (goldCoinsAmount == 100) {
+			goldCoinsCounter->render(onehundredalt); // TODO 
+		}
+	}
 }
 
 

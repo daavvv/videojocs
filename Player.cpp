@@ -160,7 +160,9 @@ void Player::update(int deltaTime)
 	}*/
 
 	if (map->isOverGoldCoin(posPlayer, glm::ivec2(32, 32))) {
-		goldcoins++;
+		if (goldcoins < 100) {
+			goldcoins++;
+		}
 	}
 
 
