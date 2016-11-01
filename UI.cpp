@@ -49,6 +49,13 @@
 #define WEAPONSINVENTORYOFFSETX float(SCREEN_WIDTH/2)
 #define WEAPONSINVENTORYOFFSETY 50
 
+#define WEAPONSITEMINVENTORYOFFSETX WEAPONSINVENTORYOFFSETX-((WEAPONSINVENTORYRAWSCALEX*WEAPONSINVENTORYSCALE)/4)
+#define WEAPONSITEMINVENTORYOFFSETY WEAPONSINVENTORYOFFSETY-((WEAPONSINVENTORYRAWSCALEY*WEAPONSINVENTORYSCALE)/2)
+#define WEAPONSINVENTORYITEMPADDINGX 5
+#define WEAPONSINVENTORYITEMPADDINGY 0
+
+
+
 
 #define MATERIALSUIOFFSETX -35
 #define MATERIALSUIOFFSETY 10
@@ -589,27 +596,34 @@ void UI::update(int deltaTime){
 }
 
 
-void UI::updatePersonalItems(const vector<PersonalItem>& personalItems)
+void UI::updatePersonalItems(const vector<PersonalItem>& personalItemsFromPlayer)
 {
 
 	for (int i = 0; i < personalItems.size(); ++i) {
-
+		this->personalItems[i]->free();
+		delete personalItems[i];
 	}
 
+	personalItems.clear();
+	personalItemsTextures.clear();
 
+	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(INVENTORYITEMRAWSCALEX, INVENTORYITEMRAWSCALEY) };
+	glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
 
+	for (int i = 0; i < personalItemsFromPlayer.size(); ++i) {
+
+		cout << personalItemsFromPlayer[i].type << endl;
+
+		TexturedQuad* quad = TexturedQuad::createTexturedQuad(geom, texCoords, UIProgram);
+		personalItems.push_back(quad);
+		if (personalItemsFromPlayer[i].type == "sword") {
+			personalItemsTextures.push_back(swordTex);
+		}
+		if (personalItemsFromPlayer[i].type == "axe") {
+			personalItemsTextures.push_back(axeTex);
+		}
+	}
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -684,7 +698,25 @@ void UI::renderWeaponsInventory() {
 	modelview = glm::translate(modelview, glm::vec3(-32.f, -32.f, 0.f));
 	UIProgram.setUniformMatrix4f("modelview", modelview);
 	weaponsInventory->render(weaponsInventoryTex);
+
+
+	for (int i = 0; i < personalItems.size(); ++i) {
+		glm::mat4 modelview;
+		UIProgram.use();
+		UIProgram.setUniformMatrix4f("projection", projection);
+		UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+		modelview = glm::translate(glm::mat4(1.0f), glm::vec3(WEAPONSITEMINVENTORYOFFSETX + (i)*WEAPONSINVENTORYITEMPADDINGX, WEAPONSITEMINVENTORYOFFSETY + (i)*WEAPONSINVENTORYITEMPADDINGY, 0.f));
+		//modelview = glm::translate(modelview, glm::vec3(64.f, 64.f, 0.f));
+		//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
+		modelview = glm::scale(modelview, glm::vec3(INVENTORYITEMSCALE, INVENTORYITEMSCALE, 0.f));
+		modelview = glm::translate(modelview, glm::vec3(-32.f, -32.f, 0.f));
+		UIProgram.setUniformMatrix4f("modelview", modelview);
+		personalItems[i]->render(personalItemsTextures[i]);
+	}
+
 }
+
+
 
 
 
