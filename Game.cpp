@@ -29,8 +29,13 @@ void Game::setWinId(int id)
 bool Game::update(int deltaTime)
 {
 	if (gameInitialized) {
-		scene.update(deltaTime);
-		return bPlay;
+		if (scene.getPlayerLife() > 0) {
+			scene.update(deltaTime);
+			return bPlay;
+		}
+		else {
+			gameInitialized = false;
+		}
 	}
 	ui.update(deltaTime);
 }
@@ -44,43 +49,49 @@ void Game::render()
 
 
 	if (gameInitialized) {
-		float playerlife = scene.getPlayerLife();
-		scene.render();
-		ui.render(playerlife);
 
-		if (getKey('i')) {
-			if (MaterialsInventory == 4 && !bMaterialInventoryOpened) {
-				MaterialsInventory--;
-				return;
+		float playerlife = scene.getPlayerLife();
+		if (playerlife > 0) {
+			scene.render();
+			ui.render(playerlife);
+
+			if (getKey('i')) {
+				if (MaterialsInventory == 4 && !bMaterialInventoryOpened) {
+					MaterialsInventory--;
+					return;
+				}
+				if (MaterialsInventory == 2 && bMaterialInventoryOpened) {
+					MaterialsInventory--;
+					return;
+				}
 			}
-			if (MaterialsInventory == 2 && bMaterialInventoryOpened) {
-				MaterialsInventory--;
-				return;
+			else {
+				if (MaterialsInventory == 3) {
+					vector<Item> bag = scene.getPlayerBag();
+					ui.updateBag(bag);
+					ui.renderMaterialInventory();
+					MaterialsInventory--;
+					bMaterialInventoryOpened = true;
+				}
+				if (MaterialsInventory == 1) {
+					MaterialsInventory = 4;
+					bMaterialInventoryOpened = false;
+				}
+
+				if (bMaterialInventoryOpened) {
+					ui.renderMaterialInventory();
+				}
 			}
 		}
 		else {
-			if (MaterialsInventory == 3) {
-				vector<Item> bag = scene.getPlayerBag();
-				ui.updateBag(bag);
-				ui.renderMaterialInventory();
-				MaterialsInventory--;
-				bMaterialInventoryOpened = true;
-			}
-			if (MaterialsInventory == 1) {
-				MaterialsInventory = 4;
-				bMaterialInventoryOpened = false;
-			}
-
-			if (bMaterialInventoryOpened) {
-				ui.renderMaterialInventory();
-			}
+			ui.renderMainMenu(false);
 		}
 	}
 	else if (instructionsWindowOpened){
 		//ui.renderMainMenu();
 	}
 	else {
-		ui.renderMainMenu();
+		ui.renderMainMenu(false);
 	}
 }
 
@@ -124,7 +135,15 @@ void Game::mouseMotionMove(int x, int y)
 		string menu;
 		bool success = false;
 		cout << x << "," << y << endl;
-		success = ui.clickOnMenu(x, y, &menu);
+
+		bool dead = false;
+		if (scene.getPlayerLife() > 0) {
+			dead = false;
+		}
+		else {
+			dead = true;
+		}
+		success = ui.clickOnMenu(x, y, &menu, dead);
 	}
 }
 
@@ -139,7 +158,15 @@ void Game::mousePress(int button, int x, int y)
 	if (!gameInitialized) {
 		string menu;
 		bool success = false;
-		success = ui.clickOnMenu(x, y, &menu);
+
+		bool dead = false;
+		if (scene.getPlayerLife() > 0) {
+			dead = false;
+		}
+		else {
+			dead = true;
+		}
+		success = ui.clickOnMenu(x, y, &menu, dead);
 
 		if (success) {
 			if (menu == "play") {

@@ -818,6 +818,7 @@ bool TileMap::buildTile(int ID) {
 	structMap[tileToBeBuilded.y*mapSize.x + tileToBeBuilded.x].ID = ID;
 	structMap[tileToBeBuilded.y*mapSize.x + tileToBeBuilded.x].isSolid = true;
 	structMap[tileToBeBuilded.y*mapSize.x + tileToBeBuilded.x].isDiggable = true;
+	structMap[tileToBeBuilded.y*mapSize.x + tileToBeBuilded.x].handbuilded = true;
 
 	prepareArrays();
 
@@ -923,8 +924,23 @@ int TileMap::digTile() {
 	int tile;
 	tile = structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].ID;
 
+
+	if (!structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].handbuilded) {
+
+		if (tile == DIRT) {
+			structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].ID = DIRT_CAVED;
+		}
+		if (tile == GRASS) {
+			structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].ID = GRASS_CAVED;
+		}
+	}
+	else {
+		structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].ID = 0;
+	}
+
+
 	structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].isDiggable = false;
-	structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].ID = 0;
+	//structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].ID = 0;
 	//structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].estat = 2;
 	structMap[(tileToBeDigged.y)*mapSize.x + tileToBeDigged.x].isSolid = false;
 	//sprite->setPosition(glm::vec2(float((tileToBeDigged.x+2)*tileSize), float((tileToBeDigged.y-3)*tileSize)));

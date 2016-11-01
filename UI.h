@@ -30,14 +30,14 @@ public:
 	void update(int deltaTime);
 	void updateBag(const vector<Item>& bag);
 	void render(float playerlife);
-	void renderMainMenu();
+	void renderMainMenu(bool dead);
 	void initShaders();
 	void renderHearts(float life);
 	void renderMaterialInventory();
 	void renderObjectsInInventory();
 	void renderCounters();
 	bool clickOnInventoryItem(int x, int y, int *tile);
-	bool clickOnMenu(int x, int y, string *menu);
+	bool clickOnMenu(int x, int y, string *menu, bool dead);
 	void setupLeftMaterialBar(ShaderProgram &program);
 	void addUIElement(glm::vec2 geom[2], glm::vec2 texCoords[2], ShaderProgram &program, string path);
 	void addInventoryItem(glm::vec2 geom[2], glm::vec2 texCoords[2], ShaderProgram &program, string type, int amount);
@@ -54,7 +54,7 @@ private:
 	TexturedQuad* playButton;
 	TexturedQuad* exitButton;
 	TexturedQuad* instructionsButton;
-	Texture stone,grass,zero,one,two,three,four,five,six,seven,eight,nine,ten,hightlight,menuBackgroundTex,playButtonTex,instructionsButtonTex,exitButtonTex;
+	Texture stone,grass,zero,one,two,three,four,five,six,seven,eight,nine,ten,hightlight,menuBackgroundTex,playButtonTex,playAgainButtonTex,instructionsButtonTex,exitButtonTex;
 	vector<TexturedQuad*> UIElements, MaterialsLeftBar,CountersLeftBar;
 	vector<TexturedQuad*> Inventory;
 	vector<TexturedQuad*> CountersBox;

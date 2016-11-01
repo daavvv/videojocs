@@ -16,12 +16,15 @@
 #define WATER 13
 #define WATER_1 14
 #define GRASS 237
+#define GRASS_CAVED 134
 #define DIRT 220
+#define DIRT_CAVED 113
 
 struct Tile {
-	Tile():isSolid(false), ID(0), isDiggable(false) {}
+	Tile():isSolid(false), ID(0), isDiggable(false), handbuilded(false) {}
 	bool isSolid;
 	bool isDiggable;
+	bool handbuilded;
 	int estat;// estat 0 = destruit; 1 = viu; 2 = destruint-se 
 	int instant_estat;
 	int timeAnimation;

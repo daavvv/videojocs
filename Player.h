@@ -29,6 +29,7 @@ public:
 	void init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram);
 	void update(int deltaTime);
 	void render();
+	void loadSprite();
 	
 	void crear(int button, int x, int y);
 	void setTileMap(TileMap *tileMap);

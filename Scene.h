@@ -38,6 +38,7 @@ private:
 
 private:
 	int contador;
+	bool isPlayerDead;
 	Boss *boss;
 	TileMap *map;
 	Player *player;

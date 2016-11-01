@@ -50,6 +50,8 @@
 #define MENUBACKGROUNDIMGPATH "images/UI/menuBackground.png"
 #define PLAYBUTTONIMGPATH "images/UI/playButton.png"
 #define PLAYBUTTONIMGPRESSEDPATH "images/UI/playButtonPressed.png"
+#define PLAYAGAINBUTTONIMGPATH "images/UI/playAgainButton.png"
+#define PLAYAGAINBUTTONIMGPRESSEDPATH "images/UI/playAgainButtonPressed.png"
 #define EXITBUTTONIMGPATH "images/UI/exitButton.png"
 #define EXITBUTTONIMGPRESSEDPATH "images/UI/exitButtonPressed.png"
 #define INSTRUCTIONSBUTTONIMGPATH "images/UI/instruccionsButton.png"
@@ -80,6 +82,10 @@ void UI::init(){
 	}
 	
 	if (playButtonTex.loadFromFile(PLAYBUTTONIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+
+	if (playAgainButtonTex.loadFromFile(PLAYAGAINBUTTONIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
 		cout << "loaded" << endl;
 	}
 
@@ -436,7 +442,7 @@ void UI::renderCounters() {
 }
 
 
-bool UI::clickOnMenu(int x, int y, string* menu) {
+bool UI::clickOnMenu(int x, int y, string* menu, bool dead) {
 
 	
 	double left, right, top, bottom;
@@ -456,8 +462,15 @@ bool UI::clickOnMenu(int x, int y, string* menu) {
 		cout << "inside play button" << endl;
 		*menu = "play";
 
-		if (playButtonTex.loadFromFile(PLAYBUTTONIMGPRESSEDPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
-			//renderMainMenu();
+		if (!dead) {
+			if (playButtonTex.loadFromFile(PLAYBUTTONIMGPRESSEDPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
+				//renderMainMenu();
+			}
+		}
+		else {
+			if (playAgainButtonTex.loadFromFile(PLAYAGAINBUTTONIMGPRESSEDPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
+				//renderMainMenu();
+			}
 		}
 		return true;
 	}
@@ -497,6 +510,7 @@ bool UI::clickOnMenu(int x, int y, string* menu) {
 
 	instructionsButtonTex.loadFromFile(INSTRUCTIONSBUTTONIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA);
 	playButtonTex.loadFromFile(PLAYBUTTONIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA);
+	playAgainButtonTex.loadFromFile(PLAYAGAINBUTTONIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA);
 	exitButtonTex.loadFromFile(EXITBUTTONIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA);
 	return false;
 	
@@ -632,7 +646,7 @@ void UI::render(float playerlife){
 	//renderMaterialInventory();
 }
 
-void UI::renderMainMenu()
+void UI::renderMainMenu(bool dead)
 {
 
 	//BACKGROUND
@@ -649,6 +663,8 @@ void UI::renderMainMenu()
 	menuBackground->render(menuBackgroundTex);
 
 
+
+
 	//PLAY BUTTON
 	UIProgram.use();
 	UIProgram.setUniformMatrix4f("projection", projection);
@@ -658,7 +674,12 @@ void UI::renderMainMenu()
 	modelview = glm::scale(modelview, glm::vec3(PLAYBUTTONSCALEX, PLAYBUTTONSCALEY, 0));
 	modelview = glm::translate(modelview, glm::vec3(-(PLAYBUTTONRAWSCALE/2), -(PLAYBUTTONRAWSCALE/2), 0.f));
 	UIProgram.setUniformMatrix4f("modelview", modelview);
-	playButton->render(playButtonTex);
+	if (!dead) {
+		playButton->render(playButtonTex);
+	}
+	else {
+		playButton->render(playAgainButtonTex);
+	}
 
 	//EXIT BUTTON
 	UIProgram.use();
@@ -681,6 +702,12 @@ void UI::renderMainMenu()
 	modelview = glm::translate(modelview, glm::vec3(-(INSTRUCTIONSBUTTONRAWSCALE / 2), -(INSTRUCTIONSBUTTONRAWSCALE / 2), 0.f));
 	UIProgram.setUniformMatrix4f("modelview", modelview);
 	instructionsButton->render(instructionsButtonTex);
+
+
+
+	if (dead) {
+		cout << "dead" << endl;
+	}
 
 
 }
