@@ -95,6 +95,15 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 
 	swordTex.loadFromFile(SWORDONPLAYERIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA);
 	axeTex.loadFromFile(AXEONPLAYERIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA);
+	sword = Sprite::createSprite(glm::ivec2(26, 26), glm::ivec2(1, 1), &swordTex, &shaderProgram);
+	axe = Sprite::createSprite(glm::ivec2(26, 26), glm::ivec2(1, 1), &axeTex, &shaderProgram);
+
+	sword->setNumberAnimations(1);
+	axe->setNumberAnimations(1);
+
+	sword->setAnimationSpeed(MOVE_RIGHT, 1);
+	axe->setAnimationSpeed(MOVE_RIGHT, 1);
+
 
 
 	spritesheet.loadFromFile("images/player1.png", TEXTURE_PIXEL_FORMAT_RGBA);
@@ -192,6 +201,31 @@ void Player::update(int deltaTime)
 
 
 	sprite->update(deltaTime);
+
+	if (weapon == "sword") {
+		sword->update(deltaTime);
+		int x = posPlayer.x+72;
+		int y = posPlayer.y-95;
+
+		glm::ivec2 p;
+		p.x = x;
+		p.y = y;
+
+		sword->setPosition(p);
+	}
+
+	if (weapon == "axe") {
+		axe->update(deltaTime);
+		int x = posPlayer.x + 72;
+		int y = posPlayer.y - 95;
+
+		glm::ivec2 p;
+		p.x = x;
+		p.y = y;
+
+		axe->setPosition(p);
+	}
+
 
 		
 	if(Game::instance().getSpecialKey(GLUT_KEY_LEFT))
@@ -445,6 +479,12 @@ void Player::addItemToBag(int tileID) {
 void Player::render()
 {
 	sprite->render();
+	if (weapon == "sword") {
+		sword->render();
+	}
+	if (weapon == "sword") {
+		axe->render();
+	}
 }
 
 void Player::setTileMap(TileMap *tileMap)
