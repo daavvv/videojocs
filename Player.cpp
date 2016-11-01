@@ -163,6 +163,13 @@ void Player::update(int deltaTime)
 		if (goldcoins < 100) {
 			goldcoins++;
 		}
+
+		if (goldcoins == 5) {
+			if (life <= 2) {
+				life++;
+				goldcoins = goldcoins - 5;
+			}
+		}
 	}
 
 
