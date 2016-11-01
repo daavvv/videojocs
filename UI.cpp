@@ -64,6 +64,30 @@
 #define GOLDCOINSIMGPATH "images/UI/coins.png"
 
 
+
+
+#define ONEALT "images/numbers_alt/one.png"
+#define TWOALT "images/numbers_alt/two.png"
+#define THREEALT "images/numbers_alt/three.png"
+#define FOURALT "images/numbers_alt/four.png"
+#define FIVEALT "images/numbers_alt/five.png"
+#define SIXALT "images/numbers_alt/six.png"
+#define SEVENALT "images/numbers_alt/seven.png"
+#define EIGHTALT "images/numbers_alt/eight.png"
+#define NINEALT "images/numbers_alt/nine.png"
+#define TENALT "images/numbers_alt/ten.png"
+#define TWENTYALT "images/numbers_alt/twenty.png"
+#define THIRTYALT "images/numbers_alt/thirty.png"
+#define FORTYALT "images/numbers_alt/forty.png"
+#define FIFTYALT "images/numbers_alt/fifty.png"
+#define SIXTYALT "images/numbers_alt/sixty.png"
+#define SEVENTYALT "images/numbers_alt/seventy.png"
+#define EIGHTYALT "images/numbers_alt/eighty.png"
+#define NINETYALT "images/numbers_alt/ninety.png"
+#define ONEHUNDREDALT "images/numbers_alt/one-hundred.png"
+
+
+
 #define INVENTORYITEMRAWSCALEX 64.f
 #define INVENTORYITEMRAWSCALEY 64.f
 #define INVENTORYITEMSCALE 0.5
@@ -185,6 +209,148 @@ void UI::init(){
 	else {
 		cout << "not loaded" << endl;
 	}
+
+
+	if (onealt.loadFromFile(ONEALT, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	else {
+		cout << "not loaded" << endl;
+	}
+	if (twoalt.loadFromFile(TWOALT, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	else {
+		cout << "not loaded" << endl;
+	}
+	if (threealt.loadFromFile(THREEALT, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	else {
+		cout << "not loaded" << endl;
+	}
+	if (fouralt.loadFromFile(FOURALT, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	else {
+		cout << "not loaded" << endl;
+	}
+	if (fivealt.loadFromFile(FIVEALT, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	else {
+		cout << "not loaded" << endl;
+	}
+	if (sixalt.loadFromFile(SIXALT, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	else {
+		cout << "not loaded" << endl;
+	}
+	if (sevenalt.loadFromFile(SEVENALT, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	else {
+		cout << "not loaded" << endl;
+	}
+	if (eightalt.loadFromFile(EIGHTALT, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	else {
+		cout << "not loaded" << endl;
+	}
+	if (ninealt.loadFromFile(NINEALT, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	else {
+		cout << "not loaded" << endl;
+	}
+	if (tenalt.loadFromFile(TENALT, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	else {
+		cout << "not loaded" << endl;
+	}
+	if (twentyalt.loadFromFile(TWENTYALT, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	else {
+		cout << "not loaded" << endl;
+	}
+	if (thirtyalt.loadFromFile(THIRTYALT, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	else {
+		cout << "not loaded" << endl;
+	}
+	if (fortyalt.loadFromFile(FORTYALT, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	else {
+		cout << "not loaded" << endl;
+	}
+	if (fiftyalt.loadFromFile(FIFTYALT, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	else {
+		cout << "not loaded" << endl;
+	}
+	if (sixtyalt.loadFromFile(SIXTYALT, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	else {
+		cout << "not loaded" << endl;
+	}
+	if (seventyalt.loadFromFile(SEVENTYALT, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	else {
+		cout << "not loaded" << endl;
+	}
+	if (eightyalt.loadFromFile(EIGHTYALT, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	else {
+		cout << "not loaded" << endl;
+	}
+	if (ninetyalt.loadFromFile(NINETYALT, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	else {
+		cout << "not loaded" << endl;
+	}
+	if (onehundredalt.loadFromFile(ONEHUNDREDALT, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	else {
+		cout << "not loaded" << endl;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 	//LOAD HEARTS
