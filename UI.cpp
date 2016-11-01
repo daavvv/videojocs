@@ -442,6 +442,9 @@ void UI::renderCounters() {
 }
 
 
+
+
+
 bool UI::clickOnMenu(int x, int y, string* menu, bool dead) {
 
 	
@@ -462,6 +465,7 @@ bool UI::clickOnMenu(int x, int y, string* menu, bool dead) {
 		cout << "inside play button" << endl;
 		*menu = "play";
 
+		/*
 		if (!dead) {
 			if (playButtonTex.loadFromFile(PLAYBUTTONIMGPRESSEDPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
 				//renderMainMenu();
@@ -472,6 +476,7 @@ bool UI::clickOnMenu(int x, int y, string* menu, bool dead) {
 				//renderMainMenu();
 			}
 		}
+		*/
 		return true;
 	}
 
@@ -485,9 +490,11 @@ bool UI::clickOnMenu(int x, int y, string* menu, bool dead) {
 		cout << "inside exit button" << endl;
 		*menu = "exit";
 
+		/*
 		if (exitButtonTex.loadFromFile(EXITBUTTONIMGPRESSEDPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
 			//renderMainMenu();
 		}
+		*/
 		return true;
 	}
 
@@ -502,17 +509,22 @@ bool UI::clickOnMenu(int x, int y, string* menu, bool dead) {
 		cout << "inside INSTRUCTIONS button" << endl;
 		*menu = "instructions";
 
+		/*
 		if (instructionsButtonTex.loadFromFile(INSTRUCTIONSBUTTONIMGPRESSEDPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
 			//renderMainMenu();
 		}
+		*/
 		return true;
 	}
 
+	/*
 	instructionsButtonTex.loadFromFile(INSTRUCTIONSBUTTONIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA);
 	playButtonTex.loadFromFile(PLAYBUTTONIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA);
 	playAgainButtonTex.loadFromFile(PLAYAGAINBUTTONIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA);
 	exitButtonTex.loadFromFile(EXITBUTTONIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA);
+	*/
 	return false;
+
 	
 }
 

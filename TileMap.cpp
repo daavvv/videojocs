@@ -155,14 +155,14 @@ void TileMap::free()
 void TileMap::create_animations(int ID) 
 {
 	//frames per segon
-	cout << ID << endl;
+	//cout << ID << endl;
 
 	animations[ID * 10 + 0].millisecsPerKeyframe = 125.f;
 	animations[ID * 10 + 1].millisecsPerKeyframe = 125.f;
 	animations[ID * 10 + 2].millisecsPerKeyframe = 125.f;
 	
 	int tile = ID;
-	cout << ID * 10 << endl;
+	//cout << ID * 10 << endl;
 	//afegir estats als blocs 0-> no existeix, 1-> existeix, 2 -> transicio  
 	animations[ID * 10 + 1].keyframeDispl.push_back(glm::vec2(float((tile - 1) % tilesheetSize.x) / tilesheetSize.x, float((tile - 1) / tilesheetSize.x) / tilesheetSize.y));
 

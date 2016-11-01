@@ -46,15 +46,15 @@ void Sprite::update(int deltaTime)
 	if(currentAnimation >= 0)
 	{
 		timeAnimation += deltaTime;
-		cout << timeAnimation << " abans del buclee " << deltaTime << endl;
+		//cout << timeAnimation << " abans del buclee " << deltaTime << endl;
 		while(timeAnimation > animations[currentAnimation].millisecsPerKeyframe)
 		{
-			cout << timeAnimation << " inici "<< currentKeyframe  << endl;
+			//cout << timeAnimation << " inici "<< currentKeyframe  << endl;
 			timeAnimation -= animations[currentAnimation].millisecsPerKeyframe;
-			cout << timeAnimation << " mig " << currentKeyframe << " (currentKeyframe + 1): " << (currentKeyframe + 1) << " animations[currentAnimation].keyframeDispl.size(): " << animations[currentAnimation].keyframeDispl.size() << " currentAnimation; "<< currentAnimation << endl;
+			//cout << timeAnimation << " mig " << currentKeyframe << " (currentKeyframe + 1): " << (currentKeyframe + 1) << " animations[currentAnimation].keyframeDispl.size(): " << animations[currentAnimation].keyframeDispl.size() << " currentAnimation; "<< currentAnimation << endl;
 
 			currentKeyframe = (currentKeyframe + 1) % animations[currentAnimation].keyframeDispl.size();
-			cout << timeAnimation << " fin " << currentKeyframe << endl;
+			//cout << timeAnimation << " fin " << currentKeyframe << endl;
 		}
 		texCoordDispl = animations[currentAnimation].keyframeDispl[currentKeyframe];
 	}
