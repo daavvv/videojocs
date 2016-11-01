@@ -47,6 +47,7 @@
 #define DIRTIMGPATH "images/UI/dirt.png"
 #define GRASSIMGPATH "images/UI/grass.png"
 #define STONEIMGPATH "images/UI/stone.png"
+#define IRONIMGPATH "images/UI/iron.png"
 
 #define ZEROIMGPATH "images/UI/numbers/hud_0.png"
 #define ONEIMGPATH "images/UI/numbers/hud_1.png"
@@ -161,6 +162,13 @@ void UI::init(){
 	else {
 		cout << "not loaded" << endl;
 	}
+	if (iron.loadFromFile(IRONIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	else {
+		cout << "not loaded" << endl;
+	}
+
 
 	if (zero.loadFromFile(ZEROIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
 		cout << "loaded" << endl;
@@ -462,6 +470,9 @@ void UI::addInventoryItem(glm::vec2 geom[2], glm::vec2 texCoords[2], ShaderProgr
 	if (type == "stone") {
 		inventoryTextures.push_back(stone);
 	}
+	if (type == "iron") {
+		inventoryTextures.push_back(iron);
+	}
 }
 
 
@@ -539,6 +550,10 @@ void UI::updateBag(const vector<Item>& bag)
 		}
 		if (bag[i].ID == STONE && bag[i].amount > 0) {
 			addInventoryItem(geom, texCoords, UIProgram, "stone", bag[i].amount);//0
+			ids.push_back(bag[i].ID);
+		}
+		if (bag[i].ID == IRON && bag[i].amount > 0) {
+			addInventoryItem(geom, texCoords, UIProgram, "iron", bag[i].amount);//0
 			ids.push_back(bag[i].ID);
 		}
 	}
