@@ -34,6 +34,7 @@ public:
 	void initShaders();
 	void renderHearts(float life);
 	void renderMaterialInventory();
+	void renderWeaponsInventory();
 	void renderObjectsInInventory();
 	void renderCounters();
 	void renderGoldCoins(int goldCoins);
@@ -53,6 +54,7 @@ private:
 	GLuint VertexArrayID;
 	GLuint vertexbuffer;
 	ShaderProgram UIProgram;
+	TexturedQuad* weaponsInventory;
 	TexturedQuad* weaponPopup;
 	TexturedQuad* goldCoins;
 	TexturedQuad* goldCoinsCounter;
@@ -62,7 +64,7 @@ private:
 	TexturedQuad* exitButton;
 	TexturedQuad* instructionsButton;
 	Texture onealt, twoalt, threealt, fouralt, fivealt, sixalt, sevenalt, eightalt, ninealt, tenalt, twentyalt, thirtyalt, fortyalt, fiftyalt, sixtyalt, seventyalt, eightyalt, ninetyalt, onehundredalt;
-	Texture swordPopupTex,axePopupTex,dirt, grass, stone, iron, zero, one, two, three, four, five, six, seven, eight, nine, ten, hightlight, menuBackgroundTex, playButtonTex, playAgainButtonTex, instructionsButtonTex, exitButtonTex, goldCoinsTex, goldCoinsCounterTex;
+	Texture weaponsInventoryTex,swordPopupTex,axePopupTex,dirt, grass, stone, iron, zero, one, two, three, four, five, six, seven, eight, nine, ten, hightlight, menuBackgroundTex, playButtonTex, playAgainButtonTex, instructionsButtonTex, exitButtonTex, goldCoinsTex, goldCoinsCounterTex;
 	vector<TexturedQuad*> UIElements, MaterialsLeftBar,CountersLeftBar;
 	vector<TexturedQuad*> Inventory;
 	vector<TexturedQuad*> CountersBox;

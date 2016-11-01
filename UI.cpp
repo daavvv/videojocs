@@ -43,6 +43,12 @@
 #define WEAPONOFFSETY 150
 
 
+#define WEAPONSINVENTORYRAWSCALEX 64*3
+#define WEAPONSINVENTORYRAWSCALEY 64.f
+#define WEAPONSINVENTORYSCALE 1
+#define WEAPONSINVENTORYOFFSETX float(SCREEN_WIDTH/2)
+#define WEAPONSINVENTORYOFFSETY 50
+
 
 #define MATERIALSUIOFFSETX -35
 #define MATERIALSUIOFFSETY 10
@@ -78,6 +84,7 @@
 #define GOLDCOINSIMGPATH "images/UI/coins.png"
 #define SWORDPOPUPIMGPATH "images/UI/swordweaponPopup.png"
 #define AXEPOPUPIMGPATH "images/UI/axeweaponPopup.png"
+#define WEAPONSINVENTORY "images/UI/weaponsInventory.png"
 
 
 
@@ -154,6 +161,9 @@ void UI::init(){
 		cout << "loaded" << endl;
 	}
 
+	if (weaponsInventoryTex.loadFromFile(WEAPONSINVENTORY, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
 
 
 	if (hightlight.loadFromFile(HIGHLIGHTIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
@@ -396,7 +406,13 @@ void UI::init(){
 	texCoords[0] = glm::vec2(0.f, 0.f); texCoords[1] = glm::vec2(1.f, 1.f);
 	addUIElement(geom, texCoords, UIProgram, "images/UI/materials.png");//3
 
-	
+	//LOAD WEAPONS INVENTORY
+	geom[0] = glm::vec2(0.f, 0.f);
+	geom[1] = glm::vec2(WEAPONSINVENTORYRAWSCALEX, (WEAPONSINVENTORYRAWSCALEY));
+	texCoords[0] = glm::vec2(0.f, 0.f); texCoords[1] = glm::vec2(1.f, 1.f);
+	weaponsInventory = TexturedQuad::createTexturedQuad(geom, texCoords, UIProgram);
+
+
 	//LOAD HIGHLIGHT
 	geom[0] = glm::vec2(0.f, 0.f);
 	geom[1] = glm::vec2(64.f, 64.f);
@@ -617,6 +633,22 @@ void UI::updateBag(const vector<Item>& bag)
 }
 
 
+
+void UI::renderWeaponsInventory() {
+
+	glm::mat4 modelview;
+	UIProgram.use();
+	UIProgram.setUniformMatrix4f("projection", projection);
+	UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+
+	modelview = glm::translate(glm::mat4(1.0f), glm::vec3(WEAPONSINVENTORYOFFSETX, WEAPONSINVENTORYOFFSETY, 0.f));
+	//modelview = glm::translate(modelview, glm::vec3(32.f, 32.f, 0.f));
+	//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
+	modelview = glm::scale(modelview, glm::vec3(WEAPONSINVENTORYSCALE, WEAPONSINVENTORYSCALE, 0));
+	modelview = glm::translate(modelview, glm::vec3(-32.f, -32.f, 0.f));
+	UIProgram.setUniformMatrix4f("modelview", modelview);
+	weaponsInventory->render(weaponsInventoryTex);
+}
 
 
 
@@ -1029,6 +1061,7 @@ void UI::renderHearts(float life) {
 
 void UI::render(float playerlife,int goldCoins){
 	renderHearts(playerlife);
+	renderWeaponsInventory();
 	renderGoldCoins(goldCoins);
 	
 	//renderMaterialInventory();
