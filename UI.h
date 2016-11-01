@@ -37,19 +37,23 @@ public:
 	void renderObjectsInInventory();
 	void renderCounters();
 	void renderGoldCoins(int goldCoins);
+	void renderWeaponPopup(string type);
 	bool clickOnInventoryItem(int x, int y, int *tile);
 	bool clickOnMenu(int x, int y, string *menu, bool dead);
+	bool clickOnPopup(int x, int y, bool dead);
 	void setupLeftMaterialBar(ShaderProgram &program);
 	void addUIElement(glm::vec2 geom[2], glm::vec2 texCoords[2], ShaderProgram &program, string path);
 	void addInventoryItem(glm::vec2 geom[2], glm::vec2 texCoords[2], ShaderProgram &program, string type, int amount);
 
 private:
+	bool swordPopupOpened;
 	float currentTime;
 	bool playButtonOver;
 	glm::mat4 projection;
 	GLuint VertexArrayID;
 	GLuint vertexbuffer;
 	ShaderProgram UIProgram;
+	TexturedQuad* weaponPopup;
 	TexturedQuad* goldCoins;
 	TexturedQuad* goldCoinsCounter;
 	TexturedQuad* highlight;
@@ -58,7 +62,7 @@ private:
 	TexturedQuad* exitButton;
 	TexturedQuad* instructionsButton;
 	Texture onealt, twoalt, threealt, fouralt, fivealt, sixalt, sevenalt, eightalt, ninealt, tenalt, twentyalt, thirtyalt, fortyalt, fiftyalt, sixtyalt, seventyalt, eightyalt, ninetyalt, onehundredalt;
-	Texture dirt,grass,stone,iron,zero,one,two,three,four,five,six,seven,eight,nine,ten,hightlight,menuBackgroundTex,playButtonTex,playAgainButtonTex,instructionsButtonTex,exitButtonTex,goldCoinsTex,goldCoinsCounterTex;
+	Texture swordPopupTex,axePopupTex,dirt, grass, stone, iron, zero, one, two, three, four, five, six, seven, eight, nine, ten, hightlight, menuBackgroundTex, playButtonTex, playAgainButtonTex, instructionsButtonTex, exitButtonTex, goldCoinsTex, goldCoinsCounterTex;
 	vector<TexturedQuad*> UIElements, MaterialsLeftBar,CountersLeftBar;
 	vector<TexturedQuad*> Inventory;
 	vector<TexturedQuad*> CountersBox;

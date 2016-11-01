@@ -29,6 +29,7 @@ public:
 	void setBuildTile(int tileID);
 	float getPlayerLife();
 	int getGoldCoins();
+	void substractMaterialToPlayer(int ID, int amount);
 	vector<Item> getPlayerBag();
 	
 	

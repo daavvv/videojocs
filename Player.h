@@ -40,6 +40,7 @@ public:
 	bool isItemInBag(int tileID);
 	bool isEnoughAmount(int tileID);
 	void substractOne(int tileID);
+	void substractMaterialToPlayer(int ID, int amount);
 	float getLife();
 	int getGoldCoins();
 	vector<Item> getBag();

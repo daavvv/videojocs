@@ -42,7 +42,7 @@ Sprite::Sprite(const glm::vec2 &quadSize, const glm::vec2 &sizeInSpritesheet, Te
 
 void Sprite::update(int deltaTime)
 {
-	cout << currentAnimation << endl;
+	//cout << currentAnimation << endl;
 	if(currentAnimation >= 0)
 	{
 		timeAnimation += deltaTime;

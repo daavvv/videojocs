@@ -9,6 +9,7 @@
 
 void Game::init()
 {
+	weaponPopUpOpened = false;
 	gameInitialized = false;
 	startover = false;
 	MaterialsInventory = 4;
@@ -53,6 +54,19 @@ void Game::render()
 		if (playerlife > 0) {
 			scene.render();
 			ui.render(playerlife,goldCoins);
+
+
+			vector<Item> bag = scene.getPlayerBag();
+
+			for (int i = 0; i < bag.size(); ++i) {
+				if (bag[i].ID == STONE) {
+					if (bag[i].amount >= 9) {
+						ui.renderWeaponPopup("sword");
+						popupType = "sword";
+						weaponPopUpOpened = true;
+					}
+				}	
+			}
 
 			if (getKey('i')) {
 				if (MaterialsInventory == 4 && !bMaterialInventoryOpened) {
@@ -190,6 +204,18 @@ void Game::mousePress(int button, int x, int y)
 	}
 
 	if (gameInitialized) {
+
+		if (weaponPopUpOpened) {
+			bool success = false;
+			success = ui.clickOnPopup(x, y, false);
+			if (success) {
+				weaponPopUpOpened = false;
+				if (popupType == "sword") {
+					scene.substractMaterialToPlayer(STONE,10);
+				}	
+			}
+		}
+
 		if (bMaterialInventoryOpened) {
 			int tile;
 			if (ui.clickOnInventoryItem(x, y, &tile)) {

@@ -48,9 +48,11 @@ public:
 
 private:
 	int winID;
+	string popupType;
 	bool gameInitialized;
 	bool startover;
 	bool instructionsWindowOpened;
+	bool weaponPopUpOpened;
 	bool bPlay, bMaterialInventoryOpened;
 	int MaterialsInventory;                       // Continue to play game?
 	Scene scene;

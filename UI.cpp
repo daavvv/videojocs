@@ -36,6 +36,12 @@
 #define GOLDCOINSCOUNTEROFFSETX GOLDCOINSOFFSETX + 35
 #define GOLDCOINSCOUNTEROFFSETY GOLDCOINSOFFSETY
 
+#define WEAPONRAWSCALEX 64*3
+#define WEAPONRAWSCALEY 64.f
+#define WEAPONSCALE 1
+#define WEAPONOFFSETX 55
+#define WEAPONOFFSETY 150
+
 
 
 #define MATERIALSUIOFFSETX -35
@@ -70,6 +76,8 @@
 #define INSTRUCTIONSBUTTONIMGPATH "images/UI/instruccionsButton.png"
 #define INSTRUCTIONSBUTTONIMGPRESSEDPATH "images/UI/instruccionsButtonPressed.png"
 #define GOLDCOINSIMGPATH "images/UI/coins.png"
+#define SWORDPOPUPIMGPATH "images/UI/swordweaponPopup.png"
+//#define AXEPOPUPIMGPATH "images/UI/axe.png"
 
 
 
@@ -112,6 +120,7 @@ void UI::init(){
 
 	selectedItem = -1;
 	playButtonOver = false;
+	swordPopupOpened = false;
 
 	initShaders();
 
@@ -137,6 +146,13 @@ void UI::init(){
 	if (goldCoinsTex.loadFromFile(GOLDCOINSIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
 		cout << "loaded" << endl;
 	}
+	if (swordPopupTex.loadFromFile(SWORDPOPUPIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
+	/*
+	if (axePopupTex.loadFromFile(AXEIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}*/
 
 
 
@@ -366,6 +382,13 @@ void UI::init(){
 	geom[1] = glm::vec2(64.f, 64.f);
 	texCoords[0] = glm::vec2(0.f, 0.f); texCoords[1] = glm::vec2(1.f, 1.f);
 	goldCoinsCounter = TexturedQuad::createTexturedQuad(geom, texCoords, UIProgram);
+
+	//LOAD WEAPON POPUP
+	geom[0] = glm::vec2(0.f, 0.f);
+	geom[1] = glm::vec2(WEAPONRAWSCALEX, WEAPONRAWSCALEY);
+	texCoords[0] = glm::vec2(0.f, 0.f); texCoords[1] = glm::vec2(1.f, 1.f);
+	weaponPopup = TexturedQuad::createTexturedQuad(geom, texCoords, UIProgram);
+
 
 	//LOAD MATERIAL INVENTORY HUD
 	geom[0] = glm::vec2(0.f, 0.f);
@@ -722,6 +745,42 @@ void UI::renderGoldCoins(int goldCoinsAmount)
 	}
 }
 
+void UI::renderWeaponPopup(string type)
+{
+
+	glm::mat4 modelview;
+	UIProgram.use();
+	UIProgram.setUniformMatrix4f("projection", projection);
+	UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+	modelview = glm::translate(glm::mat4(1.0f), glm::vec3(WEAPONOFFSETX, WEAPONOFFSETY, 0));
+	//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
+	modelview = glm::scale(modelview, glm::vec3(WEAPONSCALE, WEAPONSCALE, 0));
+	modelview = glm::translate(modelview, glm::vec3(-32.f, -32.f, 0.f));
+	UIProgram.setUniformMatrix4f("modelview", modelview);
+
+	if (type == "sword") {
+		weaponPopup->render(swordPopupTex);
+		swordPopupOpened = true;
+	}
+}
+
+bool UI::clickOnPopup(int x, int y, bool dead)
+{
+	
+	double left, right, top, bottom;
+	left = WEAPONOFFSETX;
+	right = left + WEAPONRAWSCALEX*WEAPONSCALE;
+	top = WEAPONOFFSETY - ((WEAPONRAWSCALEY*WEAPONSCALE) / 2);
+	bottom = top + WEAPONRAWSCALEX*WEAPONSCALE;
+
+	if (x >= left && x <= right && y >= top && y <= bottom) {
+		return true;
+	}
+	return false;
+}
+
+
+
 
 
 
@@ -808,6 +867,7 @@ bool UI::clickOnMenu(int x, int y, string* menu, bool dead) {
 
 	
 }
+
 
 
 

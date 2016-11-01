@@ -108,6 +108,11 @@ int Scene::getGoldCoins()
 	return player->getGoldCoins();
 }
 
+void Scene::substractMaterialToPlayer(int ID, int amount)
+{
+	player->substractMaterialToPlayer(ID,amount);
+}
+
 vector<Item> Scene::getPlayerBag()
 {
 	return player->getBag();

@@ -374,6 +374,17 @@ void Player::substractOne(int tileID) {
 	}
 }
 
+void Player::substractMaterialToPlayer(int ID, int amount)
+{
+	if (isItemInBag(ID) && isEnoughAmount(ID)) {
+		for (int i = 0; i < bag.size(); ++i) {
+			if (ID == bag[i].ID) {
+				bag[i].amount = bag[i].amount - amount;
+			}
+		}
+	}
+}
+
 
 void Player::addItemToBag(int tileID) {
 
@@ -415,8 +426,8 @@ void Player::setPosition(const glm::vec2 &pos)
 
 
 void Player::crear(int button, int x, int y) {
-	cout << glutGet(GLUT_WINDOW_WIDTH) << ' ' << x << endl;
-	cout << glutGet(GLUT_WINDOW_HEIGHT) << ' ' << y << endl;
+	//cout << glutGet(GLUT_WINDOW_WIDTH) << ' ' << x << endl;
+	//cout << glutGet(GLUT_WINDOW_HEIGHT) << ' ' << y << endl;
 	int centrex = glutGet(GLUT_WINDOW_WIDTH) / 2;
 	int centrey = glutGet(GLUT_WINDOW_HEIGHT) / 2;
 	int puntx = x - centrex;
@@ -425,7 +436,7 @@ void Player::crear(int button, int x, int y) {
 		if (button == GLUT_LEFT_BUTTON)
 		{
 			//store the x,y value where the click happened
-			cout << "he clicat" << endl;
+			//cout << "he clicat" << endl;
 			if (abs(puntx) > abs(punty) and puntx > 0) {
 				if (map->rightTileIsBuildable(posPlayer, glm::ivec2(32, 32))) {
 					if (build == 2 && !bbuilding) {
@@ -435,7 +446,7 @@ void Player::crear(int button, int x, int y) {
 				}
 			}
 			else if (abs(puntx) > abs(punty) and puntx <= 0) {
-				cout << "esquerra" << endl;
+				//cout << "esquerra" << endl;
 				if (map->leftTileIsBuildable(posPlayer, glm::ivec2(32, 32))) {
 					if (build == 2 && !bbuilding) {
 						build--;
@@ -444,10 +455,10 @@ void Player::crear(int button, int x, int y) {
 				}
 			}
 			if (abs(puntx) <= abs(punty) and punty < 0) {
-				cout << "adalt" << endl;
+				//cout << "adalt" << endl;
 			}
 			else if (abs(puntx) <= abs(punty) and punty >= 0) {
-				cout << "abaix" << endl;
+				//cout << "abaix" << endl;
 				if (map->bottomTileIsBuildable(posPlayer, glm::ivec2(32, 32), &posPlayer.y)) {
 					if (build == 2 && !bbuilding) {
 						posPlayer.y = posPlayer.y - 60;
