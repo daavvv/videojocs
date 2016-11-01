@@ -77,7 +77,7 @@
 #define INSTRUCTIONSBUTTONIMGPRESSEDPATH "images/UI/instruccionsButtonPressed.png"
 #define GOLDCOINSIMGPATH "images/UI/coins.png"
 #define SWORDPOPUPIMGPATH "images/UI/swordweaponPopup.png"
-//#define AXEPOPUPIMGPATH "images/UI/axe.png"
+#define AXEPOPUPIMGPATH "images/UI/axeweaponPopup.png"
 
 
 
@@ -149,10 +149,10 @@ void UI::init(){
 	if (swordPopupTex.loadFromFile(SWORDPOPUPIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
 		cout << "loaded" << endl;
 	}
-	/*
-	if (axePopupTex.loadFromFile(AXEIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
+	
+	if (axePopupTex.loadFromFile(AXEPOPUPIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
 		cout << "loaded" << endl;
-	}*/
+	}
 
 
 
@@ -790,6 +790,10 @@ void UI::renderWeaponPopup(string type)
 
 	if (type == "sword") {
 		weaponPopup->render(swordPopupTex);
+		swordPopupOpened = true;
+	}
+	if (type == "axe") {
+		weaponPopup->render(axePopupTex);
 		swordPopupOpened = true;
 	}
 }

@@ -181,6 +181,11 @@ void Scene::setBuildTile(int tileID)
 	player->setBuildTile(tileID);
 }
 
+void Scene::addPersonalItemToPlayer(bool weapon, string type)
+{
+	player->addPersonalItem(weapon, type);
+}
+
 void Scene::initShaders()
 {
 	Shader vShader, fShader;

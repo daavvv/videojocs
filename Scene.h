@@ -27,6 +27,7 @@ public:
 	void update(int deltaTime);
 	void render();
 	void setBuildTile(int tileID);
+	void addPersonalItemToPlayer(bool weapon, string type);
 	float getPlayerLife();
 	int getGoldCoins();
 	void substractMaterialToPlayer(int ID, int amount);

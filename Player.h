@@ -18,6 +18,12 @@ struct Item {
 	int amount;
 };
 
+struct PersonalItem {
+	PersonalItem() :weapon(true){}
+	bool weapon;
+	string type;
+};
+
 
 class Player
 {
@@ -40,6 +46,7 @@ public:
 	bool isItemInBag(int tileID);
 	bool isEnoughAmount(int tileID);
 	void substractOne(int tileID);
+	void addPersonalItem(bool weapon, string type);
 	void substractMaterialToPlayer(int ID, int amount);
 	float getLife();
 	int getGoldCoins();
@@ -58,6 +65,7 @@ private:
 	float life;
 	int digCounter,buildCounter;
 	vector<Item> bag;
+	vector<PersonalItem> personalItems;
 
 };
 

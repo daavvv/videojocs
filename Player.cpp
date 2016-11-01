@@ -374,6 +374,24 @@ void Player::substractOne(int tileID) {
 	}
 }
 
+void Player::addPersonalItem(bool weapon, string type)
+{
+
+	bool existeix = false;
+	for (int i = 0; i < personalItems.size(); ++i) {
+		if (type == personalItems[i].type) {
+			existeix = true;
+		}
+	}
+
+	if (!existeix) {
+		personalItems.push_back(PersonalItem());
+		int size = personalItems.size();
+		personalItems[size - 1].type = type;
+		personalItems[size - 1].weapon = weapon;
+	}
+}
+
 void Player::substractMaterialToPlayer(int ID, int amount)
 {
 	if (isItemInBag(ID) && isEnoughAmount(ID)) {

@@ -71,7 +71,7 @@ void Game::render()
 					}
 				}
 				if (bag[i].ID == IRON) {
-					if (bag[i].amount >= 10) {
+					if (bag[i].amount >= 20) {
 						ui.renderWeaponPopup("axe");
 						popupType = "axe";
 						canMakeAxe = true;
@@ -224,9 +224,11 @@ void Game::mousePress(int button, int x, int y)
 				weaponPopUpOpened = false;
 				if (popupType == "sword") {
 					scene.substractMaterialToPlayer(STONE,10);
+					scene.addPersonalItemToPlayer(true, "sword");
 				}	
 				if (popupType == "axe") {
-					scene.substractMaterialToPlayer(IRON, 10);
+					scene.addPersonalItemToPlayer(true, "axe");
+					scene.substractMaterialToPlayer(IRON, 20);
 				}
 			}
 		}
