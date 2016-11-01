@@ -112,7 +112,7 @@
 #define INVENTORYITEMPADDINGX float(INVENTORYITEMRAWSCALEX*INVENTORYITEMSCALE + float(3.5f*SCREEN_WIDTH/640))
 #define INVENTORYITEMPADDINGY float(INVENTORYITEMRAWSCALEY*INVENTORYITEMSCALE + float(3.5f*SCREEN_HEIGHT/640))
 
-#define INVENTORYCOUNTERSCALE 0.2
+#define INVENTORYCOUNTERSCALE 0.32
 
 void UI::init(){
 	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(128.f, 128.f) };
@@ -457,31 +457,61 @@ void UI::addInventoryItem(glm::vec2 geom[2], glm::vec2 texCoords[2], ShaderProgr
 	CountersBox.push_back(texQuadCount);
 	
 	if (amount == 1) {
-		Counters.push_back(one);
+		Counters.push_back(onealt);
 	}
 	if (amount == 2) {
-		Counters.push_back(two);
+		Counters.push_back(twoalt);
 	}
 	if (amount == 3) {
-		Counters.push_back(three);
+		Counters.push_back(threealt);
 	}
 	if (amount == 4) {
-		Counters.push_back(four);
+		Counters.push_back(fouralt);
 	}
 	if (amount == 5) {
-		Counters.push_back(five);
+		Counters.push_back(fivealt);
 	}
 	if (amount == 6) {
-		Counters.push_back(six);
+		Counters.push_back(sixalt);
 	}
 	if (amount == 7) {
-		Counters.push_back(seven);
+		Counters.push_back(sevenalt);
 	}
 	if (amount == 8) {
-		Counters.push_back(eight);
+		Counters.push_back(eightalt);
 	}
 	if (amount == 9) {
-		Counters.push_back(nine);
+		Counters.push_back(ninealt);
+	}
+	if (amount >= 10 && amount < 20) {
+		Counters.push_back(tenalt);
+	}
+	if (amount >= 20 && amount < 30) {
+		Counters.push_back(twentyalt);
+	}
+	if (amount >= 30 && amount < 40) {
+		Counters.push_back(thirtyalt);
+	}
+	if (amount >= 40 && amount < 50) {
+		Counters.push_back(fortyalt);
+	}
+	if (amount >= 50 && amount < 60) {
+		Counters.push_back(fiftyalt);
+	}
+	if (amount >= 60 && amount < 70) {
+		Counters.push_back(sixtyalt);
+	}
+	if (amount >= 70 && amount < 80) {
+		Counters.push_back(seventyalt);
+	}
+	if (amount >= 80 && amount < 90) {
+		Counters.push_back(eightyalt);
+	}
+	if (amount >= 90 && amount < 100) {
+		Counters.push_back(ninetyalt);
+	}
+	if (amount == 100) {
+		Counters.push_back(onehundredalt);
 	}
 	
 	if (type == "dirt") {

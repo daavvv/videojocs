@@ -397,7 +397,7 @@ void Player::addItemToBag(int tileID) {
 	else {
 		for (int i = 0; i < bag.size(); ++i) {
 			if (tileID == bag[i].ID) {
-				if (bag[i].amount < 9) {
+				if (bag[i].amount < 100) {
 					bag[i].amount = bag[i].amount + 1;
 				}
 			}

@@ -58,14 +58,26 @@ void Game::render()
 
 			vector<Item> bag = scene.getPlayerBag();
 
+			bool canMakeSword = false;
+			bool canMakeAxe = false;
+
 			for (int i = 0; i < bag.size(); ++i) {
-				if (bag[i].ID == STONE) {
-					if (bag[i].amount >= 9) {
+				if (bag[i].ID == STONE && !canMakeAxe) {
+					if (bag[i].amount >= 10) {
 						ui.renderWeaponPopup("sword");
 						popupType = "sword";
+						canMakeSword = true;
 						weaponPopUpOpened = true;
 					}
-				}	
+				}
+				if (bag[i].ID == IRON) {
+					if (bag[i].amount >= 10) {
+						ui.renderWeaponPopup("axe");
+						popupType = "axe";
+						canMakeAxe = true;
+						weaponPopUpOpened = true;
+					}
+				}
 			}
 
 			if (getKey('i')) {
@@ -213,6 +225,9 @@ void Game::mousePress(int button, int x, int y)
 				if (popupType == "sword") {
 					scene.substractMaterialToPlayer(STONE,10);
 				}	
+				if (popupType == "axe") {
+					scene.substractMaterialToPlayer(IRON, 10);
+				}
 			}
 		}
 
