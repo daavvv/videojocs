@@ -70,6 +70,26 @@ void Boss::update(int deltaTime, int Posplayerx, int Posplayery)
 			sprite->changeAnimation(STAND_RIGHT);
 		}
 	}
+	else if (!(Posplayery < posBoss.y && diferenciay > diferenciax && (map->Exists_platform(posBoss, glm::ivec2(64, 64)) or (Posplayerx >= posBoss.x and map->Exists_platform(glm::ivec2(posBoss.x + map->getTileSize(), posBoss.y), glm::ivec2(64, 64))) or (Posplayerx < posBoss.x and map->Exists_platform(glm::ivec2(posBoss.x - map->getTileSize(), posBoss.y), glm::ivec2(64, 64))))) and (diferenciay >= diferenciax && Posplayerx < posBoss.x)) {
+		if (sprite->animation() != MOVE_LEFT)
+			sprite->changeAnimation(MOVE_LEFT);
+		posBoss.x -= 1;
+		if (map->collisionMoveLeft(posBoss, glm::ivec2(64, 64)))
+		{
+			posBoss.x += 1;
+			sprite->changeAnimation(STAND_LEFT);
+		}
+	}
+	else if (!(Posplayery < posBoss.y && diferenciay > diferenciax && (map->Exists_platform(posBoss, glm::ivec2(64, 64)) or (Posplayerx >= posBoss.x and map->Exists_platform(glm::ivec2(posBoss.x + map->getTileSize(), posBoss.y), glm::ivec2(64, 64))) or (Posplayerx < posBoss.x and map->Exists_platform(glm::ivec2(posBoss.x - map->getTileSize(), posBoss.y), glm::ivec2(64, 64))))) and (diferenciay >= diferenciax && Posplayerx > posBoss.x)) {
+		if (sprite->animation() != MOVE_RIGHT)
+			sprite->changeAnimation(MOVE_RIGHT);
+		posBoss.x += 1;
+		if (map->collisionMoveRight(posBoss, glm::ivec2(64, 64)))
+		{
+			posBoss.x -= 1;
+			sprite->changeAnimation(STAND_RIGHT);
+		}
+	}
 	else {//animacions
 		if (sprite->animation() == MOVE_LEFT)
 			sprite->changeAnimation(STAND_LEFT);
@@ -103,7 +123,7 @@ void Boss::update(int deltaTime, int Posplayerx, int Posplayery)
 				jumpAngle = 0;
 				startY = posBoss.y;
 			}
-			else {
+			/*else {
 				if (diferenciay >= diferenciax && Posplayerx < posBoss.x) {
 					if (sprite->animation() != MOVE_LEFT)
 						sprite->changeAnimation(MOVE_LEFT);
@@ -130,7 +150,7 @@ void Boss::update(int deltaTime, int Posplayerx, int Posplayery)
 					else if (sprite->animation() == MOVE_RIGHT)
 						sprite->changeAnimation(STAND_RIGHT);
 				}
-			}
+			}*/
 		}
 	}
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posBoss.x), float(tileMapDispl.y + posBoss.y)));

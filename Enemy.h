@@ -8,6 +8,8 @@
 class Enemy
 {
 public:
+	void update_attack_left(int deltaTime);
+	void update_attack_right(int deltaTime);
 	void init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram);
 	void setPosition(const glm::vec2 &pos);
 	void setTileMap(TileMap *tileMap);

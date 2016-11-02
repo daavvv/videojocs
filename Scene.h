@@ -38,7 +38,7 @@ public:
 	
 
 private:
-	bool ataca_enemic();
+	bool ataca_enemic(int deltaTime);
 	void initShaders();
 
 private:

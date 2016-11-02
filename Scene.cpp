@@ -45,11 +45,11 @@ void Scene::init()
 	enemy->setPosition(glm::vec2((INIT_PLAYER_X_TILES+4) * map->getTileSize(), INIT_PLAYER_X_TILES* map->getTileSize()));
 	enemy->setTileMap(map);
 	
-	/*boss = new Boss();
+	boss = new Boss();
 	boss->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 	boss->setPosition(glm::vec2((INIT_PLAYER_X_TILES + 4) * map->getTileSize(), INIT_PLAYER_X_TILES* map->getTileSize()));
 	boss->setTileMap(map);
-	*/
+	
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
 	currentTime = 0.0f;
 
@@ -64,12 +64,12 @@ void Scene::update(int deltaTime)
 
 
 	if (enemy->get_life() > 0) {
-		if (!ataca_enemic())	enemy->update(deltaTime, posicio_player.x, posicio_player.y);
-		//boss->update(deltaTime, posicio_player.x, posicio_player.y);
+		if (!ataca_enemic(deltaTime))	enemy->update(deltaTime, posicio_player.x, posicio_player.y);
 	}
+	boss->update(deltaTime, posicio_player.x, posicio_player.y);
 }
 
-bool Scene::ataca_enemic() {
+bool Scene::ataca_enemic(int deltaTime) {
 	//si esta al costat que ataqui
 	int posy = (enemy->get_position().y);
 	//cout << (player->getPosition().x > enemy->get_position().x) << ' ' << ((player->getPosition().x - map->getTileSize()) <= enemy->get_position().x) << endl;
@@ -78,15 +78,23 @@ bool Scene::ataca_enemic() {
 			//cout << "et matari babyy" << endl;
 			++contador;
 			if(int(contador)%50 == 0){
+				//canviar animacio a atacar
+				enemy->update_attack_right(deltaTime);
 				player->setLife(player->getLife() - 0.5f);
 				}
-			/*if(map->collisionMoveDown(enemy->get_position(), glm::ivec2(32, 32), &posy))*/return true;
+			cout << map->collisionMoveDown(enemy->get_position(), glm::ivec2(32, 32), &posy) << endl;
+			if(map->collisionMoveDown(enemy->get_position(), glm::ivec2(32, 32), &posy))return true;
 		}
 		else if ((player->getPosition().x <= enemy->get_position().x) and (player->getPosition().x + map->getTileSize()) >= enemy->get_position().x) {
 			//cout << "et matari babyy" << endl;
 			++contador;
-			if (int(contador)% 50 == 0)player->setLife(player->getLife() - 0.5f);
-			/*if (map->collisionMoveDown(enemy->get_position(), glm::ivec2(32, 32), &posy))*/return true;
+			if (int(contador) % 50 == 0) {
+				//canviar animacio a atacar
+				enemy->update_attack_left(deltaTime);
+				player->setLife(player->getLife() - 0.5f);
+			}
+			cout << map->collisionMoveDown(enemy->get_position(), glm::ivec2(32, 32), &posy) << endl;
+			if (map->collisionMoveDown(enemy->get_position(), glm::ivec2(32, 32), &posy))return true;
 		}
 		else {
 			contador = 0;
@@ -182,7 +190,7 @@ void Scene::render()
 	}
 	
 
-	//boss->render();
+	boss->render();
 
 }
 

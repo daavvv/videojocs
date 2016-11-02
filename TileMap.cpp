@@ -31,15 +31,41 @@ TileMap::TileMap(const string &levelFile, const glm::vec2 &minCoords, ShaderProg
 	string path = "levels/test_level.json";
 	loadLevelTest(path);
 
-	spritesheet.loadFromFile("images/blocks.png", TEXTURE_PIXEL_FORMAT_RGBA);
-	sprite = Sprite::createSprite(glm::ivec2(32, 32), glm::vec2(0.25, 0.25), &spritesheet, &program);
+	spritesheet.loadFromFile("images/caving.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	//sprite = Sprite::createSprite(glm::ivec2(32, 32), glm::vec2(0.25, 0.25), &spritesheet, &program);
+	sprite = Sprite::createSprite(glm::ivec2(64, 64), glm::vec2(0.20, 0.20), &spritesheet, &program);
 	sprite->setNumberAnimations(1);
 
-	sprite->setAnimationSpeed(0, 8);
-	sprite->addKeyframe(0, glm::vec2(0.f, 0.f));
+	sprite->setAnimationSpeed(0, 25);
+	/*sprite->addKeyframe(0, glm::vec2(0.f, 0.f));
 	sprite->addKeyframe(0, glm::vec2(0.5f, 0.f));
 	sprite->addKeyframe(0, glm::vec2(0.f, 0.5f));
-	sprite->addKeyframe(0, glm::vec2(0.5f, 0.5f));
+	sprite->addKeyframe(0, glm::vec2(0.5f, 0.5f));*/
+	sprite->addKeyframe(0, glm::vec2(0.f, 0.f));
+	sprite->addKeyframe(0, glm::vec2(0.f, 0.2f));
+	sprite->addKeyframe(0, glm::vec2(0.f, 0.4f));
+	sprite->addKeyframe(0, glm::vec2(0.f, 0.6f));
+	sprite->addKeyframe(0, glm::vec2(0.f, 0.8f));
+	sprite->addKeyframe(0, glm::vec2(0.2f, 0.f));
+	sprite->addKeyframe(0, glm::vec2(0.2f, 0.2f));
+	sprite->addKeyframe(0, glm::vec2(0.2f, 0.4f));
+	sprite->addKeyframe(0, glm::vec2(0.2f, 0.6f));
+	sprite->addKeyframe(0, glm::vec2(0.2f, 0.8f));
+	sprite->addKeyframe(0, glm::vec2(0.4f, 0.f));
+	sprite->addKeyframe(0, glm::vec2(0.4f, 0.2f));
+	sprite->addKeyframe(0, glm::vec2(0.4f, 0.4f));
+	sprite->addKeyframe(0, glm::vec2(0.4f, 0.6f));
+	sprite->addKeyframe(0, glm::vec2(0.4f, 0.8f));
+	sprite->addKeyframe(0, glm::vec2(0.6f, 0.f));
+	sprite->addKeyframe(0, glm::vec2(0.6f, 0.2f));
+	sprite->addKeyframe(0, glm::vec2(0.6f, 0.4f));
+	sprite->addKeyframe(0, glm::vec2(0.6f, 0.6f));
+	sprite->addKeyframe(0, glm::vec2(0.6f, 0.8f));
+	sprite->addKeyframe(0, glm::vec2(0.8f, 0.f));
+	sprite->addKeyframe(0, glm::vec2(0.8f, 0.2f));
+	sprite->addKeyframe(0, glm::vec2(0.8f, 0.4f));
+	sprite->addKeyframe(0, glm::vec2(0.8f, 0.6f));
+	sprite->addKeyframe(0, glm::vec2(0.8f, 0.8f));
 	sprite->changeAnimation(0);
 
 
@@ -137,7 +163,7 @@ void TileMap::render()
 	glDisable(GL_TEXTURE_2D);
 	
 	if (cabar) {
-		sprite->setPosition(glm::vec2(float((tileToBeDigged.x + 2)*tileSize), float((tileToBeDigged.y - 3)*tileSize)));
+		sprite->setPosition(glm::vec2(float((tileToBeDigged.x + 2)*tileSize)-16.f, float((tileToBeDigged.y - 3)*tileSize) - 16.f));
 		sprite->render();
 	}
 }
