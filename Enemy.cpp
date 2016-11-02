@@ -136,7 +136,7 @@ if (map->collisionMoveRight(posEnemy, glm::ivec2(32, 32)))
 }
 	}
 	else {//animacions
-		if (sprite->animation() == ATTACK_LEFT or sprite->animation() == ATTACK_RIGHT) {
+		if (sprite->animation() != ATTACK_LEFT or sprite->animation() != ATTACK_RIGHT) {
 			if (sprite->animation() == MOVE_LEFT)
 				sprite->changeAnimation(STAND_LEFT);
 			else if (sprite->animation() == MOVE_RIGHT)
@@ -227,6 +227,16 @@ void Enemy::setTileMap(TileMap *tileMap)
 
 void Enemy::set_life(float resta) {
 	life = life - resta;
+}
+
+void Enemy::set_contador_atac(int actualitzacio)
+{
+	contador_atac = actualitzacio;
+}
+
+int Enemy::get_contador_atac()
+{
+	return contador_atac;
 }
 
 void Enemy::update_attack_left(int deltaTime){

@@ -26,8 +26,10 @@ public:
 	float get_life() {
 		return life;
 	}
-
+	void set_contador_atac(int actualitzacio);
+	int get_contador_atac();
 private:
+	int contador_atac;
 	bool bJumping;
 	int jumpAngle, startY;
 	glm::ivec2 tileMapDispl, posEnemy;
