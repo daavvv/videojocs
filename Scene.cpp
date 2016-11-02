@@ -60,7 +60,7 @@ void Scene::update(int deltaTime)
 	currentTime += deltaTime;
 	player->update(deltaTime);
 	glm::ivec2 posicio_player = player->getPosition();
-	//map->update(deltaTime);
+	map->update(deltaTime);
 
 
 	if (enemy->get_life() > 0) {
