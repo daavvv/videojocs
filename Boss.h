@@ -12,18 +12,22 @@ public:
 	void setPosition(const glm::vec2 &pos);
 	void setTileMap(TileMap *tileMap);
 	void render();
+	float get_life();
+	void set_life(float resta);
 	void update(int deltaTime, int Posplayerx, int Posplayery);
+	void update_attack(int deltaTime);
 	glm::ivec2 get_position() {
 		return posBoss;
 	}
-	void reducir_vida();
 
 private:
+	int contador_atac;
+	float life;
 	bool bJumping;
 	int jumpAngle, startY;
 	glm::ivec2 tileMapDispl, posBoss;
-	Texture spritesheet;
-	Sprite *sprite;
+	Texture spritesheet, spritesheet2;
+	Sprite *sprite, *sprite2;
 	TileMap *map;
 };
 

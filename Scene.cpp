@@ -32,6 +32,7 @@ Scene::~Scene()
 
 void Scene::init()
 {
+	ticks = 0;
 	initShaders();
 	map = TileMap::createTileMap("levels/level01.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 	contador = 0;
@@ -53,20 +54,57 @@ void Scene::init()
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
 	currentTime = 0.0f;
 
+	spritesheet2.loadFromFile("images/caving.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	sprite2 = Sprite::createSprite(glm::ivec2(64, 64), glm::vec2(0.2, 0.2), &spritesheet2, &texProgram);
+	sprite2->setNumberAnimations(1);
+	sprite2->setAnimationSpeed(0, 25);
+
+	sprite2->addKeyframe(0, glm::vec2(0.f, 0.f));
+	sprite2->addKeyframe(0, glm::vec2(0.f, 0.2f));
+	sprite2->addKeyframe(0, glm::vec2(0.f, 0.4f));
+	sprite2->addKeyframe(0, glm::vec2(0.f, 0.6f));
+	sprite2->addKeyframe(0, glm::vec2(0.f, 0.8f));
+	sprite2->addKeyframe(0, glm::vec2(0.2f, 0.f));
+	sprite2->addKeyframe(0, glm::vec2(0.2f, 0.2f));
+	sprite2->addKeyframe(0, glm::vec2(0.2f, 0.4f));
+	sprite2->addKeyframe(0, glm::vec2(0.2f, 0.6f));
+	sprite2->addKeyframe(0, glm::vec2(0.2f, 0.8f));
+	sprite2->addKeyframe(0, glm::vec2(0.4f, 0.f));
+	sprite2->addKeyframe(0, glm::vec2(0.4f, 0.2f));
+	sprite2->addKeyframe(0, glm::vec2(0.4f, 0.4f));
+	sprite2->addKeyframe(0, glm::vec2(0.4f, 0.6f));
+	sprite2->addKeyframe(0, glm::vec2(0.4f, 0.8f));
+	sprite2->addKeyframe(0, glm::vec2(0.6f, 0.f));
+	sprite2->addKeyframe(0, glm::vec2(0.6f, 0.2f));
+	sprite2->addKeyframe(0, glm::vec2(0.6f, 0.4f));
+	sprite2->addKeyframe(0, glm::vec2(0.6f, 0.6f));
+	sprite2->addKeyframe(0, glm::vec2(0.6f, 0.8f));
+	sprite2->addKeyframe(0, glm::vec2(0.8f, 0.f));
+	sprite2->addKeyframe(0, glm::vec2(0.8f, 0.2f));
+	sprite2->addKeyframe(0, glm::vec2(0.8f, 0.4f));
+	sprite2->addKeyframe(0, glm::vec2(0.8f, 0.6f));
+	sprite2->addKeyframe(0, glm::vec2(0.8f, 0.8f));
+
+	sprite2->changeAnimation(0);
+
+	sprite2->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));
 }
 
 void Scene::update(int deltaTime)
 {
+	++ticks;
 	currentTime += deltaTime;
 	player->update(deltaTime);
 	glm::ivec2 posicio_player = player->getPosition();
+	sprite2->update(deltaTime);
 	map->update(deltaTime);
 
-
 	if (enemy->get_life() > 0) {
+		cout << ataca_enemic(deltaTime) << endl;
 		if (!ataca_enemic(deltaTime))	enemy->update(deltaTime, posicio_player.x, posicio_player.y);
 	}
-	boss->update(deltaTime, posicio_player.x, posicio_player.y);
+	ataca_boss(deltaTime);
+	//boss->update(deltaTime, posicio_player.x, posicio_player.y);
 }
 
 bool Scene::ataca_enemic(int deltaTime) {
@@ -74,6 +112,7 @@ bool Scene::ataca_enemic(int deltaTime) {
 	int posy = (enemy->get_position().y);
 	//cout << (player->getPosition().x > enemy->get_position().x) << ' ' << ((player->getPosition().x - map->getTileSize()) <= enemy->get_position().x) << endl;
 	if (((player->getPosition().y >= enemy->get_position().y) and (player->getPosition().y - map->getTileSize()) <= enemy->get_position().y) or ((player->getPosition().y <= enemy->get_position().y) and (player->getPosition().y + map->getTileSize()) >= enemy->get_position().y)) {
+
 		if ((player->getPosition().x > enemy->get_position().x) and (player->getPosition().x - map->getTileSize()) <= enemy->get_position().x) {
 			//cout << "et matari babyy" << endl;
 			++contador;
@@ -82,8 +121,10 @@ bool Scene::ataca_enemic(int deltaTime) {
 				enemy->update_attack_right(deltaTime);
 				player->setLife(player->getLife() - 0.5f);
 				}
-			cout << map->collisionMoveDown(enemy->get_position(), glm::ivec2(32, 32), &posy) << endl;
-			if(map->collisionMoveDown(enemy->get_position(), glm::ivec2(32, 32), &posy))return true;
+			
+			if (enemy->get_collisionDown()) {
+				return true;
+			}
 		}
 		else if ((player->getPosition().x <= enemy->get_position().x) and (player->getPosition().x + map->getTileSize()) >= enemy->get_position().x) {
 			//cout << "et matari babyy" << endl;
@@ -93,8 +134,10 @@ bool Scene::ataca_enemic(int deltaTime) {
 				enemy->update_attack_left(deltaTime);
 				player->setLife(player->getLife() - 0.5f);
 			}
-			cout << map->collisionMoveDown(enemy->get_position(), glm::ivec2(32, 32), &posy) << endl;
-			if (map->collisionMoveDown(enemy->get_position(), glm::ivec2(32, 32), &posy))return true;
+			if (enemy->get_collisionDown()) {
+
+				return true;
+			}
 		}
 		else {
 			contador = 0;
@@ -243,14 +286,28 @@ void Scene::mouse_clicked(int button, int x, int y) {
 		if (abs(puntx) > abs(punty) and puntx <= 0) {
 			if (((player->getPosition().y >= enemy->get_position().y) and (player->getPosition().y - map->getTileSize()) <= enemy->get_position().y) or ((player->getPosition().y <= enemy->get_position().y) and (player->getPosition().y + map->getTileSize()) >= enemy->get_position().y)) {
 				if ((player->getPosition().x > enemy->get_position().x) and (player->getPosition().x - map->getTileSize()) <= enemy->get_position().x) {
-					enemy->set_life( 1.f);
+					enemy->set_life(0.2f*player->get_attack_power());
+				}
+			}
+			if (((player->getPosition().y >= boss->get_position().y) and (player->getPosition().y - map->getTileSize()) <= boss->get_position().y) or ((player->getPosition().y <= boss->get_position().y) and (player->getPosition().y + map->getTileSize()) >= boss->get_position().y)) {
+				if ((player->getPosition().x >= boss->get_position().x) and (player->getPosition().x - map->getTileSize()) <= boss->get_position().x) {
+					cout << "matooooooooooooooooooo2" << endl;
+					boss->set_life(0.2f*player->get_attack_power());
+					cout << boss->get_life()<< endl; 
 				}
 			}
 		}
 		else if (abs(puntx) > abs(punty) and puntx > 0) {
 			if (((player->getPosition().y >= enemy->get_position().y) and (player->getPosition().y - map->getTileSize()) <= enemy->get_position().y) or ((player->getPosition().y <= enemy->get_position().y) and (player->getPosition().y + map->getTileSize()) >= enemy->get_position().y)) {
 				if ((player->getPosition().x < enemy->get_position().x) and (player->getPosition().x + map->getTileSize()) >= enemy->get_position().x) {
-					enemy->set_life(1.f);
+					enemy->set_life(0.2f*player->get_attack_power());
+				}
+			}
+			if (((player->getPosition().y >= boss->get_position().y) and (player->getPosition().y - map->getTileSize()) <= boss->get_position().y) or ((player->getPosition().y <= boss->get_position().y) and (player->getPosition().y + map->getTileSize()) >= boss->get_position().y)) {
+				if ((player->getPosition().x <= boss->get_position().x) and (player->getPosition().x + map->getTileSize()) >= boss->get_position().x) {
+					cout << "matooooooooooooooooooo4" << endl;
+					boss->set_life(0.2f*player->get_attack_power());
+					cout << boss->get_life() << endl;
 				}
 			}
 		}
@@ -258,3 +315,62 @@ void Scene::mouse_clicked(int button, int x, int y) {
 	player->crear(button, x, y);
 }
 
+
+
+
+bool Scene::ataca_boss(int deltaTime) {
+	//si esta al costat que ataqui
+	int posy = (boss->get_position().y);
+	if (ticks % 120 == 0) {
+		cout << "of course I enter" << endl;
+		boss->update_attack(deltaTime);
+		if (((player->getPosition().y >= boss->get_position().y) and (player->getPosition().y - map->getTileSize()) <= boss->get_position().y) or ((player->getPosition().y <= boss->get_position().y) and (player->getPosition().y + (map->getTileSize()) * 3) >= boss->get_position().y)) {// (map->getTileSize())*2 tamany del boss (doble que el enemic)
+			if ((player->getPosition().x > boss->get_position().x) and (player->getPosition().x - (map->getTileSize())*3) <= boss->get_position().x) {
+				player->setLife(player->getLife() - 1.5f);
+			}
+			else if ((player->getPosition().x <= boss->get_position().x) and (player->getPosition().x + map->getTileSize()) >= boss->get_position().x) {
+				player->setLife(player->getLife() - 1.5f);
+
+			}
+		}
+
+	}
+	else if (ticks % 120 == 60) {//activar sprite de boomb
+	}
+	else {
+		boss->update(deltaTime, player->getPosition().x, player->getPosition().y);
+	}
+	//cout << (player->getPosition().x > enemy->get_position().x) << ' ' << ((player->getPosition().x - map->getTileSize()) <= enemy->get_position().x) << endl;
+	/*if (((player->getPosition().y >= boss->get_position().y) and (boss->getPosition().y - map->getTileSize()) <= boss->get_position().y) or ((player->getPosition().y <= boss->get_position().y) and (player->getPosition().y + map->getTileSize()) >= boss->get_position().y)) {
+
+		if ((player->getPosition().x > boss->get_position().x) and (player->getPosition().x - map->getTileSize()) <= boss->get_position().x) {
+			//cout << "et matari babyy" << endl;
+			++contador;
+			if (int(contador) % 50 == 0) {
+				//canviar animacio a atacar
+				player->setLife(player->getLife() - 0.5f);
+			}
+				return true;
+		}
+		else if ((player->getPosition().x <= boss->get_position().x) and (player->getPosition().x + map->getTileSize()) >= boss->get_position().x) {
+			//cout << "et matari babyy" << endl;
+			++contador;
+			if (int(contador) % 50 == 0) {
+				//canviar animacio a atacar
+				boss->update_attack_left(deltaTime);
+				player->setLife(player->getLife() - 0.5f);
+			}
+			if (boss->get_collisionDown()) {
+
+				return true;
+			}
+		}
+		else {
+			contador = 0;
+		}
+	}
+	else {
+		contador = 0;
+	}*/
+	return false;
+}

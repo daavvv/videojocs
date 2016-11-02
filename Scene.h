@@ -39,15 +39,20 @@ public:
 
 private:
 	bool ataca_enemic(int deltaTime);
+	bool ataca_boss(int deltaTime);
 	void initShaders();
 
 private:
+	int ticks;
 	int contador;
 	bool isPlayerDead;
 	Boss *boss;
 	TileMap *map;
 	Player *player;
+	vector<Enemy> *enemics;
 	Enemy *enemy;
+	Texture  spritesheet2;
+	Sprite *sprite2;
 	ShaderProgram texProgram;
 	float currentTime;
 	glm::mat4 projection;

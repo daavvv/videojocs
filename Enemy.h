@@ -14,6 +14,7 @@ public:
 	void setPosition(const glm::vec2 &pos);
 	void setTileMap(TileMap *tileMap);
 	void render();
+	bool get_collisionDown();
 	bool get_enemy_bjumping() {
 		return bJumping;
 	}

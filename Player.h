@@ -36,7 +36,8 @@ public:
 	void update(int deltaTime);
 	void render();
 	void loadSprite();
-	
+	int get_attack_power();
+
 	void crear(int button, int x, int y);
 	void setTileMap(TileMap *tileMap);
 	void setPosition(const glm::vec2 &pos);

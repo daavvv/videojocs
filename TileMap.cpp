@@ -743,9 +743,10 @@ bool TileMap::collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, i
 		if(structMap[y*mapSize.x+x].ID != 0 && structMap[y*mapSize.x+x].isSolid)
 		{
 			//cout << structMap[y*mapSize.x + x].isSolid  << " " << structMap[y*mapSize.x + x].ID  << endl;
-			
+			//cout << "aqui entro" << endl;
 			if(*posY - tileSize * y + size.y <= 5)
 			{
+				//cout << "aqui entro" << endl;
 				*posY = tileSize * y - size.y;
 				return true;
 			}

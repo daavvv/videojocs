@@ -74,13 +74,18 @@ void Player::loadSprite() {
 
 }
 
+int Player::get_attack_power()
+{
+	return this->attackpower;
+}
+
 
 
 void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 {
 	
 	//glutMouseFunc(OnMouseClick);
-	attackpower = 1;
+	attackpower = 3;
 	weapon = "none";
 	goldcoins = 0;
 	buildTile = 0;
