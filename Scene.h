@@ -46,7 +46,6 @@ private:
 private:
 	//bool enableEnemies;
 	int ticks;
-	int contador;
 	bool isPlayerDead;
 	Boss *boss;
 	TileMap *map;

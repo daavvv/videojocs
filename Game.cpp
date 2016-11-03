@@ -39,6 +39,7 @@ bool Game::update(int deltaTime)
 		}
 	}
 	ui.update(deltaTime);
+	return true;
 }
 
 

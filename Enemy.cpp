@@ -90,7 +90,6 @@ void Enemy::update(int deltaTime, int Posplayerx, int Posplayery)
 
 	sprite->update(deltaTime);
 	if (Areax > diferenciax / map->getTileSize() && Areay > diferenciay / map->getTileSize()) {
-		cout << "he entrat dintre del bucle amb: Areax" << Areax << " diferenciax "<< diferenciax/map->getTileSize() << " Areay " << Areay << " diferenciay "<< diferenciay/ map->getTileSize() << endl;
 		if (diferenciay < diferenciax && Posplayerx < posEnemy.x) {
 			if (sprite->animation() != MOVE_LEFT)
 				sprite->changeAnimation(MOVE_LEFT);
@@ -119,14 +118,11 @@ void Enemy::update(int deltaTime, int Posplayerx, int Posplayery)
 			posEnemy.x -= 1;
 			if (map->collisionMoveLeft(posEnemy, glm::ivec2(32, 32)))
 			{
-
-				//cout << "aqui no hauria d'entrar" << endl;
 				posEnemy.x += 1;
 				sprite->changeAnimation(STAND_LEFT);
 			}
 		}
 		else if (!(Posplayery < posEnemy.y && diferenciay > diferenciax && (map->Exists_platform(posEnemy, glm::ivec2(32, 32)) or (Posplayerx >= posEnemy.x and map->Exists_platform(glm::ivec2(posEnemy.x + map->getTileSize(), posEnemy.y), glm::ivec2(32, 32))) or (Posplayerx < posEnemy.x and map->Exists_platform(glm::ivec2(posEnemy.x - map->getTileSize(), posEnemy.y), glm::ivec2(32, 32))))) and diferenciay >= diferenciax && Posplayerx > posEnemy.x) {
-			//cout << "entro22222222222222222222222222222" << endl;
 			if (sprite->animation() != MOVE_RIGHT)
 				sprite->changeAnimation(MOVE_RIGHT);
 			posEnemy.x += 1;

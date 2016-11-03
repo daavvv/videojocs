@@ -169,6 +169,7 @@ int Player::getAmountOfMaterial(int ID)
 			}
 		}
 	}
+	return 0;
 }
 
 void Player::setWeapon(string type)
@@ -198,7 +199,6 @@ void Player::setBuildTile(int tileID)
 
 void Player::update(int deltaTime)
 {
-	int xpos, ypos;
 	/*Game::instance().mouseMove() {
 
 	}*/
