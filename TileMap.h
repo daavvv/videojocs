@@ -23,6 +23,7 @@
 #define STONE 88
 #define STONE_CAVED 286
 #define IRON 388
+#define TERRAINLIMIT 16
 
 struct Tile {
 	Tile():isSolid(false), ID(0), isDiggable(false), handbuilded(false) {}

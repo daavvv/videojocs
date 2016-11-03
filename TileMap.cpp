@@ -302,7 +302,13 @@ bool TileMap::loadLevelTest(const string &levelFile)
 					//map[i] = int(array.value()[i]);
 					tile.ID = int(j3["layers"][i]["data"][j]);
 					//create_animations(tile.ID);
-
+					if (tile.ID == TERRAINLIMIT) {
+						tile.isSolid = true;
+						tile.isDiggable = false;
+						tile.estat = 1;
+						tile.instant_estat = 0;
+						tile.timeAnimation = 0;
+					}
 					if (tile.ID == GRASS){
 						tile.isSolid = true;
 						tile.isDiggable = true;
@@ -772,15 +778,12 @@ bool TileMap::canJump(const glm::ivec2 &playerPos, const glm::ivec2 &size) const
 
 	if (structMap[(tiley)*mapSize.x + tilex].ID == GRASS || structMap[(tiley)*mapSize.x + tilex].ID == DIRT 
 		|| structMap[(tiley)*mapSize.x + tilex].ID == SUPPORT_TERRAIN || structMap[(tiley)*mapSize.x + tilex].ID == STONE
-		|| structMap[(tiley)*mapSize.x + tilex].ID == IRON) {
+		|| structMap[(tiley)*mapSize.x + tilex].ID == IRON || structMap[(tiley)*mapSize.x + tilex].ID == TERRAINLIMIT) {
 		return false;
 	}
 
 	return true;
 }
-
-
-
 
 
 bool TileMap::bottomTileIsDiggable(const glm::ivec2 &playerPos, const glm::ivec2 &size) 
@@ -882,7 +885,21 @@ bool TileMap::topTileIsDiggable(const glm::ivec2 &playerPos, const glm::ivec2 &s
 	tiley = (playerPos.y + size.y - 1) / tileSize;
 
 
-	if (structMap[(tiley - 1)*mapSize.x + tilex].isDiggable && structMap[(tiley - 1)*mapSize.x + tilex].isSolid) {
+
+	if (structMap[(tiley - 1)*mapSize.x + tilex].ID == 0) {
+		if (structMap[(tiley - 2)*mapSize.x + tilex].isDiggable && structMap[(tiley - 2)*mapSize.x + tilex].isSolid) {
+			//cout << "Is diggable" << endl;
+			tileToBeDigged.x = tilex;
+			tileToBeDigged.y = tiley - 2;
+			/*
+			structMap[(tiley + 1)*mapSize.x + tilex].isDiggable = false;
+			structMap[(tiley + 1)*mapSize.x + tilex].ID = 0;
+			structMap[(tiley + 1)*mapSize.x + tilex].isSolid = false;
+			*/
+			return true;
+		}
+	}
+	else if (structMap[(tiley - 1)*mapSize.x + tilex].isDiggable && structMap[(tiley - 1)*mapSize.x + tilex].isSolid) {
 		//cout << "Is diggable" << endl;
 		tileToBeDigged.x = tilex;
 		tileToBeDigged.y = tiley - 1;
