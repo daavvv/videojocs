@@ -108,7 +108,7 @@ void Scene::init()
 
 		boss = new Boss();
 		boss->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-		boss->setPosition(glm::vec2(107 * map->getTileSize(), 26* map->getTileSize()));
+		boss->setPosition(glm::vec2(107 * map->getTileSize(), 24* map->getTileSize()));
 		boss->set_Area(8, 8);
 		boss->setTileMap(map);
 	//}
@@ -194,7 +194,9 @@ void Scene::update(int deltaTime)
 			//cout << ataca_enemic(deltaTime, enemics[1]) << endl;
 			if (!ataca_enemic(deltaTime, enemics[7]))	enemics[7]->update(deltaTime, posicio_player.x, posicio_player.y);
 		}
-		ataca_boss(deltaTime);
+		if (boss->get_life() > 0) {
+			ataca_boss(deltaTime);
+		}
 	//}
 	//boss->update(deltaTime, posicio_player.x, posicio_player.y);
 }
@@ -351,9 +353,10 @@ void Scene::render()
 		if (enemics[7]->get_life() > 0) {
 			enemics[7]->render();
 		}
-		boss->render();
+		if (boss->get_life() > 0) {
+			boss->render();
+		}	
 	//}
-
 }
 
 void Scene::setBuildTile(int tileID)
@@ -448,21 +451,20 @@ void Scene::mouse_clicked(int button, int x, int y) {
 bool Scene::ataca_boss(int deltaTime) {
 	//si esta al costat que ataqui
 	int posy = (boss->get_position().y);
-	if (ticks % 120 == 0) {
+	if (ticks % 180 == 0) {
 		//cout << "of course I enter" << endl;
 		boss->update_attack(deltaTime);
 		if (((player->getPosition().y >= boss->get_position().y) and (player->getPosition().y - map->getTileSize()) <= boss->get_position().y) or ((player->getPosition().y <= boss->get_position().y) and (player->getPosition().y + (map->getTileSize()) * 3) >= boss->get_position().y)) {// (map->getTileSize())*2 tamany del boss (doble que el enemic)
 			if ((player->getPosition().x > boss->get_position().x) and (player->getPosition().x - (map->getTileSize())*3) <= boss->get_position().x) {
-				player->setLife(player->getLife() - 1.5f);
+				player->setLife(player->getLife() - 1.f);
 			}
 			else if ((player->getPosition().x <= boss->get_position().x) and (player->getPosition().x + map->getTileSize()) >= boss->get_position().x) {
-				player->setLife(player->getLife() - 1.5f);
-
+				player->setLife(player->getLife() - 1.f);
 			}
 		}
 
 	}
-	else if (ticks % 120 == 60) {//activar sprite de boomb
+	else if (ticks % 180 == 60) {//activar sprite de boomb
 	}
 	else {
 		boss->update(deltaTime, player->getPosition().x, player->getPosition().y);
