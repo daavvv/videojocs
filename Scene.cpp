@@ -177,6 +177,11 @@ float Scene::getPlayerLife() {
 	return player->getLife();
 }
 
+bool Scene::checkIfPlayerHasWeapon(string type)
+{
+	return player->hasWeapon(type);
+}
+
 int Scene::getGoldCoins()
 {
 	return player->getGoldCoins();

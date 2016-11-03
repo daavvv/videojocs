@@ -29,6 +29,7 @@ public:
 	void setBuildTile(int tileID);
 	void addPersonalItemToPlayer(bool weapon, string type);
 	float getPlayerLife();
+	bool checkIfPlayerHasWeapon(string type);
 	int getGoldCoins();
 	void setPlayerWeapon(string type);
 	void substractMaterialToPlayer(int ID, int amount);

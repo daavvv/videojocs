@@ -56,6 +56,7 @@ public:
 	void free();
 	void update(int deltatime);
 	void setCavar(bool cavar);
+	int getTilesToDig();
 
 	
 	int getTileSize() const { return tileSize; }
@@ -103,6 +104,7 @@ private:
 	GLint posLocation_background, texCoordLocation_background, posLocation_background_objects, texCoordLocation_background_objects;
 	GLint posLocation_terrain, texCoordLocation_terrain, posLocation_foreground_objects, texCoordLocation_foreground_objects;
 	glm::ivec2 position, mapSize, tilesheetSize, tileToBeDigged, tileToBeBuilded;
+	int tileIDToBeDigged;
 	int tileSize, blockSize;
 	Texture tilesheet, spritesheet;
 

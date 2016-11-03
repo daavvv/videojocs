@@ -46,11 +46,13 @@ public:
 	void addItemToBag(int tileID);
 	bool isItemInBag(int tileID);
 	bool isEnoughAmount(int tileID);
+	bool hasWeapon(string type);
 	void substractOne(int tileID);
 	void addPersonalItem(bool weapon, string type);
 	void substractMaterialToPlayer(int ID, int amount);
 	float getLife();
 	int getGoldCoins();
+	int getAmountOfMaterial(int ID);
 	void setWeapon(string type);
 	vector<Item> getBag();
 	vector<PersonalItem> getPersonalItems();

@@ -160,6 +160,17 @@ int Player::getGoldCoins()
 	return this->goldcoins;
 }
 
+int Player::getAmountOfMaterial(int ID)
+{
+	if (isItemInBag(ID)) {
+		for (int i = 0; i < bag.size(); ++i) {
+			if (bag[i].ID == ID) {
+				return bag[i].amount;
+			}
+		}
+	}
+}
+
 void Player::setWeapon(string type)
 {
 	this->weapon = type;
@@ -310,57 +321,65 @@ void Player::update(int deltaTime)
 	if (Game::instance().getKey('s')) {
 		if (map->bottomTileIsDiggable(posPlayer, glm::ivec2(32, 32))) {
 
-			if (dig == 2 && !bdigging){
-
-				map->setCavar(true);
-				map->render();
-
-				dig--;
-				return;
+			if ((isItemInBag(map->getTilesToDig()) && getAmountOfMaterial(map->getTilesToDig()) < 100)|| !isItemInBag(map->getTilesToDig())) {
+				if (dig == 2 && !bdigging) {
+					map->setCavar(true);
+					map->render();
+					dig--;
+					return;
+				}
 			}
 		}
 	}
 	else if (Game::instance().getKey('a')) {
 		if (map->leftTileIsDiggable(posPlayer, glm::ivec2(32, 32))) {
 
-			if (dig == 2 && !bdigging) {
 
-				map->setCavar(true);
-				map->render();
+			if ((isItemInBag(map->getTilesToDig()) && getAmountOfMaterial(map->getTilesToDig()) < 100) || !isItemInBag(map->getTilesToDig())) {
+				if (dig == 2 && !bdigging) {
 
-				dig--;
-				return;
+					map->setCavar(true);
+					map->render();
+
+					dig--;
+					return;
+				}
 			}
 		}
 	}
 	else if (Game::instance().getKey('d')) {
 		if (map->rightTileIsDiggable(posPlayer, glm::ivec2(32, 32))) {
 
-			if (dig == 2 && !bdigging) {
+			if ((isItemInBag(map->getTilesToDig()) && getAmountOfMaterial(map->getTilesToDig()) < 100) || !isItemInBag(map->getTilesToDig())) {
+				if (dig == 2 && !bdigging) {
 
-				map->setCavar(true);
-				map->render();
+					map->setCavar(true);
+					map->render();
 
-				dig--;
-				return;
+					dig--;
+					return;
+				}
 			}
 		}
 	}
 	else if (Game::instance().getKey('w')) {
 		if (map->topTileIsDiggable(posPlayer, glm::ivec2(32, 32))) {
 
-			if (dig == 2 && !bdigging) {
+			if ((isItemInBag(map->getTilesToDig()) && getAmountOfMaterial(map->getTilesToDig()) < 100) || !isItemInBag(map->getTilesToDig())) {
+				if (dig == 2 && !bdigging) {
 
-				map->setCavar(true);
-				map->render();
+					map->setCavar(true);
+					map->render();
 
-				dig--;
-				return;
+					dig--;
+					return;
+				}
 			}
 		}
 	}
 	else {
 		if (dig == 1 && !bdigging) {
+
 			int tile = map->digTile();
 			addItemToBag(tile);
 			dig = 2;
@@ -426,6 +445,17 @@ bool Player::isEnoughAmount(int tileID) {
 			}
 		}
 	}
+	return false;
+}
+
+bool Player::hasWeapon(string type)
+{
+	for (int i = 0; i < personalItems.size(); ++i) {
+		if (personalItems[i].type == type) {
+			return true;
+		}
+	}
+
 	return false;
 }
 

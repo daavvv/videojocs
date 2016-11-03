@@ -129,6 +129,11 @@ void TileMap::setCavar(bool cavar)
 	this->cabar = cavar;
 }
 
+int TileMap::getTilesToDig()
+{
+	return tileIDToBeDigged;
+}
+
 
 void TileMap::render()
 {
@@ -799,6 +804,7 @@ bool TileMap::bottomTileIsDiggable(const glm::ivec2 &playerPos, const glm::ivec2
 		//cout << "Is diggable" << endl;
 		tileToBeDigged.x = tilex;
 		tileToBeDigged.y = tiley+1;
+		tileIDToBeDigged = structMap[(tiley + 1)*mapSize.x + tilex].ID;
 		/*
 		structMap[(tiley + 1)*mapSize.x + tilex].isDiggable = false;
 		structMap[(tiley + 1)*mapSize.x + tilex].ID = 0;
@@ -891,6 +897,7 @@ bool TileMap::topTileIsDiggable(const glm::ivec2 &playerPos, const glm::ivec2 &s
 			//cout << "Is diggable" << endl;
 			tileToBeDigged.x = tilex;
 			tileToBeDigged.y = tiley - 2;
+			tileIDToBeDigged = structMap[(tiley - 2)*mapSize.x + tilex].ID;
 			/*
 			structMap[(tiley + 1)*mapSize.x + tilex].isDiggable = false;
 			structMap[(tiley + 1)*mapSize.x + tilex].ID = 0;
@@ -903,6 +910,7 @@ bool TileMap::topTileIsDiggable(const glm::ivec2 &playerPos, const glm::ivec2 &s
 		//cout << "Is diggable" << endl;
 		tileToBeDigged.x = tilex;
 		tileToBeDigged.y = tiley - 1;
+		tileIDToBeDigged = structMap[(tiley - 1)*mapSize.x + tilex].ID;
 		/*
 		structMap[(tiley + 1)*mapSize.x + tilex].isDiggable = false;
 		structMap[(tiley + 1)*mapSize.x + tilex].ID = 0;
@@ -932,6 +940,7 @@ bool TileMap::rightTileIsDiggable(const glm::ivec2 &playerPos, const glm::ivec2 
 		//cout << "Is diggable" << endl;
 		tileToBeDigged.x = tilex+1;
 		tileToBeDigged.y = tiley;
+		tileIDToBeDigged = structMap[(tiley)*mapSize.x + tilex + 1].ID;
 		/*
 		structMap[(tiley + 1)*mapSize.x + tilex].isDiggable = false;
 		structMap[(tiley + 1)*mapSize.x + tilex].ID = 0;
@@ -959,6 +968,7 @@ bool TileMap::leftTileIsDiggable(const glm::ivec2 &playerPos, const glm::ivec2 &
 		//cout << "Is diggable" << endl;
 		tileToBeDigged.x = tilex - 1;
 		tileToBeDigged.y = tiley;
+		tileIDToBeDigged = structMap[(tiley)*mapSize.x + tilex - 1].ID;
 		/*
 		structMap[(tiley + 1)*mapSize.x + tilex].isDiggable = false;
 		structMap[(tiley + 1)*mapSize.x + tilex].ID = 0;
