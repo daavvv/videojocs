@@ -44,14 +44,14 @@ private:
 	void initShaders();
 
 private:
-	bool enableEnemies;
+	//bool enableEnemies;
 	int ticks;
 	int contador;
 	bool isPlayerDead;
 	Boss *boss;
 	TileMap *map;
 	Player *player;
-	Enemy *enemics[5];
+	Enemy *enemics[8];
 	Enemy *enemy;
 	Texture  spritesheet2;
 	Sprite *sprite2;

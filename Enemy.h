@@ -15,6 +15,7 @@ public:
 	void setTileMap(TileMap *tileMap);
 	void render();
 	bool get_collisionDown();
+	void set_Area(int x, int y);
 	bool get_enemy_bjumping() {
 		return bJumping;
 	}
@@ -32,6 +33,7 @@ private:
 	int contador_atac;
 	bool bJumping;
 	int jumpAngle, startY;
+	int Areax, Areay;
 	glm::ivec2 tileMapDispl, posEnemy;
 	Texture spritesheet;
 	Sprite *sprite;

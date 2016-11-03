@@ -14,6 +14,7 @@ public:
 	void render();
 	float get_life();
 	void set_life(float resta);
+	void set_Area(int x, int y);
 	void update(int deltaTime, int Posplayerx, int Posplayery);
 	void update_attack(int deltaTime);
 	glm::ivec2 get_position() {
@@ -22,6 +23,7 @@ public:
 
 private:
 	int contador_atac;
+	int Areax, Areay;
 	float life;
 	bool bJumping;
 	int jumpAngle, startY;

@@ -32,7 +32,7 @@ Scene::~Scene()
 
 void Scene::init()
 {
-	enableEnemies = false;
+	//enableEnemies = true;
 	ticks = 0;
 	initShaders();
 	map = TileMap::createTileMap("levels/level01.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
@@ -48,25 +48,70 @@ void Scene::init()
 	enemy->setTileMap(map);*/
 
 	
-	if (enableEnemies) {
+	//if (enableEnemies) {
 		enemics[0] = new Enemy();
 		enemics[0]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-		enemics[0]->setPosition(glm::vec2((INIT_PLAYER_X_TILES + 4) * map->getTileSize(), INIT_PLAYER_X_TILES* map->getTileSize()));
+		enemics[0]->setPosition(glm::vec2(14 * map->getTileSize(), 24* map->getTileSize()));
+		enemics[0]->set_Area(3, 3);
 		enemics[0]->setTileMap(map);
 		enemics[0]->set_contador_atac(0);
 
 		enemics[1] = new Enemy();
 		enemics[1]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-		enemics[1]->setPosition(glm::vec2((INIT_PLAYER_X_TILES + 12) * map->getTileSize(), INIT_PLAYER_X_TILES* map->getTileSize()));
+		enemics[1]->setPosition(glm::vec2(37 * map->getTileSize(), 32* map->getTileSize()));
+		enemics[1]->set_Area(5, 5);
 		enemics[1]->setTileMap(map);
 		enemics[1]->set_contador_atac(0);
+
+		enemics[2] = new Enemy();
+		enemics[2]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+		enemics[2]->setPosition(glm::vec2(25 * map->getTileSize(), 33 * map->getTileSize()));
+		enemics[2]->set_Area(10, 10);
+		enemics[2]->setTileMap(map);
+		enemics[2]->set_contador_atac(0);
+
+		enemics[3] = new Enemy();
+		enemics[3]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+		enemics[3]->setPosition(glm::vec2(36 * map->getTileSize(), 56 * map->getTileSize()));
+		enemics[3]->set_Area(7, 7);
+		enemics[3]->setTileMap(map);
+		enemics[3]->set_contador_atac(0);
+
+		enemics[4] = new Enemy();
+		enemics[4]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+		enemics[4]->setPosition(glm::vec2(74 * map->getTileSize(), 51 * map->getTileSize()));
+		enemics[4]->set_Area(5, 5);
+		enemics[4]->setTileMap(map);
+		enemics[4]->set_contador_atac(0);
+
+		enemics[5] = new Enemy();
+		enemics[5]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+		enemics[5]->setPosition(glm::vec2(97 * map->getTileSize(), 54 * map->getTileSize()));
+		enemics[5]->set_Area(8, 8);
+		enemics[5]->setTileMap(map);
+		enemics[5]->set_contador_atac(0);
+
+		enemics[6] = new Enemy();
+		enemics[6]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+		enemics[6]->setPosition(glm::vec2(63 * map->getTileSize(), 9 * map->getTileSize()));
+		enemics[6]->set_Area(10, 10);
+		enemics[6]->setTileMap(map);
+		enemics[6]->set_contador_atac(0);
+
+		enemics[7] = new Enemy();
+		enemics[7]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+		enemics[7]->setPosition(glm::vec2(72 * map->getTileSize(), 37 * map->getTileSize()));
+		enemics[7]->set_Area(10, 10);
+		enemics[7]->setTileMap(map);
+		enemics[7]->set_contador_atac(0);
 
 
 		boss = new Boss();
 		boss->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-		boss->setPosition(glm::vec2((INIT_PLAYER_X_TILES + 8) * map->getTileSize(), INIT_PLAYER_X_TILES* map->getTileSize()));
+		boss->setPosition(glm::vec2(107 * map->getTileSize(), 26* map->getTileSize()));
+		boss->set_Area(8, 8);
 		boss->setTileMap(map);
-	}
+	//}
 	
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
 	currentTime = 0.0f;
@@ -116,7 +161,7 @@ void Scene::update(int deltaTime)
 	sprite2->update(deltaTime);
 	map->update(deltaTime);
 
-	if (enableEnemies) {
+	//if (enableEnemies) {
 		if (enemics[0]->get_life() > 0) {
 			//cout << ataca_enemic(deltaTime, enemics[0]) << endl;
 			if (!ataca_enemic(deltaTime, enemics[0]))	enemics[0]->update(deltaTime, posicio_player.x, posicio_player.y);
@@ -125,8 +170,32 @@ void Scene::update(int deltaTime)
 			//cout << ataca_enemic(deltaTime, enemics[1]) << endl;
 			if (!ataca_enemic(deltaTime, enemics[1]))	enemics[1]->update(deltaTime, posicio_player.x, posicio_player.y);
 		}
+		if (enemics[2]->get_life() > 0) {
+			//cout << ataca_enemic(deltaTime, enemics[1]) << endl;
+			if (!ataca_enemic(deltaTime, enemics[2]))	enemics[2]->update(deltaTime, posicio_player.x, posicio_player.y);
+		}
+		if (enemics[3]->get_life() > 0) {
+			//cout << ataca_enemic(deltaTime, enemics[1]) << endl;
+			if (!ataca_enemic(deltaTime, enemics[3]))	enemics[3]->update(deltaTime, posicio_player.x, posicio_player.y);
+		}
+		if (enemics[4]->get_life() > 0) {
+			//cout << ataca_enemic(deltaTime, enemics[1]) << endl;
+			if (!ataca_enemic(deltaTime, enemics[4]))	enemics[4]->update(deltaTime, posicio_player.x, posicio_player.y);
+		}
+		if (enemics[5]->get_life() > 0) {
+			//cout << ataca_enemic(deltaTime, enemics[1]) << endl;
+			if (!ataca_enemic(deltaTime, enemics[5]))	enemics[5]->update(deltaTime, posicio_player.x, posicio_player.y);
+		}
+		if (enemics[6]->get_life() > 0) {
+			//cout << ataca_enemic(deltaTime, enemics[1]) << endl;
+			if (!ataca_enemic(deltaTime, enemics[6]))	enemics[6]->update(deltaTime, posicio_player.x, posicio_player.y);
+		}
+		if (enemics[7]->get_life() > 0) {
+			//cout << ataca_enemic(deltaTime, enemics[1]) << endl;
+			if (!ataca_enemic(deltaTime, enemics[7]))	enemics[7]->update(deltaTime, posicio_player.x, posicio_player.y);
+		}
 		ataca_boss(deltaTime);
-	}
+	//}
 	//boss->update(deltaTime, posicio_player.x, posicio_player.y);
 }
 
@@ -256,7 +325,7 @@ void Scene::render()
 	map->render();
 	player->render();
 
-	if (enableEnemies) {
+	//if (enableEnemies) {
 
 		if (enemics[0]->get_life() > 0) {
 			enemics[0]->render();
@@ -264,8 +333,26 @@ void Scene::render()
 		if (enemics[1]->get_life() > 0) {
 			enemics[1]->render();
 		}
+		if (enemics[2]->get_life() > 0) {
+			enemics[2]->render();
+		}
+		if (enemics[3]->get_life() > 0) {
+			enemics[3]->render();
+		}
+		if (enemics[4]->get_life() > 0) {
+			enemics[4]->render();
+		}
+		if (enemics[5]->get_life() > 0) {
+			enemics[5]->render();
+		}
+		if (enemics[6]->get_life() > 0) {
+			enemics[6]->render();
+		}
+		if (enemics[7]->get_life() > 0) {
+			enemics[7]->render();
+		}
 		boss->render();
-	}
+	//}
 
 }
 
@@ -316,7 +403,7 @@ void Scene::mouse_clicked(int button, int x, int y) {
 	int punty = y - centrey;
 	if (button == GLUT_RIGHT_BUTTON) {
 		if (abs(puntx) > abs(punty) and puntx <= 0) {
-			for (int i = 0; i < 2; ++i) {
+			for (int i = 0; i < 8; ++i) {
 				//cout << "vidaa " << enemics[i]->get_life() << endl;
 				if (((player->getPosition().y >= enemics[i]->get_position().y) and (player->getPosition().y - map->getTileSize()) <= enemics[i]->get_position().y) or ((player->getPosition().y <= enemics[i]->get_position().y) and (player->getPosition().y + map->getTileSize()) >= enemics[i]->get_position().y)) {
 					if ((player->getPosition().x >= enemics[i]->get_position().x) and (player->getPosition().x - map->getTileSize()) <= enemics[i]->get_position().x) {
@@ -334,7 +421,7 @@ void Scene::mouse_clicked(int button, int x, int y) {
 			}
 		}
 		else if (abs(puntx) > abs(punty) and puntx > 0) {
-			for (int i = 0; i < 2; ++i) {
+			for (int i = 0; i < 8; ++i) {
 				//cout << "vida" << enemics[i]->get_life() << endl;
 				if (((player->getPosition().y >= enemics[i]->get_position().y) and (player->getPosition().y - map->getTileSize()) <= enemics[i]->get_position().y) or ((player->getPosition().y <= enemics[i]->get_position().y) and (player->getPosition().y + map->getTileSize()) >= enemics[i]->get_position().y)) {
 					if ((player->getPosition().x <= enemics[i]->get_position().x) and (player->getPosition().x + map->getTileSize()) >= enemics[i]->get_position().x) {

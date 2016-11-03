@@ -60,115 +60,117 @@ void Boss::update(int deltaTime, int Posplayerx, int Posplayery)
 	int diferenciay = abs(posBoss.y - Posplayery);
 	//sprite2->update(deltaTime);
 	sprite->update(deltaTime);
-	if (sprite->animation() != ATTACK) {
-		contador_atac = 0;
-		if (diferenciay < diferenciax && Posplayerx < posBoss.x) {
-			if (sprite->animation() != MOVE_LEFT)
-				sprite->changeAnimation(MOVE_LEFT);
-			posBoss.x -= 1;
-			if (map->collisionMoveLeft(posBoss, glm::ivec2(64, 64)))
-			{
-				posBoss.x += 1;
-				sprite->changeAnimation(STAND_LEFT);
-			}
-		}
-		else if (diferenciay < diferenciax && Posplayerx > posBoss.x) {
-			if (sprite->animation() != MOVE_RIGHT)
-				sprite->changeAnimation(MOVE_RIGHT);
-			posBoss.x += 1;
-			if (map->collisionMoveRight(posBoss, glm::ivec2(64, 64)))
-			{
+	if (Areax > diferenciax / map->getTileSize() && Areay > diferenciay / map->getTileSize()) {
+		if (sprite->animation() != ATTACK) {
+			contador_atac = 0;
+			if (diferenciay < diferenciax && Posplayerx < posBoss.x) {
+				if (sprite->animation() != MOVE_LEFT)
+					sprite->changeAnimation(MOVE_LEFT);
 				posBoss.x -= 1;
-				sprite->changeAnimation(STAND_RIGHT);
+				if (map->collisionMoveLeft(posBoss, glm::ivec2(64, 64)))
+				{
+					posBoss.x += 1;
+					sprite->changeAnimation(STAND_LEFT);
+				}
 			}
-		}
-		else if (!(Posplayery < posBoss.y && diferenciay > diferenciax && (map->Exists_platform(posBoss, glm::ivec2(64, 64)) or (Posplayerx >= posBoss.x and map->Exists_platform(glm::ivec2(posBoss.x + map->getTileSize(), posBoss.y), glm::ivec2(64, 64))) or (Posplayerx < posBoss.x and map->Exists_platform(glm::ivec2(posBoss.x - map->getTileSize(), posBoss.y), glm::ivec2(64, 64))))) and (diferenciay >= diferenciax && Posplayerx < posBoss.x)) {
-			if (sprite->animation() != MOVE_LEFT)
-				sprite->changeAnimation(MOVE_LEFT);
-			posBoss.x -= 1;
-			if (map->collisionMoveLeft(posBoss, glm::ivec2(64, 64)))
-			{
+			else if (diferenciay < diferenciax && Posplayerx > posBoss.x) {
+				if (sprite->animation() != MOVE_RIGHT)
+					sprite->changeAnimation(MOVE_RIGHT);
 				posBoss.x += 1;
-				sprite->changeAnimation(STAND_LEFT);
+				if (map->collisionMoveRight(posBoss, glm::ivec2(64, 64)))
+				{
+					posBoss.x -= 1;
+					sprite->changeAnimation(STAND_RIGHT);
+				}
 			}
-		}
-		else if (!(Posplayery < posBoss.y && diferenciay > diferenciax && (map->Exists_platform(posBoss, glm::ivec2(64, 64)) or (Posplayerx >= posBoss.x and map->Exists_platform(glm::ivec2(posBoss.x + map->getTileSize(), posBoss.y), glm::ivec2(64, 64))) or (Posplayerx < posBoss.x and map->Exists_platform(glm::ivec2(posBoss.x - map->getTileSize(), posBoss.y), glm::ivec2(64, 64))))) and (diferenciay >= diferenciax && Posplayerx > posBoss.x)) {
-			if (sprite->animation() != MOVE_RIGHT)
-				sprite->changeAnimation(MOVE_RIGHT);
-			posBoss.x += 1;
-			if (map->collisionMoveRight(posBoss, glm::ivec2(64, 64)))
-			{
+			else if (!(Posplayery < posBoss.y && diferenciay > diferenciax && (map->Exists_platform(posBoss, glm::ivec2(64, 64)) or (Posplayerx >= posBoss.x and map->Exists_platform(glm::ivec2(posBoss.x + map->getTileSize(), posBoss.y), glm::ivec2(64, 64))) or (Posplayerx < posBoss.x and map->Exists_platform(glm::ivec2(posBoss.x - map->getTileSize(), posBoss.y), glm::ivec2(64, 64))))) and (diferenciay >= diferenciax && Posplayerx < posBoss.x)) {
+				if (sprite->animation() != MOVE_LEFT)
+					sprite->changeAnimation(MOVE_LEFT);
 				posBoss.x -= 1;
-				sprite->changeAnimation(STAND_RIGHT);
+				if (map->collisionMoveLeft(posBoss, glm::ivec2(64, 64)))
+				{
+					posBoss.x += 1;
+					sprite->changeAnimation(STAND_LEFT);
+				}
 			}
-		}
-		else {//animacions
-			if (sprite->animation() == MOVE_LEFT)
-				sprite->changeAnimation(STAND_LEFT);
-			else if (sprite->animation() == MOVE_RIGHT)
-				sprite->changeAnimation(STAND_RIGHT);
-		}
+			else if (!(Posplayery < posBoss.y && diferenciay > diferenciax && (map->Exists_platform(posBoss, glm::ivec2(64, 64)) or (Posplayerx >= posBoss.x and map->Exists_platform(glm::ivec2(posBoss.x + map->getTileSize(), posBoss.y), glm::ivec2(64, 64))) or (Posplayerx < posBoss.x and map->Exists_platform(glm::ivec2(posBoss.x - map->getTileSize(), posBoss.y), glm::ivec2(64, 64))))) and (diferenciay >= diferenciax && Posplayerx > posBoss.x)) {
+				if (sprite->animation() != MOVE_RIGHT)
+					sprite->changeAnimation(MOVE_RIGHT);
+				posBoss.x += 1;
+				if (map->collisionMoveRight(posBoss, glm::ivec2(64, 64)))
+				{
+					posBoss.x -= 1;
+					sprite->changeAnimation(STAND_RIGHT);
+				}
+			}
+			else {//animacions
+				if (sprite->animation() == MOVE_LEFT)
+					sprite->changeAnimation(STAND_LEFT);
+				else if (sprite->animation() == MOVE_RIGHT)
+					sprite->changeAnimation(STAND_RIGHT);
+			}
 
-		if (bJumping)
-		{
-			jumpAngle += JUMP_ANGLE_STEP;
-			if (jumpAngle == 180)
+			if (bJumping)
 			{
-				bJumping = false;
-				posBoss.y = startY;
+				jumpAngle += JUMP_ANGLE_STEP;
+				if (jumpAngle == 180)
+				{
+					bJumping = false;
+					posBoss.y = startY;
+				}
+				else
+				{
+					posBoss.y = int(startY - 96 * sin(3.14159f * jumpAngle / 180.f));
+					if (jumpAngle > 90)
+						bJumping = !map->collisionMoveDown(posBoss, glm::ivec2(64, 64), &posBoss.y);
+				}
 			}
 			else
 			{
-				posBoss.y = int(startY - 96 * sin(3.14159f * jumpAngle / 180.f));
-				if (jumpAngle > 90)
-					bJumping = !map->collisionMoveDown(posBoss, glm::ivec2(64, 64), &posBoss.y);
-			}
-		}
-		else
-		{
-			posBoss.y += FALL_STEP;
-			if (map->collisionMoveDown(posBoss, glm::ivec2(64, 64), &posBoss.y))
-			{
-				if (Posplayery < posBoss.y && diferenciay > diferenciax && (map->Exists_platform(posBoss, glm::ivec2(64, 64)) or (Posplayerx >= posBoss.x and map->Exists_platform(glm::ivec2(posBoss.x + map->getTileSize(), posBoss.y), glm::ivec2(64, 64))) or (Posplayerx < posBoss.x and map->Exists_platform(glm::ivec2(posBoss.x - map->getTileSize(), posBoss.y), glm::ivec2(64, 64)))))
+				posBoss.y += FALL_STEP;
+				if (map->collisionMoveDown(posBoss, glm::ivec2(64, 64), &posBoss.y))
 				{
-					bJumping = true;
-					jumpAngle = 0;
-					startY = posBoss.y;
-				}
-				/*else {
-					if (diferenciay >= diferenciax && Posplayerx < posBoss.x) {
-						if (sprite->animation() != MOVE_LEFT)
-							sprite->changeAnimation(MOVE_LEFT);
-						posBoss.x -= 1;
-						if (map->collisionMoveLeft(posBoss, glm::ivec2(64, 64)))
-						{
-							posBoss.x += 1;
-							sprite->changeAnimation(STAND_LEFT);
-						}
+					if (Posplayery < posBoss.y && diferenciay > diferenciax && (map->Exists_platform(posBoss, glm::ivec2(64, 64)) or (Posplayerx >= posBoss.x and map->Exists_platform(glm::ivec2(posBoss.x + map->getTileSize(), posBoss.y), glm::ivec2(64, 64))) or (Posplayerx < posBoss.x and map->Exists_platform(glm::ivec2(posBoss.x - map->getTileSize(), posBoss.y), glm::ivec2(64, 64)))))
+					{
+						bJumping = true;
+						jumpAngle = 0;
+						startY = posBoss.y;
 					}
-					else if (diferenciay >= diferenciax && Posplayerx > posBoss.x) {
-						if (sprite->animation() != MOVE_RIGHT)
-							sprite->changeAnimation(MOVE_RIGHT);
-						posBoss.x += 1;
-						if (map->collisionMoveRight(posBoss, glm::ivec2(64, 64)))
-						{
+					/*else {
+						if (diferenciay >= diferenciax && Posplayerx < posBoss.x) {
+							if (sprite->animation() != MOVE_LEFT)
+								sprite->changeAnimation(MOVE_LEFT);
 							posBoss.x -= 1;
-							sprite->changeAnimation(STAND_RIGHT);
+							if (map->collisionMoveLeft(posBoss, glm::ivec2(64, 64)))
+							{
+								posBoss.x += 1;
+								sprite->changeAnimation(STAND_LEFT);
+							}
 						}
-					}
-					else {//animacions
-						if (sprite->animation() == MOVE_LEFT)
-							sprite->changeAnimation(STAND_LEFT);
-						else if (sprite->animation() == MOVE_RIGHT)
-							sprite->changeAnimation(STAND_RIGHT);
-					}
-				}*/
+						else if (diferenciay >= diferenciax && Posplayerx > posBoss.x) {
+							if (sprite->animation() != MOVE_RIGHT)
+								sprite->changeAnimation(MOVE_RIGHT);
+							posBoss.x += 1;
+							if (map->collisionMoveRight(posBoss, glm::ivec2(64, 64)))
+							{
+								posBoss.x -= 1;
+								sprite->changeAnimation(STAND_RIGHT);
+							}
+						}
+						else {//animacions
+							if (sprite->animation() == MOVE_LEFT)
+								sprite->changeAnimation(STAND_LEFT);
+							else if (sprite->animation() == MOVE_RIGHT)
+								sprite->changeAnimation(STAND_RIGHT);
+						}
+					}*/
+				}
 			}
 		}
-	}
-	else{
-		contador_atac = contador_atac + deltaTime;
-		if(contador_atac >= 1000) sprite->changeAnimation(STAND_RIGHT);
+		else {
+			contador_atac = contador_atac + deltaTime;
+			if (contador_atac >= 1000) sprite->changeAnimation(STAND_RIGHT);
+		}
 	}
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posBoss.x), float(tileMapDispl.y + posBoss.y)));
 }
@@ -187,6 +189,12 @@ float Boss::get_life()
 void Boss::set_life(float resta)
 {
 	life = life - resta;
+}
+
+void Boss::set_Area(int x, int y)
+{
+	Areax = x;
+	Areay = y;
 }
 
 void Boss::setPosition(const glm::vec2 &pos)
