@@ -245,7 +245,7 @@ bool TileMap::loadLevelTest(const string &levelFile)
 
 
 
-  			cout << array.key() << ": " << array.value() << endl;
+  			//cout << array.key() << ": " << array.value() << endl;
   		}
 	}
 
@@ -375,6 +375,7 @@ bool TileMap::loadLevelTest(const string &levelFile)
 			}
 	}
 
+	/*
 
 	cout << "Background Map" << endl;
 	
@@ -418,6 +419,7 @@ bool TileMap::loadLevelTest(const string &levelFile)
 	cout << "Tile size:" << tileSize << endl;
 	cout << "Block size:" << blockSize << endl;
 
+	*/
 	return true;
 
 }
@@ -996,6 +998,7 @@ int TileMap::digTile() {
 	cabar = false;
 
 
+	/*
 	for (int i = 0; i < mapSize.x * mapSize.y; ++i) {
 		if (structMap[i].isSolid) {
 			cout << 1 << ",";
@@ -1007,6 +1010,7 @@ int TileMap::digTile() {
 			cout << endl;
 		}
 	}
+	*/
 
 	return tile;
 }

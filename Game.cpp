@@ -163,7 +163,7 @@ void Game::mouseMotionMove(int x, int y)
 	if (!gameInitialized) {
 		string menu;
 		bool success = false;
-		cout << x << "," << y << endl;
+		//cout << x << "," << y << endl;
 
 		bool dead = false;
 		if (scene.getPlayerLife() > 0) {
@@ -180,7 +180,7 @@ void Game::mousePress(int button, int x, int y)
 {
 
 
-	cout << "clicked on " << x << "," << y << endl;
+	//cout << "clicked on " << x << "," << y << endl;
 
 	//Esto dejamelo así please
 
@@ -222,7 +222,7 @@ void Game::mousePress(int button, int x, int y)
 		string type = "none";
 		if (ui.clickOnWeaponsBar(x, y, &type)) {
 			//do something
-			cout << "click on weapons's bar: " << type << endl;
+			//cout << "click on weapons's bar: " << type << endl;
 			if (type != "none") {
 				scene.setPlayerWeapon(type);
 			}
@@ -250,7 +250,7 @@ void Game::mousePress(int button, int x, int y)
 		if (bMaterialInventoryOpened) {
 			int tile;
 			if (ui.clickOnInventoryItem(x, y, &tile)) {
-				cout << "Tile:" << tile << endl;
+				//cout << "Tile:" << tile << endl;
 				scene.setBuildTile(tile);
 			}
 		}

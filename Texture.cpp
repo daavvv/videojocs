@@ -19,7 +19,6 @@ Texture::Texture()
 bool Texture::loadFromFile(const string &filename, PixelFormat format)
 {
 	unsigned char *image = NULL;
-	
 	cout << filename << endl;
 	switch(format)
 	{

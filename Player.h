@@ -58,6 +58,7 @@ public:
 	glm::ivec2 getPosition();
 	
 private:
+	bool canjump;
 	int attackpower;
 	string weapon;
 	bool bJumping,bdownLadder,bdigging, bbuilding;

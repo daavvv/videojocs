@@ -656,7 +656,7 @@ void UI::updateBag(const vector<Item>& bag)
 
 	int bagSize = bag.size();
 
-	cout << "Print bag size:" << bagSize << endl;
+	//cout << "Print bag size:" << bagSize << endl;
 
 	bool exists = false;
 
@@ -982,7 +982,7 @@ bool UI::clickOnMenu(int x, int y, string* menu, bool dead) {
 	*/
 
 	if (x >= left && x <= right && y >= top && y <= bottom) {
-		cout << "inside play button" << endl;
+		//cout << "inside play button" << endl;
 		*menu = "play";
 
 		/*
@@ -1007,7 +1007,7 @@ bool UI::clickOnMenu(int x, int y, string* menu, bool dead) {
 
 
 	if (x >= left && x <= right && y >= top && y <= bottom) {
-		cout << "inside exit button" << endl;
+		//cout << "inside exit button" << endl;
 		*menu = "exit";
 
 		/*
@@ -1026,7 +1026,7 @@ bool UI::clickOnMenu(int x, int y, string* menu, bool dead) {
 
 
 	if (x >= left && x <= right && y >= top && y <= bottom) {
-		cout << "inside INSTRUCTIONS button" << endl;
+		//cout << "inside INSTRUCTIONS button" << endl;
 		*menu = "instructions";
 
 		/*
@@ -1065,8 +1065,10 @@ bool UI::clickOnInventoryItem(int x, int y, int* tile)
 
 	int size = Inventory.size();
 
+	/*
 	for (int i = 0; i < ids.size(); ++i) cout << ids[i] << ",";
 	cout << endl;
+	*/
 
 	for (int i = 0; i < size; ++i) {
 		left = (offsetx - (scalex/2)) + (scalex+paddingx)*(i%6);

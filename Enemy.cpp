@@ -254,8 +254,8 @@ void Enemy::update_attack_right(int deltaTime) {
 
 
 bool Enemy::get_collisionDown() {
-	cout << "abans d'entrar a la func" << endl;
+	//cout << "abans d'entrar a la func" << endl;
 	bool hola = map->collisionMoveDown(posEnemy, glm::ivec2(32, 32), &posEnemy.y);
-	cout << "hola " << hola << endl;
+	//cout << "hola " << hola << endl;
 	return hola;
 }

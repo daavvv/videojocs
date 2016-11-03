@@ -43,6 +43,7 @@ private:
 	void initShaders();
 
 private:
+	bool enableEnemies;
 	int ticks;
 	int contador;
 	bool isPlayerDead;

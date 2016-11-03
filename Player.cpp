@@ -98,6 +98,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	bbuilding = false;
 	digCounter = DIGCOOLDOWN;
 	buildCounter = DIGCOOLDOWN;
+	canjump = true;
 
 	swordTex.loadFromFile(SWORDONPLAYERIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA);
 	axeTex.loadFromFile(AXEONPLAYERIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA);
@@ -205,7 +206,7 @@ void Player::update(int deltaTime)
 	}
 
 
-	cout << weapon << endl;
+	//cout << weapon << endl;
 
 	sprite->update(deltaTime);
 
@@ -365,13 +366,26 @@ void Player::update(int deltaTime)
 			dig = 2;
 		}
 	}
-	
+
+
 	if(bJumping)
 	{
 	
-		jumpAngle += JUMP_ANGLE_STEP;
+		
 
-		if (jumpAngle == 180 || !map->canJump(posPlayer, glm::ivec2(32, 32)))
+		//|| !map->canJump(posPlayer, glm::ivec2(32, 32))
+
+		if (!map->canJump(posPlayer, glm::ivec2(32, 32)) & canjump) {
+
+			jumpAngle = 180 - jumpAngle;
+			canjump = false;
+		}
+		else {
+			jumpAngle += JUMP_ANGLE_STEP;
+		}
+
+
+		if (jumpAngle == 180)
 		{
 			bJumping = false;
 			posPlayer.y = startY;
@@ -387,7 +401,7 @@ void Player::update(int deltaTime)
 	}
 	else
 	{
-		
+		canjump = true;
 		posPlayer.y += FALL_STEP;
 		if(map->collisionMoveDown(posPlayer, glm::ivec2(32, 32), &posPlayer.y))
 		{
