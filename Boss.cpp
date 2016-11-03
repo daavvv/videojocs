@@ -8,6 +8,7 @@
 #define JUMP_ANGLE_STEP 4
 #define JUMP_HEIGHT 96
 #define FALL_STEP 4
+#define BOSSIMGPATH "images/boss.png"
 
 enum BossAnims
 {
@@ -15,12 +16,11 @@ enum BossAnims
 };
 
 
-
 void Boss::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 {
 	//cout << "aqui entro" << endl;
 	life = 12.f;
-	spritesheet.loadFromFile("images/bub.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	spritesheet.loadFromFile(BOSSIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(64, 64), glm::vec2(0.25, 0.25), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(5);
 
