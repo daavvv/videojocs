@@ -33,6 +33,7 @@ Scene::~Scene()
 void Scene::init()
 {
 	//enableEnemies = true;
+	enable_sprite2 = false;
 	ticks = 0;
 	initShaders();
 	map = TileMap::createTileMap("levels/level01.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
@@ -116,7 +117,7 @@ void Scene::init()
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
 	currentTime = 0.0f;
 
-	spritesheet2.loadFromFile("images/caving.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	spritesheet2.loadFromFile("images/dead.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite2 = Sprite::createSprite(glm::ivec2(64, 64), glm::vec2(0.2, 0.2), &spritesheet2, &texProgram);
 	sprite2->setNumberAnimations(1);
 	sprite2->setAnimationSpeed(0, 25);
@@ -158,7 +159,7 @@ void Scene::update(int deltaTime)
 	currentTime += deltaTime;
 	player->update(deltaTime);
 	glm::ivec2 posicio_player = player->getPosition();
-	sprite2->update(deltaTime);
+	if (enable_sprite2)sprite2->update(deltaTime);
 	map->update(deltaTime);
 
 	//if (enableEnemies) {
@@ -326,36 +327,105 @@ void Scene::render()
 
 	map->render();
 	player->render();
-
+	if (enable_sprite2) {
+		
+		sprite2->render();
+		if ((ticks - ticks_inicials) == 15) {
+			enable_sprite2 = false;
+		}
+	}
 	//if (enableEnemies) {
 
 		if (enemics[0]->get_life() > 0) {
 			enemics[0]->render();
 		}
+		else if (enemics[0]->get_primera_mort()) {
+			enemics[0]->set_primera_mort(false);
+			cout << "entro aqui" << endl;
+			ticks_inicials = ticks;
+			enable_sprite2 = true;
+			sprite2->setPosition(glm::vec2(enemics[0]->get_position().x + 1 * map->getTileSize()+16, enemics[0]->get_position().y -3*map->getTileSize()-16));
+		}
 		if (enemics[1]->get_life() > 0) {
 			enemics[1]->render();
+		}
+		else if (enemics[1]->get_primera_mort()) {
+			enemics[1]->set_primera_mort(false);
+			cout << "entro aqui" << endl;
+			ticks_inicials = ticks;
+			enable_sprite2 = true;
+			sprite2->setPosition(glm::vec2(enemics[1]->get_position().x + 1 * map->getTileSize() + 16, enemics[1]->get_position().y - 3 * map->getTileSize() - 16));
 		}
 		if (enemics[2]->get_life() > 0) {
 			enemics[2]->render();
 		}
+		else if (enemics[2]->get_primera_mort()) {
+			enemics[2]->set_primera_mort(false);
+			cout << "entro aqui" << endl;
+			ticks_inicials = ticks;
+			enable_sprite2 = true;
+			sprite2->setPosition(glm::vec2(enemics[2]->get_position().x + 1 * map->getTileSize() + 16, enemics[2]->get_position().y - 3 * map->getTileSize() - 16));
+		}
 		if (enemics[3]->get_life() > 0) {
 			enemics[3]->render();
+		}
+		else if (enemics[3]->get_primera_mort()) {
+			enemics[3]->set_primera_mort(false);
+			cout << "entro aqui" << endl;
+			ticks_inicials = ticks;
+			enable_sprite2 = true;
+			sprite2->setPosition(glm::vec2(enemics[3]->get_position().x + 1 * map->getTileSize() + 16, enemics[3]->get_position().y - 3 * map->getTileSize() - 16));
 		}
 		if (enemics[4]->get_life() > 0) {
 			enemics[4]->render();
 		}
+		else if (enemics[4]->get_primera_mort()) {
+			enemics[4]->set_primera_mort(false);
+			cout << "entro aqui" << endl;
+			ticks_inicials = ticks;
+			enable_sprite2 = true;
+			sprite2->setPosition(glm::vec2(enemics[4]->get_position().x + 1 * map->getTileSize() + 16, enemics[4]->get_position().y - 3 * map->getTileSize() - 16));
+		}
 		if (enemics[5]->get_life() > 0) {
 			enemics[5]->render();
+		}
+		else if (enemics[5]->get_primera_mort()) {
+			enemics[5]->set_primera_mort(false);
+			cout << "entro aqui" << endl;
+			ticks_inicials = ticks;
+			enable_sprite2 = true;
+			sprite2->setPosition(glm::vec2(enemics[5]->get_position().x + 1 * map->getTileSize() + 16, enemics[5]->get_position().y - 3 * map->getTileSize() - 16));
 		}
 		if (enemics[6]->get_life() > 0) {
 			enemics[6]->render();
 		}
+		else if (enemics[6]->get_primera_mort()) {
+			enemics[6]->set_primera_mort(false);
+			cout << "entro aqui" << endl;
+			ticks_inicials = ticks;
+			enable_sprite2 = true;
+			sprite2->setPosition(glm::vec2(enemics[6]->get_position().x + 1 * map->getTileSize() + 16, enemics[6]->get_position().y - 3 * map->getTileSize() - 16));
+		}
 		if (enemics[7]->get_life() > 0) {
 			enemics[7]->render();
 		}
+		else if (enemics[7]->get_primera_mort()) {
+			enemics[7]->set_primera_mort(false);
+			cout << "entro aqui" << endl;
+			ticks_inicials = ticks;
+			enable_sprite2 = true;
+			sprite2->setPosition(glm::vec2(enemics[7]->get_position().x + 1 * map->getTileSize() + 16, enemics[7]->get_position().y - 3 * map->getTileSize() - 16));
+		}
 		if (boss->get_life() > 0) {
 			boss->render();
-		}	
+		}
+		else if (boss->get_primera_mort()) {
+			boss->set_primera_mort(false);
+			cout << "entro aqui" << endl;
+			ticks_inicials = ticks;
+			enable_sprite2 = true;
+			sprite2->setPosition(glm::vec2(boss->get_position().x + 1 * map->getTileSize() + 16, enemics[7]->get_position().y - 3 * map->getTileSize() - 16));
+		}
 	//}
 }
 

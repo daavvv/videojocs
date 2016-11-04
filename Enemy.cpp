@@ -17,6 +17,7 @@ enum EnemyAnims
 
 void Enemy::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 {
+	Enemic_primera_mort = true;
 	life = 3.f;
 	//cout << "aqui entro" << endl;
 	spritesheet.loadFromFile("images/bub.png", TEXTURE_PIXEL_FORMAT_RGBA);
@@ -99,7 +100,6 @@ void Enemy::update(int deltaTime, int Posplayerx, int Posplayery)
 				posEnemy.x += 1;
 				sprite->changeAnimation(STAND_LEFT);
 				if (!bJumping and map->can_jump_enemy(glm::ivec2(posEnemy.x - map->getTileSize(), posEnemy.y), glm::ivec2(32, 32))) {
-					cout << "1" << endl;
 					bJumping = true;
 					jumpAngle = 0;
 					startY = posEnemy.y;
@@ -115,7 +115,6 @@ void Enemy::update(int deltaTime, int Posplayerx, int Posplayery)
 				posEnemy.x -= 1;
 				sprite->changeAnimation(STAND_RIGHT);
 				if (!bJumping and map->can_jump_enemy(glm::ivec2(posEnemy.x + map->getTileSize(), posEnemy.y), glm::ivec2(32, 32))) {
-					cout << "2" << endl;
 					bJumping = true;
 					jumpAngle = 0;
 					startY = posEnemy.y;
@@ -174,7 +173,6 @@ void Enemy::update(int deltaTime, int Posplayerx, int Posplayery)
 			{
 				if (Posplayery < posEnemy.y && diferenciay > diferenciax && (map->Exists_platform(posEnemy, glm::ivec2(32, 32)) or (Posplayerx >= posEnemy.x and map->Exists_platform(glm::ivec2(posEnemy.x + map->getTileSize(), posEnemy.y), glm::ivec2(32, 32))) or (Posplayerx < posEnemy.x and map->Exists_platform(glm::ivec2(posEnemy.x - map->getTileSize(), posEnemy.y), glm::ivec2(32, 32)))))
 				{
-					cout << "3" << endl;
 					bJumping = true;
 					jumpAngle = 0;
 					startY = posEnemy.y;
@@ -268,6 +266,16 @@ bool Enemy::get_collisionDown() {
 	bool hola = map->collisionMoveDown(posEnemy, glm::ivec2(32, 32), &posEnemy.y);
 	//cout << "hola " << hola << endl;
 	return hola;
+}
+
+void Enemy::set_primera_mort(bool bolea)
+{
+	Enemic_primera_mort = bolea;
+}
+
+bool Enemy::get_primera_mort()
+{
+	return Enemic_primera_mort;
 }
 
 void Enemy::set_Area(int x, int y)

@@ -19,10 +19,11 @@ enum BossAnims
 void Boss::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 {
 	//cout << "aqui entro" << endl;
+	Boss_primera_mort = true;
 	contador_atac = 0;
 	Areax = 0;
 	Areay = 0;
-	life = 12.f;
+	life = 1.f;
 	spritesheet.loadFromFile(BOSSIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(64, 64), glm::vec2(0.25, 0.25), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(5);
@@ -187,6 +188,16 @@ void Boss::render()
 float Boss::get_life()
 {
 	return life;
+}
+
+void Boss::set_primera_mort(bool bolea)
+{
+	Boss_primera_mort = bolea;
+}
+
+bool Boss::get_primera_mort()
+{
+	return Boss_primera_mort;
 }
 
 void Boss::set_life(float resta)

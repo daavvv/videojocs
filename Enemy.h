@@ -15,6 +15,8 @@ public:
 	void setTileMap(TileMap *tileMap);
 	void render();
 	bool get_collisionDown();
+	void set_primera_mort(bool bolea);
+	bool get_primera_mort();
 	void set_Area(int x, int y);
 	bool get_enemy_bjumping() {
 		return bJumping;
@@ -29,9 +31,10 @@ public:
 	}
 	void set_contador_atac(int actualitzacio);
 	int get_contador_atac();
+
 private:
 	int contador_atac;
-	bool bJumping;
+	bool bJumping, Enemic_primera_mort;
 	int jumpAngle, startY;
 	int Areax, Areay;
 	glm::ivec2 tileMapDispl, posEnemy;

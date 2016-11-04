@@ -13,6 +13,8 @@ public:
 	void setTileMap(TileMap *tileMap);
 	void render();
 	float get_life();
+	void set_primera_mort(bool bolea);
+	bool get_primera_mort();
 	void set_life(float resta);
 	void set_Area(int x, int y);
 	void update(int deltaTime, int Posplayerx, int Posplayery);
@@ -25,7 +27,7 @@ private:
 	int contador_atac;
 	int Areax, Areay;
 	float life;
-	bool bJumping;
+	bool bJumping, Boss_primera_mort;
 	int jumpAngle, startY;
 	glm::ivec2 tileMapDispl, posBoss;
 	Texture spritesheet, spritesheet2;

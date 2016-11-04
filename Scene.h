@@ -45,8 +45,8 @@ private:
 
 private:
 	//bool enableEnemies;
-	int ticks;
-	bool isPlayerDead;
+	int ticks, ticks_inicials;
+	bool isPlayerDead, enable_sprite2;
 	Boss *boss;
 	TileMap *map;
 	Player *player;
