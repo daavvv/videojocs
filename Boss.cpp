@@ -23,7 +23,7 @@ void Boss::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	contador_atac = 0;
 	Areax = 0;
 	Areay = 0;
-	life = 1.f;
+	life = 12.f;
 	spritesheet.loadFromFile(BOSSIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(64, 64), glm::vec2(0.25, 0.25), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(5);
