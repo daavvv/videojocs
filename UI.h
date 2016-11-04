@@ -41,6 +41,7 @@ public:
 	void renderGoldCoins(int goldCoins);
 	void renderWeaponPopup(string type);
 	void renderInstructionsMenu();
+	bool clickOnInstructions(int x, int y);
 	bool clickOnInventoryItem(int x, int y, int *tile);
 	bool clickOnMenu(int x, int y, string *menu, bool dead);
 	bool clickOnPopup(int x, int y, bool dead);

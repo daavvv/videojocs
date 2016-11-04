@@ -968,7 +968,17 @@ bool UI::clickOnWeaponsBar(int x, int y, string *type)
 
 
 
+bool UI::clickOnInstructions(int x, int y) {
+	int left = 27;
+	int right = 143;
+	int top = 416;
+	int bottom = 441;
 
+	if(x >= left && x <= right && y >= top && y <= bottom) {
+		return true;
+	}
+	return false;
+}
 
 
 

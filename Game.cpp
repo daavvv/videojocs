@@ -192,11 +192,20 @@ void Game::mousePress(int button, int x, int y)
 {
 
 
-	//cout << "clicked on " << x << "," << y << endl;
+	cout << "clicked on " << x << "," << y << endl;
 
 	//Esto dejamelo así please
 
 	if (!gameInitialized) {
+
+		if (instructionsWindowOpened) {
+			if (ui.clickOnInstructions(x,y)) {
+				instructionsWindowOpened = false;
+				return;
+			}
+		}
+
+
 		string menu;
 		bool success = false;
 
