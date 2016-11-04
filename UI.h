@@ -40,6 +40,7 @@ public:
 	void renderCounters();
 	void renderGoldCoins(int goldCoins);
 	void renderWeaponPopup(string type);
+	void renderInstructionsMenu();
 	bool clickOnInventoryItem(int x, int y, int *tile);
 	bool clickOnMenu(int x, int y, string *menu, bool dead);
 	bool clickOnPopup(int x, int y, bool dead);
@@ -62,10 +63,12 @@ private:
 	TexturedQuad* goldCoinsCounter;
 	TexturedQuad* highlight;
 	TexturedQuad* menuBackground;
+	TexturedQuad* instructions;
 	TexturedQuad* playButton;
 	TexturedQuad* exitButton;
 	TexturedQuad* instructionsButton;
 	Texture swordTex, axeTex;
+	Texture instructionsTex;
 	Texture onealt, twoalt, threealt, fouralt, fivealt, sixalt, sevenalt, eightalt, ninealt, tenalt, twentyalt, thirtyalt, fortyalt, fiftyalt, sixtyalt, seventyalt, eightyalt, ninetyalt, onehundredalt;
 	Texture weaponsInventoryTex,swordPopupTex,axePopupTex,dirt, grass, stone, iron, zero, one, two, three, four, five, six, seven, eight, nine, ten, hightlight, menuBackgroundTex, playButtonTex, playAgainButtonTex, instructionsButtonTex, exitButtonTex, goldCoinsTex, goldCoinsCounterTex;
 	vector<TexturedQuad*> UIElements, MaterialsLeftBar,CountersLeftBar;

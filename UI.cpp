@@ -118,6 +118,7 @@
 #define EIGHTYALT "images/UI/numbers_alt/eighty.png"
 #define NINETYALT "images/UI/numbers_alt/ninety.png"
 #define ONEHUNDREDALT "images/UI/numbers_alt/one-hundred.png"
+#define INSTRUCTIONSIMGPATH "images/UI/instruccions.png"
 
 
 
@@ -145,6 +146,10 @@ void UI::init(){
 	swordPopupOpened = false;
 
 	initShaders();
+
+	if (instructionsTex.loadFromFile(INSTRUCTIONSIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
+		cout << "loaded" << endl;
+	}
 
 	if (menuBackgroundTex.loadFromFile(MENUBACKGROUNDIMGPATH, TEXTURE_PIXEL_FORMAT_RGBA)) {
 		cout << "loaded" << endl;
@@ -441,6 +446,11 @@ void UI::init(){
 	geom[1] = glm::vec2(64.f, 64.f);
 	highlight = TexturedQuad::createTexturedQuad(geom, texCoords, UIProgram);
 
+
+	//LOAD INSTRUCTIONS MENU
+	geom[0] = glm::vec2(0.f, 0.f);
+	geom[1] = glm::vec2(64.f, 64.f);
+	instructions = TexturedQuad::createTexturedQuad(geom, texCoords, UIProgram);
 
 	//LOAD MAIN MENU
 
@@ -1182,6 +1192,21 @@ void UI::render(float playerlife,int goldCoins){
 	
 	//renderMaterialInventory();
 }
+
+void UI::renderInstructionsMenu() {
+	glm::mat4 modelview;
+	UIProgram.use();
+	UIProgram.setUniformMatrix4f("projection", projection);
+	UIProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+	modelview = glm::translate(glm::mat4(1.0f), glm::vec3(float(SCREEN_WIDTH / 2), float(SCREEN_HEIGHT / 2), 0.f));
+	//modelview = glm::rotate(modelview, currentTime / 1000.f, glm::vec3(0.0f, 0.0f, 1.0f));
+	modelview = glm::scale(modelview, glm::vec3(10, SCREEN_HEIGHT / 54, 0));
+	modelview = glm::translate(modelview, glm::vec3(-32.f, -32.f, 0.f));
+	UIProgram.setUniformMatrix4f("modelview", modelview);
+	instructions->render(instructionsTex);
+}
+
+
 
 void UI::renderMainMenu(bool dead)
 {
