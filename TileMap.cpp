@@ -1051,10 +1051,39 @@ bool TileMap::Exists_platform(const glm::ivec2 &pos, const glm::ivec2 &size)
 	x0 = pos.x / tileSize;
 	x1 = (pos.x + size.x - 1) / tileSize;
 	y = (pos.y + size.y) / tileSize;
+	bool trobat_terra, trobat_aire;
+	for (int x = x0; x <= x1; x++) {
+		trobat_terra = false;
+		trobat_aire = false;
+		for (int y_max = y - 4; y > y_max; ++y_max) {
+			if (structMap[y_max*mapSize.x + x].ID != 0)
+			{
+				trobat_terra = true;
+			}
+			if (structMap[y_max*mapSize.x + x].ID == 0)
+			{
+				trobat_aire = true;
+			}
+			if(trobat_aire and trobat_terra) return true;
+		}
+	}
+
+	return false;
+
+}
+
+bool TileMap::can_jump_enemy(const glm::ivec2 & pos, const glm::ivec2 & size)
+{
+
+	int x0, x1, y;
+
+	x0 = pos.x / tileSize;
+	x1 = (pos.x + size.x - 1) / tileSize;
+	y = (pos.y + size.y) / tileSize;
 	for (int y_max = y - 4; y > y_max; ++y_max) {
 		for (int x = x0; x <= x1; x++)
 		{
-			if (structMap[y_max*mapSize.x + x].ID != 0)
+			if (structMap[y_max*mapSize.x + x].ID == 0)
 			{
 				return true;
 			}

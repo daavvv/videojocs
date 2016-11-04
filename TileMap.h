@@ -64,6 +64,7 @@ public:
 		return mapSize;
 	}
 	bool Exists_platform(const glm::ivec2 &pos, const glm::ivec2 &size);
+	bool can_jump_enemy(const glm::ivec2 &pos, const glm::ivec2 &size);
 	bool isOverGoldCoin(const glm::ivec2 &playerPos, const glm::ivec2 &size);
 
 	glm::vec2 get_animation(int ID, int estat, int instant_estat);
